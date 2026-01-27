@@ -63,11 +63,25 @@
 
     <div id="result"></div>
 
+    <div id="disqus_thread" style="margin-top:40px;text-align:left;"></div>
+
     <footer>
       <p data-i18n="footer">© 2024 Lotto Generator | Good Luck! 🍀</p>
       <p style="margin-top:8px;"><a href="/contact.html" style="color:var(--text-muted);font-size:0.85rem;text-decoration:none;">제휴 문의</a></p>
     </footer>
   </div>
   <script defer type="text/javascript" src="/lotto.js"></script>
+  <script>
+    var disqus_config = function () {
+      this.page.url = window.location.href;
+      this.page.identifier = 'lotto-generator';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://rene650962.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
 </body>
 </html>

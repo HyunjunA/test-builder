@@ -408,6 +408,11 @@ footer p {
     font-size: 0.85rem;
 }
 
+#disqus_thread {
+    padding: 20px 0;
+    border-top: 1px solid var(--footer-border);
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {
