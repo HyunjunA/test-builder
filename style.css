@@ -1,1 +1,98 @@
-/* Add styles here */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+input[type="number"] {
+    padding: 10px 15px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 80px;
+    text-align: center;
+    -moz-appearance: textfield; /* Hide arrows for Firefox */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px dashed #cccccc;
+    border-radius: 8px;
+    min-height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: #f9f9f9;
+}
+
+#result span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 50%;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* Prevent shrinking on small screens */
+}
+
+/* Optional: Different colors for numbers for visual variety */
+#result span:nth-child(1) { background-color: #FF5733; } /* Reddish */
+#result span:nth-child(2) { background-color: #FFBD33; } /* Orangish */
+#result span:nth-child(3) { background-color: #33FF57; } /* Greenish */
+#result span:nth-child(4) { background-color: #3357FF; } /* Blueish */
+#result span:nth-child(5) { background-color: #BD33FF; } /* Purplish */
+#result span:nth-child(6) { background-color: #FF33BD; } /* Pinkish */
+#result span:nth-child(7) { background-color: #33FFBD; } /* Tealish */
