@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lotto Number Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href='/style.css' rel='stylesheet'>
+</head>
+<body>
+  <div class="container">
+    <div class="top-controls">
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+      </button>
+
+      <div class="language-selector">
+        <button id="langButton" class="lang-button">
+          <span class="lang-icon">🌐</span>
+          <span id="currentLang">EN</span>
+          <span class="arrow">▼</span>
+        </button>
+        <div id="langDropdown" class="lang-dropdown">
+          <div class="lang-option" data-lang="en">🇺🇸 English</div>
+          <div class="lang-option" data-lang="ko">🇰🇷 한국어</div>
+          <div class="lang-option" data-lang="ja">🇯🇵 日本語</div>
+          <div class="lang-option" data-lang="zh">🇨🇳 中文</div>
+          <div class="lang-option" data-lang="es">🇪🇸 Español</div>
+          <div class="lang-option" data-lang="fr">🇫🇷 Français</div>
+          <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+          <div class="lang-option" data-lang="pt">🇧🇷 Português</div>
+          <div class="lang-option" data-lang="ru">🇷🇺 Русский</div>
+          <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+          <div class="lang-option" data-lang="hi">🇮🇳 हिन्दी</div>
+          <div class="lang-option" data-lang="th">🇹🇭 ไทย</div>
+          <div class="lang-option" data-lang="vi">🇻🇳 Tiếng Việt</div>
+          <div class="lang-option" data-lang="it">🇮🇹 Italiano</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header">
+      <div class="logo">🎱</div>
+      <h1 data-i18n="title">Lotto Number Generator</h1>
+      <p class="subtitle" data-i18n="subtitle">Pick your lucky numbers!</p>
+    </div>
+
+    <div class="controls">
+      <div class="input-group">
+        <label for="maxNumber" data-i18n="maxNumber">Max Number</label>
+        <input type="number" id="maxNumber" value="45" min="1">
+      </div>
+      <div class="input-group">
+        <label for="drawCount" data-i18n="drawCount">Numbers to Draw</label>
+        <input type="number" id="drawCount" value="6" min="1">
+      </div>
+    </div>
+
+    <button id="drawButton">
+      <span class="btn-icon">🎲</span>
+      <span data-i18n="drawButton">Draw Numbers</span>
+    </button>
+
+    <div id="result"></div>
+
+    <footer>
+      <p data-i18n="footer">© 2024 Lotto Generator | Good Luck! 🍀</p>
+      <p style="margin-top:8px;">
+        <a href="/index.html" style="color:var(--text-muted);font-size:0.85rem;text-decoration:none;">← 홈으로</a>
+      </p>
+    </footer>
+  </div>
+  <script defer type="text/javascript" src="/lotto.js"></script>
+</body>
+</html>
