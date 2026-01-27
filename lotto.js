@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
             code: "EN"
         },
         ko: {
-            title: "로또 번호 추첨기",
-            subtitle: "행운의 번호를 뽑아보세요!",
-            maxNumber: "최대 숫자",
-            drawCount: "추첨 개수",
-            drawButton: "번호 추첨",
-            footer: "© 2024 로또 생성기 | 행운을 빕니다! 🍀",
-            errorPositive: "최대 번호와 추첨 개수는 양의 정수여야 합니다.",
-            errorMax: "최대 번호는 추첨 개수보다 크거나 같아야 합니다.",
+            title: "Lotto Number Picker",
+            subtitle: "Pick your lucky numbers!",
+            maxNumber: "Max Number",
+            drawCount: "Numbers to Draw",
+            drawButton: "Draw Numbers",
+            footer: "© 2024 Lotto Generator | Good Luck! 🍀",
+            errorPositive: "Max number and draw count must be positive integers.",
+            errorMax: "Max number must be greater than or equal to draw count.",
             code: "KO"
         },
         ja: {

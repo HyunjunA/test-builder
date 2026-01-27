@@ -6,7 +6,7 @@ This document outlines the current state and planned features for a simple web-b
 ## Current Features Outline
 
 ### index.html
-*   **Title**: The page title is "로또 번호 추첨기" (Lotto Number Picker).
+*   **Title**: The page title is "Lotto Number Picker".
 *   **Max Number Input**: An input field (type `number`) where users can enter the maximum possible number for the lottery draw (e.g., 45).
 *   **Number Count Input**: An input field (type `number`) where users can specify how many numbers they want to draw (e.g., 6).
 *   **Draw Button**: A button that, when clicked, triggers the lottery number generation process.

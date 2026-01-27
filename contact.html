@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>제휴 문의</title>
+  <title>Contact Us</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="/style.css" rel="stylesheet">
   <style>
@@ -83,48 +83,48 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>제휴 문의</h1>
-      <p class="subtitle">제휴 및 비즈니스 관련 문의를 남겨주세요.</p>
+      <h1>Contact Us</h1>
+      <p class="subtitle">Please leave your partnership and business inquiries.</p>
     </div>
 
     <form class="contact-form" id="contactForm" action="https://formspree.io/f/xlgbpwnd" method="POST">
       <div class="form-group">
-        <label for="name">이름 / 회사명 *</label>
-        <input type="text" id="name" name="name" required placeholder="홍길동 / ABC 주식회사">
+        <label for="name">Name / Company *</label>
+        <input type="text" id="name" name="name" required placeholder="John Doe / ABC Inc.">
       </div>
 
       <div class="form-group">
-        <label for="email">이메일 *</label>
+        <label for="email">Email *</label>
         <input type="email" id="email" name="email" required placeholder="example@company.com">
       </div>
 
       <div class="form-group">
-        <label for="phone">연락처</label>
+        <label for="phone">Phone</label>
         <input type="tel" id="phone" name="phone" placeholder="010-1234-5678">
       </div>
 
       <div class="form-group">
-        <label for="type">문의 유형 *</label>
+        <label for="type">Inquiry Type *</label>
         <select id="type" name="type" required>
-          <option value="" disabled selected>선택해주세요</option>
-          <option value="제휴 제안">제휴 제안</option>
-          <option value="광고 문의">광고 문의</option>
-          <option value="API 연동">API 연동</option>
-          <option value="기타">기타</option>
+          <option value="" disabled selected>Please select</option>
+          <option value="Partnership Proposal">Partnership Proposal</option>
+          <option value="Advertising Inquiry">Advertising Inquiry</option>
+          <option value="API Integration">API Integration</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="message">문의 내용 *</label>
-        <textarea id="message" name="message" required placeholder="문의 내용을 자세히 적어주세요."></textarea>
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" required placeholder="Please describe your inquiry in detail."></textarea>
       </div>
 
-      <button type="submit" class="submit-btn">문의 보내기</button>
+      <button type="submit" class="submit-btn">Send Inquiry</button>
 
       <div id="formMessage" class="form-message"></div>
     </form>
 
-    <a href="/index.html" class="back-link">← 메인으로 돌아가기</a>
+    <a href="/index.html" class="back-link">&larr; Back to Main</a>
   </div>
 
   <script>
@@ -135,7 +135,7 @@
       e.preventDefault();
       const btn = form.querySelector('button[type="submit"]');
       btn.disabled = true;
-      btn.textContent = '전송 중...';
+      btn.textContent = 'Sending...';
 
       try {
         const res = await fetch(form.action, {
@@ -145,17 +145,17 @@
         });
         if (res.ok) {
           msg.className = 'form-message success';
-          msg.textContent = '문의가 성공적으로 전송되었습니다. 감사합니다!';
+          msg.textContent = 'Your inquiry has been sent successfully. Thank you!';
           form.reset();
         } else {
           throw new Error();
         }
       } catch {
         msg.className = 'form-message error';
-        msg.textContent = '전송에 실패했습니다. 다시 시도해주세요.';
+        msg.textContent = 'Failed to send. Please try again.';
       }
       btn.disabled = false;
-      btn.textContent = '문의 보내기';
+      btn.textContent = 'Send Inquiry';
     });
   </script>
 </body>

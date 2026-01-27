@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>강아지 vs 고양이 AI 분류기</title>
+  <title>Dog vs Cat AI Classifier</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="/style.css" rel="stylesheet">
   <style>
@@ -109,20 +109,20 @@
   <div class="container">
     <div class="header ai-header">
       <div class="logo">🐾</div>
-      <h1>강아지 vs 고양이 AI</h1>
-      <p class="subtitle">웹캠 또는 사진 업로드로 판별해보세요</p>
+      <h1>Dog vs Cat AI</h1>
+      <p class="subtitle">Classify with webcam or photo upload</p>
     </div>
 
     <div class="tab-buttons">
-      <button class="tab-btn active" data-tab="webcam">웹캠으로 분석</button>
-      <button class="tab-btn" data-tab="upload">사진 업로드로 분석</button>
+      <button class="tab-btn active" data-tab="webcam">Analyze with Webcam</button>
+      <button class="tab-btn" data-tab="upload">Analyze with Upload</button>
     </div>
 
     <p id="statusMsg" class="status-msg"></p>
 
     <!-- Webcam Tab -->
     <div class="tab-panel active" id="panel-webcam">
-      <button type="button" id="webcamStartBtn">웹캠 시작</button>
+      <button type="button" id="webcamStartBtn">Start Webcam</button>
       <div id="webcam-container"></div>
       <div id="webcam-label-container"></div>
     </div>
@@ -131,23 +131,23 @@
     <div class="tab-panel" id="panel-upload">
       <div class="upload-area" id="uploadArea">
         <div class="upload-icon">📷</div>
-        <p>클릭하거나 사진을 드래그해서 올려주세요</p>
+        <p>Click or drag and drop a photo</p>
         <input type="file" id="fileInput" accept="image/*">
       </div>
 
       <div id="preview-container">
-        <img id="preview" alt="업로드된 이미지">
+        <img id="preview" alt="Uploaded image">
       </div>
 
       <div id="result-area">
         <div id="result-emoji"></div>
         <div id="result-text"></div>
         <div id="predictions"></div>
-        <button class="retry-btn" id="retryBtn" type="button">다른 사진 분석하기</button>
+        <button class="retry-btn" id="retryBtn" type="button">Analyze Another Photo</button>
       </div>
     </div>
 
-    <a href="/index.html" class="back-link">← 메인으로 돌아가기</a>
+    <a href="/index.html" class="back-link">&larr; Back to Main</a>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
@@ -176,12 +176,12 @@
 
     // Load model
     (async function loadModel() {
-      statusMsg.textContent = 'AI 모델을 불러오는 중...';
+      statusMsg.textContent = 'Loading AI model...';
       try {
         model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
         statusMsg.textContent = '';
       } catch (e) {
-        statusMsg.textContent = '모델 로딩에 실패했습니다. 페이지를 새로고침해주세요.';
+        statusMsg.textContent = 'Failed to load model. Please refresh the page.';
       }
     })();
 
@@ -192,7 +192,7 @@
 
     webcamStartBtn.addEventListener('click', async () => {
       if (!model) {
-        statusMsg.textContent = '모델이 아직 로딩 중입니다.';
+        statusMsg.textContent = 'Model is still loading.';
         return;
       }
       if (webcamRunning) {
@@ -205,7 +205,7 @@
         await webcam.setup();
         await webcam.play();
         webcamRunning = true;
-        webcamStartBtn.textContent = '웹캠 중지';
+        webcamStartBtn.textContent = 'Stop Webcam';
         webcamContainer.innerHTML = '';
         webcamContainer.appendChild(webcam.canvas);
         labelContainer.innerHTML = '';
@@ -216,7 +216,7 @@
         }
         window.requestAnimationFrame(webcamLoop);
       } catch (err) {
-        statusMsg.textContent = '웹캠을 사용할 수 없습니다. 브라우저 권한을 확인해주세요.';
+        statusMsg.textContent = 'Cannot access webcam. Please check browser permissions.';
       }
     });
 
@@ -234,7 +234,7 @@
         const pct = Math.round(p.probability * 100);
         const name = p.className;
         const lower = name.toLowerCase();
-        const barClass = (lower.includes('dog') || lower.includes('강아지') || lower.includes('개')) ? 'bar-dog' : 'bar-cat';
+        const barClass = (lower.includes('dog')) ? 'bar-dog' : 'bar-cat';
         labelContainer.children[i].innerHTML =
           '<div class="prediction-label">' + name + '  ' + pct + '%</div>' +
           '<div class="bar-bg"><div class="bar-fill ' + barClass + '" style="width:' + pct + '%">' + pct + '%</div></div>';
@@ -249,7 +249,7 @@
       }
       webcamContainer.innerHTML = '';
       labelContainer.innerHTML = '';
-      webcamStartBtn.textContent = '웹캠 시작';
+      webcamStartBtn.textContent = 'Start Webcam';
     }
 
     // ===== Upload =====
@@ -283,7 +283,7 @@
 
     async function handleFile(file) {
       if (!file.type.startsWith('image/')) {
-        statusMsg.textContent = '이미지 파일만 업로드할 수 있습니다.';
+        statusMsg.textContent = 'Only image files can be uploaded.';
         return;
       }
       const reader = new FileReader();
@@ -292,17 +292,17 @@
         previewContainer.style.display = 'block';
         uploadArea.style.display = 'none';
         if (!model) {
-          statusMsg.textContent = '모델이 아직 로딩 중입니다.';
+          statusMsg.textContent = 'Model is still loading.';
           return;
         }
-        statusMsg.textContent = '분석 중...';
+        statusMsg.textContent = 'Analyzing...';
         preview.onload = async () => {
           try {
             const prediction = await model.predict(preview);
             showResults(prediction);
             statusMsg.textContent = '';
           } catch (err) {
-            statusMsg.textContent = '분석에 실패했습니다. 다시 시도해주세요.';
+            statusMsg.textContent = 'Analysis failed. Please try again.';
           }
         };
       };
@@ -320,7 +320,7 @@
         const pct = Math.round(p.probability * 100);
         const name = p.className;
         const lower = name.toLowerCase();
-        const barClass = (lower.includes('dog') || lower.includes('강아지') || lower.includes('개')) ? 'bar-dog' : 'bar-cat';
+        const barClass = (lower.includes('dog')) ? 'bar-dog' : 'bar-cat';
         const bar = document.createElement('div');
         bar.className = 'prediction-bar';
         bar.innerHTML =
@@ -335,12 +335,12 @@
       const bestLower = best.className.toLowerCase();
       const pct = Math.round(best.probability * 100);
 
-      if (bestLower.includes('dog') || bestLower.includes('강아지') || bestLower.includes('개')) {
+      if (bestLower.includes('dog')) {
         emoji.textContent = '🐶';
-        text.textContent = '강아지 상입니다! (' + pct + '%)';
-      } else if (bestLower.includes('cat') || bestLower.includes('고양이')) {
+        text.textContent = 'It\'s a dog! (' + pct + '%)';
+      } else if (bestLower.includes('cat')) {
         emoji.textContent = '🐱';
-        text.textContent = '고양이 상입니다! (' + pct + '%)';
+        text.textContent = 'It\'s a cat! (' + pct + '%)';
       } else {
         emoji.textContent = '🤔';
         text.textContent = best.className + ' (' + pct + '%)';
