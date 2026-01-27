@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-6316887055096303">
+  <meta name="description" content="Free online Word Counter tool. Count words, characters, sentences, paragraphs, and estimate reading and speaking time in real time. No sign-up required.">
+  <meta name="keywords" content="word counter, character count, word count tool, reading time, speaking time, sentence counter, paragraph counter">
+  <meta property="og:title" content="Word Counter - Free Online Character & Word Count Tool | App Collection">
+  <meta property="og:description" content="Count words, characters, sentences, and paragraphs instantly. Estimate reading and speaking time in real time with our free Word Counter tool.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://test-builder-web.web.app/word-counter.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Word Counter - Free Online Character & Word Count Tool | App Collection">
+  <meta name="twitter:description" content="Count words, characters, sentences, and paragraphs instantly. Estimate reading and speaking time in real time with our free Word Counter tool.">
+  <link rel="canonical" href="https://test-builder-web.web.app/word-counter.html">
+  <title>Word Counter - Free Online Character & Word Count Tool | App Collection</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word Counter",
+    "url": "https://test-builder-web.web.app/word-counter.html",
+    "description": "Free online Word Counter. Count words, characters, sentences, paragraphs, and estimate reading and speaking time in real time.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How does the word counter work?", "acceptedAnswer": {"@type": "Answer", "text": "The word counter splits your text by whitespace and counts non-empty segments as words. Characters are counted including and excluding spaces. Sentences are detected by periods, exclamation marks, and question marks. Paragraphs are separated by blank lines."}},
+      {"@type": "Question", "name": "How is reading time estimated?", "acceptedAnswer": {"@type": "Answer", "text": "Reading time is estimated based on an average reading speed of 200 words per minute, which is the commonly accepted average for adult readers reading English text."}},
+      {"@type": "Question", "name": "How is speaking time estimated?", "acceptedAnswer": {"@type": "Answer", "text": "Speaking time is estimated based on an average speaking pace of 130 words per minute, which represents a comfortable, clear presentation speed."}},
+      {"@type": "Question", "name": "Does it count characters with and without spaces?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The tool displays both the total character count (including spaces) and the character count excluding spaces, which is useful for platforms with strict character limits."}},
+      {"@type": "Question", "name": "Can I use this for social media character limits?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. The real-time character count is perfect for checking text against social media character limits such as Twitter/X (280 characters), Instagram captions (2,200 characters), or LinkedIn posts (3,000 characters)."}}
+    ]
+  }
+  </script>
+</head>
+<body class="has-nav">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="nav-links">
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-wide">
+    <div class="main-content">
+      <header class="header">
+        <h1>Word Counter</h1>
+        <p class="subtitle">Count words, characters, sentences, and estimate reading time in real time</p>
+      </header>
+
+      <textarea id="textInput" class="tool-input" style="min-height:200px;" placeholder="Start typing or paste your text here..."></textarea>
+
+      <div id="stats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px;">
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statWords">0</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Words</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statChars">0</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Characters</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statCharsNoSpace">0</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Chars (no spaces)</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statSentences">0</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Sentences</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statParagraphs">0</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Paragraphs</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statReadTime">0 min</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Reading Time</div>
+        </div>
+        <div class="content-section" style="text-align:center;margin-top:0;padding:16px;">
+          <div style="font-size:1.8rem;font-weight:700;color:var(--text-primary);" id="statSpeakTime">0 min</div>
+          <div style="font-size:0.8rem;color:var(--text-secondary);">Speaking Time</div>
+        </div>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="content-section">
+        <h2>Why Word Count Matters</h2>
+        <p>Word count is one of the most fundamental metrics in writing. Whether you are a student writing an essay, a blogger crafting a post, a journalist meeting an article deadline, or a professional preparing a report, knowing your word count is essential. Many academic institutions set strict word limits for assignments, and exceeding or falling short of these limits can affect your grade. Publishers and editors also rely on word counts to plan layouts, estimate reading time, and maintain consistency across their publications.</p>
+        <p>In the digital age, word count has taken on additional significance. Search engine optimization (SEO) guidelines often recommend specific word count ranges for different types of content. Blog posts typically perform best at 1,000 to 2,000 words, while pillar pages and comprehensive guides may need 3,000 words or more to rank competitively. Social media platforms impose strict character limits: Twitter/X allows 280 characters, Instagram captions can be up to 2,200 characters, and LinkedIn posts are limited to 3,000 characters. Understanding your text metrics helps you tailor content to each platform effectively.</p>
+        <p>Beyond simple counting, understanding the relationship between word count and reading time helps content creators provide better user experiences. Including an estimated reading time at the top of articles has become a standard practice because it sets reader expectations and can increase engagement. Our tool calculates this automatically, saving you time and effort.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Reading Time Estimation</h2>
+        <p>Reading time estimation is based on research into average reading speeds. The widely accepted average reading speed for adult English readers is approximately 200 to 250 words per minute when reading for comprehension. Our tool uses 200 words per minute as a conservative estimate, ensuring that the displayed reading time is realistic for most audiences. This figure accounts for natural pauses, re-reading of complex passages, and varying levels of text difficulty.</p>
+        <p>Speaking time uses a different baseline. The average speaking rate for presentations and speeches is approximately 120 to 150 words per minute. We use 130 words per minute, which represents a comfortable pace that allows for clear enunciation and audience comprehension. This estimate is particularly useful for speakers preparing presentations, podcast scripts, voiceover narrations, or any content intended to be delivered orally. Knowing your speaking time in advance helps you plan your delivery and stay within allotted time slots.</p>
+        <p>It is important to note that these are estimates. Actual reading and speaking times vary based on factors such as the complexity of the text, the reader's familiarity with the subject, the presence of technical jargon, and individual reading or speaking habits. Technical or scientific documents typically have slower reading rates, while familiar or narrative content may be read more quickly.</p>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="content-section">
+        <h2>Writing Tips for Different Platforms</h2>
+        <p>Each writing platform has its own best practices regarding length and style. For blog posts and SEO content, aim for at least 1,000 words to provide sufficient depth for search engines to understand and rank your content. Use clear headings, short paragraphs, and bullet points to improve readability. Break up long sections with images or callout boxes to keep readers engaged throughout the article.</p>
+        <p>For email marketing, brevity is key. Most successful marketing emails contain between 50 and 200 words. Your subject line should be under 60 characters to display fully on mobile devices. Get to the point quickly, use a clear call to action, and avoid large blocks of text that can overwhelm readers viewing on small screens.</p>
+        <p>Academic writing has its own conventions. Research papers typically range from 3,000 to 8,000 words depending on the discipline and publication. Theses and dissertations are significantly longer. Always check your institution's specific requirements and adhere to the prescribed formatting guidelines. Use our sentence and paragraph counters to ensure your writing is well-structured and meets the expected academic standards for flow and organization.</p>
+        <p>For social media, every character counts. On Twitter/X, concise messaging is essential within the 280-character limit. Instagram captions can be longer but should front-load the most important information since text is truncated after the first few lines. LinkedIn articles can be more detailed, but even there, posts that are concise and scannable tend to receive more engagement than lengthy, unformatted blocks of text.</p>
+      </div>
+
+      <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+          <summary>How does the word counter work?</summary>
+          <div class="faq-answer">The word counter splits your text by whitespace (spaces, tabs, newlines) and counts all non-empty segments as words. It updates in real time as you type or paste text, providing instant feedback on all metrics including words, characters, sentences, paragraphs, reading time, and speaking time.</div>
+        </details>
+        <details>
+          <summary>How is reading time estimated?</summary>
+          <div class="faq-answer">Reading time is calculated based on an average reading speed of 200 words per minute, which is the commonly accepted average for adult readers processing English text for comprehension. The result is displayed in minutes, rounding up to ensure the estimate is realistic.</div>
+        </details>
+        <details>
+          <summary>How is speaking time estimated?</summary>
+          <div class="faq-answer">Speaking time is calculated at 130 words per minute, representing a comfortable, clear presentation pace. This is useful for preparing speeches, podcasts, voiceovers, and any content intended for oral delivery.</div>
+        </details>
+        <details>
+          <summary>Does it count characters with and without spaces?</summary>
+          <div class="faq-answer">Yes. The tool displays both the total character count (including all spaces, tabs, and newlines) and the character count excluding spaces. The no-spaces count is particularly useful for platforms or requirements that count only visible characters.</div>
+        </details>
+        <details>
+          <summary>Can I use this for social media character limits?</summary>
+          <div class="faq-answer">Absolutely. The real-time character count makes it perfect for checking text against social media character limits such as Twitter/X (280 characters), Instagram captions (2,200 characters), LinkedIn posts (3,000 characters), or any other platform with text restrictions.</div>
+        </details>
+      </div>
+
+      <div class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="/json-formatter.html" class="related-tool-card">
+            <div class="rt-icon">{ }</div>
+            <div class="rt-title">JSON Formatter</div>
+            <div class="rt-desc">Format and validate JSON data with syntax highlighting</div>
+          </a>
+          <a href="/password-generator.html" class="related-tool-card">
+            <div class="rt-icon">&#x1F512;</div>
+            <div class="rt-title">Password Generator</div>
+            <div class="rt-desc">Generate strong, secure passwords with customizable options</div>
+          </a>
+          <a href="/color-palette.html" class="related-tool-card">
+            <div class="rt-icon">&#x1F3A8;</div>
+            <div class="rt-title">Color Palette</div>
+            <div class="rt-desc">Generate beautiful color schemes based on color theory</div>
+          </a>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2024 App Collection. All rights reserved.</p>
+        <p class="footer-links">
+          <a href="/privacy.html">Privacy Policy</a> &middot;
+          <a href="/about.html">About</a> &middot;
+          <a href="/contact.html">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="sidebar">
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <script src="/word-counter.js"></script>
+</body>
+</html>

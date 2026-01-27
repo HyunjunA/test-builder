@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-6316887055096303">
+  <title>Income Tax Calculator - Free Tax Estimator | App Collection</title>
+  <meta name="description" content="Free income tax calculator for 2024 federal taxes. Estimate taxable income, federal tax owed, effective tax rate, and take-home pay by filing status.">
+  <meta property="og:title" content="Income Tax Calculator - Free Tax Estimator | App Collection">
+  <meta property="og:description" content="Calculate your 2024 federal income tax, effective rate, and take-home pay. Supports Single, Married Filing Jointly, and Head of Household statuses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://test-builder-web.web.app/tax-calculator.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Income Tax Calculator - Free Tax Estimator | App Collection">
+  <meta name="twitter:description" content="Calculate your 2024 federal income tax, effective rate, and take-home pay. Supports all major filing statuses.">
+  <link rel="canonical" href="https://test-builder-web.web.app/tax-calculator.html">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Income Tax Calculator",
+    "url": "https://test-builder-web.web.app/tax-calculator.html",
+    "description": "Free 2024 federal income tax calculator. Estimate your tax owed, effective rate, and take-home pay by filing status and deductions.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the difference between marginal and effective tax rate?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Your marginal tax rate is the rate applied to your last dollar of income, determined by which tax bracket it falls into. Your effective tax rate is the average rate you pay across all your income, calculated by dividing total tax owed by total gross income. The effective rate is always lower than or equal to the marginal rate." }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the 2024 standard deduction amounts?",
+        "acceptedAnswer": { "@type": "Answer", "text": "For the 2024 tax year, the standard deduction is $14,600 for Single filers, $29,200 for Married Filing Jointly, and $21,900 for Head of Household. These amounts are adjusted annually for inflation." }
+      },
+      {
+        "@type": "Question",
+        "name": "Should I take the standard deduction or itemize?",
+        "acceptedAnswer": { "@type": "Answer", "text": "You should itemize if your total itemized deductions exceed the standard deduction. Common itemized deductions include mortgage interest, state and local taxes (up to $10,000), charitable contributions, and medical expenses exceeding 7.5% of AGI. Most taxpayers benefit from taking the standard deduction." }
+      },
+      {
+        "@type": "Question",
+        "name": "How do tax brackets work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The U.S. uses a progressive tax system with multiple brackets. You do not pay the highest rate on all your income. Instead, each bracket rate applies only to the income within that bracket's range. For example, a Single filer earning $50,000 pays 10% on the first $11,600, 12% on income from $11,601 to $47,150, and 22% on the remaining amount." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator include state taxes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No, this calculator estimates federal income tax only. State income taxes vary widely, with some states having no income tax at all and others charging rates up to 13.3%. You should check your state's tax authority for state-specific calculations." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="has-nav">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="nav-links">
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-wide">
+    <div class="main-content">
+      <header>
+        <h1>Income Tax Calculator</h1>
+        <p class="subtitle">Estimate your 2024 federal income tax based on your annual income, filing status, and deductions. See your taxable income, tax owed, effective tax rate, and take-home pay.</p>
+      </header>
+
+      <div class="tool-interface">
+        <div class="input-group">
+          <label for="annualIncome">Annual Income ($)</label>
+          <input type="number" id="annualIncome" value="75000" min="0" step="1000" inputmode="decimal">
+        </div>
+        <div class="input-group">
+          <label for="filingStatus">Filing Status</label>
+          <select id="filingStatus">
+            <option value="single">Single</option>
+            <option value="married">Married Filing Jointly</option>
+            <option value="hoh">Head of Household</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label for="deductions">Deductions ($)</label>
+          <input type="number" id="deductions" value="14600" min="0" step="100" inputmode="decimal">
+        </div>
+        <button id="calculateBtn" class="btn-primary">Calculate</button>
+
+        <div id="results" class="result-cards" style="display:none;">
+          <div class="result-card">
+            <span class="result-label">Taxable Income</span>
+            <span class="result-value" id="taxableIncome">$0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Federal Tax</span>
+            <span class="result-value" id="federalTax">$0</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Effective Tax Rate</span>
+            <span class="result-value" id="effectiveRate">0%</span>
+          </div>
+          <div class="result-card">
+            <span class="result-label">Take-Home Pay</span>
+            <span class="result-value" id="takeHomePay">$0</span>
+          </div>
+        </div>
+
+        <div id="bracketContainer" style="display:none; margin-top: 2rem;">
+          <h2>Tax Bracket Breakdown</h2>
+          <div class="table-responsive">
+            <table id="bracketTable">
+              <thead>
+                <tr><th>Bracket</th><th>Rate</th><th>Taxable Amount</th><th>Tax</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <div class="content-section">
+        <h2>How Federal Income Tax Works</h2>
+        <p>The United States employs a progressive federal income tax system, meaning that higher levels of income are taxed at progressively higher rates. This system is built around tax brackets, which are ranges of income that are each taxed at a specific rate. Understanding how these brackets work is fundamental to managing your tax liability and making informed financial decisions throughout the year.</p>
+        <p>A common misconception is that moving into a higher tax bracket means all of your income is taxed at the higher rate. In reality, only the income that falls within each bracket is taxed at that bracket's rate. This is known as the marginal tax system. For example, if you are a Single filer with $50,000 in taxable income for the 2024 tax year, your tax is calculated as follows: the first $11,600 is taxed at 10%, income from $11,601 to $47,150 is taxed at 12%, and the remaining income from $47,151 to $50,000 is taxed at 22%. Your total tax would be approximately $6,307, giving you an effective tax rate of about 12.6%, even though your marginal rate is 22%.</p>
+        <p>For the 2024 tax year, there are seven federal income tax brackets: 10%, 12%, 22%, 24%, 32%, 35%, and 37%. The income thresholds for each bracket differ depending on your filing status. Married Filing Jointly filers have wider brackets, meaning they can earn more income before reaching higher tax rates. This is one of the reasons married couples often pay less in taxes compared to two single individuals earning the same combined income.</p>
+        <p>Your filing status is determined by your marital status and family situation on the last day of the tax year. Single status applies to unmarried individuals. Married Filing Jointly is available to married couples who choose to combine their income on one return. Head of Household status is available to unmarried individuals who pay more than half the cost of maintaining a home for a qualifying dependent, and it offers more favorable tax brackets and a higher standard deduction than Single status.</p>
+        <p>Before applying the tax brackets, you reduce your gross income by either the standard deduction or itemized deductions to arrive at your taxable income. The standard deduction for 2024 is $14,600 for Single filers, $29,200 for Married Filing Jointly, and $21,900 for Head of Household. Only your taxable income, after deductions, is subject to federal income tax.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Standard vs Itemized Deductions</h2>
+        <p>Every taxpayer has the option to reduce their taxable income by claiming either the standard deduction or itemized deductions, whichever is greater. This choice is one of the most impactful decisions you make on your tax return because it directly determines how much of your income is subject to taxation.</p>
+        <p>The standard deduction is a fixed dollar amount set by the IRS that reduces your taxable income. For the 2024 tax year, the standard deduction is $14,600 for Single filers, $29,200 for Married Filing Jointly, and $21,900 for Head of Household. Additional amounts are available for taxpayers who are age 65 or older or legally blind. The standard deduction is simple, requires no documentation, and benefits the majority of taxpayers.</p>
+        <p>Itemized deductions, on the other hand, allow you to list specific qualifying expenses and deduct their actual amounts. Common itemized deductions include mortgage interest on loans up to $750,000, state and local taxes (SALT) capped at $10,000, charitable contributions to qualified organizations, and medical expenses that exceed 7.5% of your adjusted gross income. To itemize, you must keep records and receipts for all claimed expenses.</p>
+        <p>Since the Tax Cuts and Jobs Act of 2017 significantly increased the standard deduction, the percentage of taxpayers who itemize has dropped dramatically. According to IRS data, roughly 87% of tax returns now use the standard deduction. However, itemizing can still make sense for taxpayers with large mortgage interest payments, significant charitable giving, or high state and local tax obligations. The key is to add up all your potential itemized deductions and compare the total to the standard deduction for your filing status.</p>
+        <p>Beyond the standard and itemized deductions, certain deductions are available regardless of which method you choose. These above-the-line deductions include contributions to traditional IRAs, student loan interest up to $2,500, health savings account (HSA) contributions, and self-employment tax deductions. These are subtracted from your gross income to determine your adjusted gross income (AGI), which is used for various calculations throughout your return.</p>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <div class="content-section">
+        <h2>Tax Planning Tips</h2>
+        <p>Effective tax planning is not just about filing your return each April. It is a year-round process that involves strategic decisions about income, deductions, investments, and retirement contributions. Here are practical tips to help you minimize your tax burden legally and keep more of your hard-earned money.</p>
+        <p><strong>Maximize retirement contributions.</strong> Contributing to tax-advantaged retirement accounts is one of the most effective ways to reduce your current tax bill. Traditional 401(k) contributions are made with pre-tax dollars, directly reducing your taxable income. For 2024, you can contribute up to $23,000 to a 401(k), or $30,500 if you are age 50 or older. Traditional IRA contributions may also be deductible depending on your income and whether you have access to a workplace retirement plan.</p>
+        <p><strong>Use Health Savings Accounts strategically.</strong> If you have a high-deductible health plan (HDHP), contributing to a Health Savings Account (HSA) provides a triple tax advantage: contributions are tax-deductible, growth is tax-free, and withdrawals for qualified medical expenses are tax-free. For 2024, the HSA contribution limit is $4,150 for individuals and $8,300 for families. HSA funds roll over year to year, making them a powerful long-term savings vehicle.</p>
+        <p><strong>Consider tax-loss harvesting.</strong> If you have investments that have lost value, selling them can generate capital losses that offset capital gains and up to $3,000 of ordinary income per year. Unused losses can be carried forward to future tax years. This strategy is most effective when done thoughtfully as part of your overall investment plan, and you must be aware of the wash-sale rule, which prevents you from repurchasing substantially identical securities within 30 days.</p>
+        <p><strong>Time your income and deductions.</strong> If you expect to be in a lower tax bracket next year, consider deferring income to the following year and accelerating deductions into the current year. Conversely, if you expect higher income next year, it may make sense to accelerate income and defer deductions. Self-employed individuals have more flexibility with this strategy, but employees can sometimes time bonuses, stock option exercises, and large deductions strategically.</p>
+        <p><strong>Keep thorough records.</strong> Good record-keeping is essential for claiming all the deductions and credits you are entitled to. Save receipts for charitable donations, medical expenses, business expenses, and any other tax-relevant transactions. Use accounting software or a simple spreadsheet to track deductible expenses throughout the year rather than scrambling to reconstruct records at tax time. This practice not only maximizes your deductions but also protects you in the event of an audit.</p>
+      </div>
+
+      <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+          <summary>What is the difference between marginal and effective tax rate?</summary>
+          <div class="faq-answer">
+            <p>Your marginal tax rate is the rate applied to your last dollar of income, based on which tax bracket it falls into. Your effective tax rate is the average rate you pay across all your income, calculated by dividing your total tax owed by your total gross income. Because the U.S. uses a progressive tax system, your effective rate is always lower than your marginal rate unless all your income falls within the lowest bracket.</p>
+          </div>
+        </details>
+        <details>
+          <summary>What are the 2024 standard deduction amounts?</summary>
+          <div class="faq-answer">
+            <p>For the 2024 tax year, the standard deduction is $14,600 for Single filers, $29,200 for Married Filing Jointly, and $21,900 for Head of Household. Taxpayers who are age 65 or older or legally blind may qualify for additional standard deduction amounts. These figures are adjusted annually for inflation by the IRS.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Should I take the standard deduction or itemize?</summary>
+          <div class="faq-answer">
+            <p>You should itemize if your total qualifying itemized deductions exceed the standard deduction for your filing status. Common itemized deductions include mortgage interest, state and local taxes (up to $10,000), charitable contributions, and qualifying medical expenses. Since the 2017 tax reform increased standard deductions, roughly 87% of taxpayers now take the standard deduction.</p>
+          </div>
+        </details>
+        <details>
+          <summary>How do tax brackets work?</summary>
+          <div class="faq-answer">
+            <p>The U.S. uses a progressive marginal tax system with seven brackets. Each bracket rate applies only to the income within that bracket's range, not your entire income. Moving into a higher bracket does not cause all your income to be taxed at the higher rate. This means earning more money always results in higher take-home pay, even after taxes.</p>
+          </div>
+        </details>
+        <details>
+          <summary>Does this calculator include state taxes?</summary>
+          <div class="faq-answer">
+            <p>No, this calculator estimates federal income tax only. State income tax rates and structures vary significantly across the country. Seven states have no income tax at all (Alaska, Florida, Nevada, South Dakota, Texas, Washington, and Wyoming), while others have rates ranging from 1% to over 13%. Consult your state's tax authority or a tax professional for state-specific calculations.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="/compound-interest.html" class="related-tool-card">
+            <h3>Compound Interest Calculator</h3>
+            <p>See how your investments and savings grow over time with the power of compound interest and regular contributions.</p>
+          </a>
+          <a href="/mortgage-calculator.html" class="related-tool-card">
+            <h3>Mortgage Calculator</h3>
+            <p>Estimate monthly mortgage payments and view detailed amortization schedules for your home loan.</p>
+          </a>
+          <a href="/word-counter.html" class="related-tool-card">
+            <h3>Word Counter</h3>
+            <p>Count words, characters, sentences, and paragraphs in your text. Useful for writing and content creation.</p>
+          </a>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2024 App Collection. All rights reserved.</p>
+        <p class="footer-links">
+          <a href="/privacy.html">Privacy Policy</a> &middot;
+          <a href="/about.html">About</a> &middot;
+          <a href="/contact.html">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="sidebar">
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </div>
+
+  <script src="/tax-calculator.js"></script>
+</body>
+</html>

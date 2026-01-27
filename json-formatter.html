@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-6316887055096303">
+  <meta name="description" content="Free online JSON Formatter and Validator. Pretty-print, minify, and validate JSON with syntax highlighting. Fast, private, no sign-up required.">
+  <meta name="keywords" content="json formatter, json validator, json beautifier, json minifier, pretty print json, online json tool">
+  <meta property="og:title" content="JSON Formatter & Validator - Free Online Tool | App Collection">
+  <meta property="og:description" content="Format, validate, and minify JSON instantly in your browser. Free online JSON tool with syntax highlighting.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://test-builder-web.web.app/json-formatter.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="JSON Formatter & Validator - Free Online Tool | App Collection">
+  <meta name="twitter:description" content="Format, validate, and minify JSON instantly in your browser. Free online JSON tool with syntax highlighting.">
+  <link rel="canonical" href="https://test-builder-web.web.app/json-formatter.html">
+  <title>JSON Formatter &amp; Validator - Free Online Tool | App Collection</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter & Validator",
+    "url": "https://test-builder-web.web.app/json-formatter.html",
+    "description": "Free online JSON formatter, validator, and minifier with syntax highlighting.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is JSON?", "acceptedAnswer": { "@type": "Answer", "text": "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate." }},
+      { "@type": "Question", "name": "How do I validate JSON?", "acceptedAnswer": { "@type": "Answer", "text": "Paste your JSON into the input area and click Format. If the JSON is invalid, the tool will display an error message with the line and column where the problem occurs." }},
+      { "@type": "Question", "name": "Is my data safe?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. All processing happens entirely in your browser. Your JSON data is never sent to any server." }},
+      { "@type": "Question", "name": "What is the difference between formatting and minifying?", "acceptedAnswer": { "@type": "Answer", "text": "Formatting adds indentation and line breaks for readability, while minifying removes all unnecessary whitespace to reduce file size." }},
+      { "@type": "Question", "name": "Can I format large JSON files?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The tool runs in your browser and can handle large JSON documents, limited only by your device's available memory." }}
+    ]
+  }
+  </script>
+  <style>
+    .tool-input { width: 100%; min-height: 200px; font-family: 'Courier New', monospace; font-size: 14px; padding: 12px; border: 1px solid var(--input-border); border-radius: 10px; background: var(--input-bg); color: var(--text-primary); resize: vertical; }
+    .tool-output { width: 100%; min-height: 200px; font-family: 'Courier New', monospace; font-size: 14px; padding: 12px; border: 1px solid var(--input-border); border-radius: 10px; background: var(--input-bg); color: var(--text-primary); overflow: auto; white-space: pre-wrap; word-break: break-all; }
+    .tool-buttons { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .tool-buttons button { padding: 10px 20px; border: none; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(102,126,234,.4); }
+    .btn-secondary { background: var(--set-bg-start); color: var(--text-primary); border: 1px solid var(--input-border) !important; }
+    .btn-secondary:hover { background: var(--set-bg-end); }
+    .error-display { color: #e74c3c; font-weight: 600; margin: 10px 0; display: none; }
+    .json-key { color: #881391; }
+    .json-string { color: #1a8f29; }
+    .json-number { color: #1a1aa6; }
+    .json-boolean { color: #d97706; }
+    .json-null { color: #888; }
+    [data-theme="dark"] .json-key { color: #c792ea; }
+    [data-theme="dark"] .json-string { color: #c3e88d; }
+    [data-theme="dark"] .json-number { color: #f78c6c; }
+    [data-theme="dark"] .json-boolean { color: #ffcb6b; }
+    [data-theme="dark"] .json-null { color: #888; }
+  </style>
+</head>
+<body class="has-nav">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="nav-links">
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-wide">
+    <div class="main-content">
+      <header>
+        <h1>JSON Formatter &amp; Validator</h1>
+        <p class="subtitle">Format, validate, and minify JSON instantly in your browser</p>
+      </header>
+
+      <div class="tool-section">
+        <label for="jsonInput"><strong>Paste your JSON below:</strong></label>
+        <textarea id="jsonInput" class="tool-input" placeholder='{"example": "Paste your JSON here..."}'></textarea>
+        <div class="tool-buttons">
+          <button class="btn-primary" id="btnFormat">Format</button>
+          <button class="btn-primary" id="btnMinify">Minify</button>
+          <button class="btn-secondary" id="btnClear">Clear</button>
+          <button class="btn-secondary" id="btnCopy">Copy Output</button>
+        </div>
+        <div class="error-display" id="errorDisplay"></div>
+        <label><strong>Output:</strong></label>
+        <div class="tool-output" id="jsonOutput"></div>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <div class="content-section">
+        <h2>What is JSON?</h2>
+        <p>JSON, or JavaScript Object Notation, is one of the most widely used data interchange formats on the modern web. Originally derived from JavaScript, JSON has become a language-independent standard recognized by virtually every programming language in use today, including Python, Java, C#, Go, Ruby, and PHP. Its design philosophy centers on simplicity: JSON uses human-readable text to represent structured data as key-value pairs and ordered lists. This makes it an ideal choice for APIs, configuration files, and data storage where both machines and humans need to interact with the same information.</p>
+        <p>A valid JSON document consists of two primary structures: objects and arrays. An object is an unordered collection of key-value pairs enclosed in curly braces, where keys must be strings surrounded by double quotes. An array is an ordered sequence of values enclosed in square brackets. Values can be strings, numbers, booleans (true or false), null, objects, or arrays, allowing for deeply nested and complex data structures. Unlike XML, JSON does not use tags or attributes, resulting in a much more compact representation of the same data. This efficiency is a key reason JSON has largely replaced XML as the preferred format for web APIs and modern data exchange.</p>
+        <p>JSON's simplicity does come with some constraints. It does not support comments, which can make configuration files harder to annotate. Trailing commas after the last element in an object or array are not permitted and will cause a parse error. Keys must always be double-quoted strings, unlike JavaScript object literals where quotes are optional. Understanding these rules is essential for writing valid JSON, and that is exactly where a JSON formatter and validator tool becomes invaluable. By automatically checking syntax and highlighting errors, our tool helps developers and data analysts save time and avoid frustrating debugging sessions.</p>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <div class="content-section">
+        <h2>How to Use the JSON Formatter</h2>
+        <p>Using this JSON formatter is straightforward. Simply paste your raw JSON data into the input text area at the top of the page. Then click the <strong>Format</strong> button to pretty-print your JSON with proper indentation and line breaks, making it easy to read and understand the structure of your data. The formatter uses a standard two-space indentation that is widely adopted across the industry and recommended by style guides from companies like Google and Airbnb.</p>
+        <p>If you need to reduce the size of your JSON for transmission over a network or storage, click the <strong>Minify</strong> button instead. Minification strips all unnecessary whitespace, newlines, and indentation, producing the most compact representation of your data. This is especially useful when embedding JSON in URLs, storing data in databases, or sending API payloads where bandwidth efficiency matters. The resulting minified string is semantically identical to the formatted version; only the whitespace has been removed.</p>
+        <p>Should your JSON contain syntax errors, the tool will display a clear error message indicating what went wrong and, when possible, the approximate line and position of the error. Common mistakes include missing commas between elements, unmatched brackets or braces, single-quoted strings instead of double-quoted ones, and trailing commas. The error feedback helps you quickly locate and fix these issues. Once you are satisfied with the output, use the <strong>Copy</strong> button to copy the result to your clipboard with a single click. The <strong>Clear</strong> button resets both the input and output areas so you can start fresh.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>JSON Best Practices</h2>
+        <p>When working with JSON in production systems, following best practices ensures reliability and maintainability. Always validate your JSON before deploying it in any application. Even a single misplaced comma or bracket can cause an entire API response to fail, potentially breaking user-facing features and triggering cascading errors across microservices. Automated validation as part of your CI/CD pipeline is highly recommended.</p>
+        <p>Keep your JSON structures as flat as possible. While JSON supports deep nesting, overly complex hierarchies make data difficult to navigate, query, and maintain. If you find yourself nesting objects more than three or four levels deep, consider restructuring your data model. Use arrays for collections of similar items and objects for entities with named properties. Consistent naming conventions, such as camelCase or snake_case, should be applied uniformly throughout your project to improve readability and reduce confusion among team members.</p>
+        <p>When dealing with large JSON files, consider using streaming parsers instead of loading the entire document into memory. Tools like JSONStream for Node.js or ijson for Python process data incrementally, making it possible to handle files that are gigabytes in size. For configuration files, consider alternatives like JSON5 or JSONC that allow comments and trailing commas during development, then strip them for production. Finally, always use UTF-8 encoding for your JSON documents, as required by the RFC 8259 specification, to ensure maximum compatibility across platforms and systems.</p>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
+      <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+          <summary>What is JSON used for?</summary>
+          <p>JSON is primarily used for transmitting data between a server and a web application. It serves as the standard format for RESTful APIs, configuration files, data storage in NoSQL databases like MongoDB, and inter-service communication in microservice architectures.</p>
+        </details>
+        <details>
+          <summary>How do I validate JSON?</summary>
+          <p>Paste your JSON into the input area above and click the Format button. If the JSON is invalid, a detailed error message will appear showing the type of error and its approximate location, helping you quickly identify and fix the issue.</p>
+        </details>
+        <details>
+          <summary>Is my data safe when using this tool?</summary>
+          <p>Absolutely. All JSON processing happens entirely within your browser using JavaScript. Your data never leaves your device and is not sent to any remote server. This makes the tool safe for use with sensitive or proprietary data.</p>
+        </details>
+        <details>
+          <summary>What is the difference between Format and Minify?</summary>
+          <p>Format adds indentation (two spaces per level) and line breaks to make JSON human-readable. Minify does the opposite: it removes all unnecessary whitespace to produce the smallest possible string, ideal for network transmission and storage.</p>
+        </details>
+        <details>
+          <summary>Can this tool handle large JSON files?</summary>
+          <p>Yes. Since the tool runs in your browser, it can process large JSON documents. Performance depends on your device's available memory and processing power, but most modern devices can handle files up to several megabytes without issue.</p>
+        </details>
+      </section>
+
+      <section class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="app-cards">
+          <a href="/password-generator.html" class="app-card">
+            <div class="card-icon">&#128274;</div>
+            <div class="card-title">Password Generator</div>
+            <div class="card-desc">Generate strong, secure random passwords with customizable length and character sets.</div>
+          </a>
+          <a href="/qr-code-generator.html" class="app-card">
+            <div class="card-icon">&#9641;</div>
+            <div class="card-title">QR Code Generator</div>
+            <div class="card-desc">Create QR codes from any text or URL. Download as PNG with adjustable size and error correction.</div>
+          </a>
+          <a href="/word-counter.html" class="app-card">
+            <div class="card-icon">&#128221;</div>
+            <div class="card-title">Word Counter</div>
+            <div class="card-desc">Count words, characters, sentences, and paragraphs in your text instantly.</div>
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        <p>&copy; 2024 App Collection. All rights reserved.</p>
+        <p class="footer-links">
+          <a href="/privacy.html">Privacy Policy</a> &middot;
+          <a href="/about.html">About</a> &middot;
+          <a href="/contact.html">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="sidebar">
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="/json-formatter.js"></script>
+</body>
+</html>

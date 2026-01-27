@@ -4,92 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-6316887055096303">
-  <meta name="description" content="Free AI-powered Dog vs Cat Classifier. Upload a photo or use your webcam to instantly identify whether an image contains a dog or cat using TensorFlow.js machine learning.">
+  <meta name="description" content="Free AI-powered Dog vs Cat Classifier. Upload a photo or use your webcam to instantly identify dogs and cats using TensorFlow.js machine learning in your browser.">
   <meta name="keywords" content="dog vs cat AI, image classifier, pet identifier, machine learning, TensorFlow.js, webcam AI">
-  <meta property="og:title" content="Dog vs Cat AI Classifier - App Collection">
+  <meta property="og:title" content="Dog vs Cat AI Classifier - Free Online Tool">
   <meta property="og:description" content="Upload a photo or use your webcam to classify dogs and cats instantly with AI-powered image recognition.">
   <meta property="og:type" content="website">
-  <title>Dog vs Cat AI Classifier - App Collection</title>
+  <meta property="og:url" content="https://test-builder-web.web.app/classify.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Dog vs Cat AI Classifier - Free Online Tool">
+  <meta name="twitter:description" content="Classify dogs and cats with AI. Free, runs in your browser.">
+  <link rel="canonical" href="https://test-builder-web.web.app/classify.html">
+  <title>Dog vs Cat AI Classifier - Free Image Recognition Tool | App Collection</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303"
      crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
   <style>
     .ai-header h1 { font-size: 2rem; }
-    .tab-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 20px 0;
-    }
-    .tab-btn {
-      padding: 10px 24px;
-      border-radius: 50px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      border: 2px solid var(--input-border);
-      background: var(--input-bg);
-      color: var(--text-primary);
-      box-shadow: none;
-      transition: all 0.3s ease;
-    }
+    .tab-buttons { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+    .tab-btn { padding: 10px 24px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: 2px solid var(--input-border); background: var(--input-bg); color: var(--text-primary); box-shadow: none; transition: all 0.3s ease; }
     .tab-btn:hover { transform: translateY(-2px); }
-    .tab-btn.active {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 6px 20px rgba(102,126,234,0.4);
-    }
+    .tab-btn.active { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border-color: transparent; box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
-
-    /* Upload styles */
-    .upload-area {
-      margin: 25px auto;
-      max-width: 400px;
-      border: 3px dashed var(--input-border);
-      border-radius: 16px;
-      padding: 40px 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .upload-area:hover, .upload-area.dragover {
-      border-color: #667eea;
-      background: rgba(102,126,234,0.05);
-    }
+    .upload-area { margin: 25px auto; max-width: 400px; border: 3px dashed var(--input-border); border-radius: 16px; padding: 40px 20px; cursor: pointer; transition: all 0.3s ease; }
+    .upload-area:hover, .upload-area.dragover { border-color: #667eea; background: rgba(102,126,234,0.05); }
     .upload-area p { color: var(--text-secondary); font-size: 1rem; margin-top: 10px; }
     .upload-area .upload-icon { font-size: 3rem; }
     .upload-area input[type="file"] { display: none; }
-
-    /* Webcam styles */
-    #webcam-container {
-      margin: 20px auto;
-      max-width: 350px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
-    #webcam-container canvas {
-      display: block;
-      width: 100%;
-    }
-    #webcam-label-container {
-      max-width: 350px;
-      margin: 15px auto 0;
-    }
-
-    /* Shared result styles */
-    #preview-container {
-      display: none;
-      margin: 20px auto;
-      max-width: 350px;
-    }
-    #preview-container img {
-      width: 100%;
-      border-radius: 16px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
+    #webcam-container { margin: 20px auto; max-width: 350px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
+    #webcam-container canvas { display: block; width: 100%; }
+    #webcam-label-container { max-width: 350px; margin: 15px auto 0; }
+    #preview-container { display: none; margin: 20px auto; max-width: 350px; }
+    #preview-container img { width: 100%; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
     #result-area { display: none; margin-top: 25px; }
     #result-emoji { font-size: 5rem; margin-bottom: 5px; }
     #result-text { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
@@ -97,29 +45,60 @@
     .prediction-bar { margin: 8px 0; text-align: left; }
     .prediction-label { font-weight: 600; font-size: 0.95rem; color: var(--text-primary); margin-bottom: 4px; }
     .bar-bg { background: var(--input-border); border-radius: 10px; height: 28px; overflow: hidden; }
-    .bar-fill {
-      height: 100%; border-radius: 10px; transition: width 0.5s ease;
-      display: flex; align-items: center; padding-left: 10px;
-      font-size: 0.8rem; font-weight: 700; color: #fff; min-width: 40px;
-    }
+    .bar-fill { height: 100%; border-radius: 10px; transition: width 0.5s ease; display: flex; align-items: center; padding-left: 10px; font-size: 0.8rem; font-weight: 700; color: #fff; min-width: 40px; }
     .bar-dog { background: linear-gradient(135deg, #6eb5ff, #2196f3); }
     .bar-cat { background: linear-gradient(135deg, #ff6b6b, #e53935); }
     .retry-btn { margin-top: 20px; }
     .status-msg { color: var(--text-secondary); font-size: 0.9rem; margin-top: 10px; }
-    .back-link {
-      display: inline-block; margin-top: 25px;
-      color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s;
-    }
+    .back-link { display: inline-block; margin-top: 25px; color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
     .back-link:hover { color: #667eea; }
   </style>
+  <script type="application/ld+json">
+  [{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Dog vs Cat AI Classifier",
+    "url": "https://test-builder-web.web.app/classify.html",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "AI-powered image classifier that identifies dogs and cats using TensorFlow.js in your browser."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "How does the AI classifier work?", "acceptedAnswer": {"@type": "Answer", "text": "The classifier uses a machine learning model trained with Google's Teachable Machine and runs on TensorFlow.js entirely in your browser."}},
+      {"@type": "Question", "name": "Are my photos uploaded to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. All image processing happens locally in your browser. Your photos never leave your device."}},
+      {"@type": "Question", "name": "What animals can it identify?", "acceptedAnswer": {"@type": "Answer", "text": "The current model is trained specifically to distinguish between dogs and cats."}},
+      {"@type": "Question", "name": "Does the webcam mode work on mobile?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, webcam mode works on mobile devices that have a camera and support the getUserMedia API."}}
+    ]
+  }]
+  </script>
 </head>
 <body class="has-nav">
   <nav class="site-nav">
     <div class="nav-inner">
       <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-links">
-        <a href="/lotto.html">Lotto</a>
-        <a href="/classify.html">AI Classifier</a>
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
       </div>
@@ -140,31 +119,32 @@
 
     <p id="statusMsg" class="status-msg"></p>
 
-    <!-- Webcam Tab -->
     <div class="tab-panel active" id="panel-webcam">
       <button type="button" id="webcamStartBtn">Start Webcam</button>
       <div id="webcam-container"></div>
       <div id="webcam-label-container"></div>
     </div>
 
-    <!-- Upload Tab -->
     <div class="tab-panel" id="panel-upload">
       <div class="upload-area" id="uploadArea">
         <div class="upload-icon">📷</div>
         <p>Click or drag and drop a photo</p>
         <input type="file" id="fileInput" accept="image/*">
       </div>
-
       <div id="preview-container">
         <img id="preview" alt="Uploaded image">
       </div>
-
       <div id="result-area">
         <div id="result-emoji"></div>
         <div id="result-text"></div>
         <div id="predictions"></div>
         <button class="retry-btn" id="retryBtn" type="button">Analyze Another Photo</button>
       </div>
+    </div>
+
+    <div class="ad-slot-horizontal">
+      <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-gw-3+1f-3d+2z" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <div class="content-section">
@@ -186,6 +166,51 @@
         <li>Both close-up portraits and full-body shots are supported.</li>
         <li>For webcam mode, ensure your camera has permission enabled in your browser settings.</li>
       </ul>
+    </div>
+
+    <div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <details>
+        <summary>How does the AI classifier work?</summary>
+        <div class="faq-answer">The classifier uses a convolutional neural network trained with Google's Teachable Machine. The model runs entirely in your browser via TensorFlow.js, analyzing pixel data from images to determine whether the subject is a dog or cat.</div>
+      </details>
+      <details>
+        <summary>Are my photos uploaded to a server?</summary>
+        <div class="faq-answer">No. All image processing happens locally in your browser using client-side machine learning. Your photos never leave your device, ensuring complete privacy.</div>
+      </details>
+      <details>
+        <summary>What animals can it identify?</summary>
+        <div class="faq-answer">The current model is trained specifically to distinguish between dogs and cats. It may produce unpredictable results for other animals or non-animal images.</div>
+      </details>
+      <details>
+        <summary>Does the webcam mode work on mobile?</summary>
+        <div class="faq-answer">Yes, webcam mode works on mobile devices that have a camera and support the browser getUserMedia API. Most modern mobile browsers support this feature.</div>
+      </details>
+      <details>
+        <summary>How accurate is the classifier?</summary>
+        <div class="faq-answer">The model achieves high accuracy on clear images of dogs and cats. The confidence percentage displayed tells you how certain the AI is about its prediction. Well-lit, focused images yield the best results.</div>
+      </details>
+    </div>
+
+    <div class="related-tools">
+      <h2>Related Tools</h2>
+      <div class="related-tools-grid">
+        <a href="/lotto.html" class="related-tool-card">
+          <div class="rt-icon">🎱</div>
+          <div class="rt-title">Lotto Generator</div>
+          <div class="rt-desc">Generate random lottery numbers</div>
+        </a>
+        <a href="/color-palette.html" class="related-tool-card">
+          <div class="rt-icon">🎨</div>
+          <div class="rt-title">Color Palette</div>
+          <div class="rt-desc">Generate color schemes</div>
+        </a>
+        <a href="/qr-code-generator.html" class="related-tool-card">
+          <div class="rt-icon">📱</div>
+          <div class="rt-title">QR Code Generator</div>
+          <div class="rt-desc">Create QR codes from text</div>
+        </a>
+      </div>
     </div>
 
     <a href="/index.html" class="back-link">&larr; Back to Main</a>
@@ -210,21 +235,16 @@
 
     const statusMsg = document.getElementById('statusMsg');
 
-    // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
-        // Stop webcam when switching away
-        if (btn.dataset.tab !== 'webcam' && webcamRunning) {
-          stopWebcam();
-        }
+        if (btn.dataset.tab !== 'webcam' && webcamRunning) { stopWebcam(); }
       });
     });
 
-    // Load model
     (async function loadModel() {
       statusMsg.textContent = 'Loading AI model...';
       try {
@@ -235,20 +255,13 @@
       }
     })();
 
-    // ===== Webcam =====
     const webcamStartBtn = document.getElementById('webcamStartBtn');
     const webcamContainer = document.getElementById('webcam-container');
     const labelContainer = document.getElementById('webcam-label-container');
 
     webcamStartBtn.addEventListener('click', async () => {
-      if (!model) {
-        statusMsg.textContent = 'Model is still loading.';
-        return;
-      }
-      if (webcamRunning) {
-        stopWebcam();
-        return;
-      }
+      if (!model) { statusMsg.textContent = 'Model is still loading.'; return; }
+      if (webcamRunning) { stopWebcam(); return; }
       try {
         const flip = true;
         webcam = new tmImage.Webcam(350, 350, flip);
@@ -293,16 +306,12 @@
 
     function stopWebcam() {
       webcamRunning = false;
-      if (webcam) {
-        webcam.stop();
-        webcam = null;
-      }
+      if (webcam) { webcam.stop(); webcam = null; }
       webcamContainer.innerHTML = '';
       labelContainer.innerHTML = '';
       webcamStartBtn.textContent = 'Start Webcam';
     }
 
-    // ===== Upload =====
     const uploadArea = document.getElementById('uploadArea');
     const fileInput = document.getElementById('fileInput');
     const preview = document.getElementById('preview');
@@ -311,17 +320,10 @@
     const retryBtn = document.getElementById('retryBtn');
 
     uploadArea.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files.length > 0) handleFile(e.target.files[0]);
-    });
-
+    fileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) handleFile(e.target.files[0]); });
     uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
     uploadArea.addEventListener('dragleave', () => { uploadArea.classList.remove('dragover'); });
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragover');
-      if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
-    });
+    uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('dragover'); if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]); });
 
     retryBtn.addEventListener('click', () => {
       previewContainer.style.display = 'none';
@@ -332,28 +334,20 @@
     });
 
     async function handleFile(file) {
-      if (!file.type.startsWith('image/')) {
-        statusMsg.textContent = 'Only image files can be uploaded.';
-        return;
-      }
+      if (!file.type.startsWith('image/')) { statusMsg.textContent = 'Only image files can be uploaded.'; return; }
       const reader = new FileReader();
       reader.onload = async (e) => {
         preview.src = e.target.result;
         previewContainer.style.display = 'block';
         uploadArea.style.display = 'none';
-        if (!model) {
-          statusMsg.textContent = 'Model is still loading.';
-          return;
-        }
+        if (!model) { statusMsg.textContent = 'Model is still loading.'; return; }
         statusMsg.textContent = 'Analyzing...';
         preview.onload = async () => {
           try {
             const prediction = await model.predict(preview);
             showResults(prediction);
             statusMsg.textContent = '';
-          } catch (err) {
-            statusMsg.textContent = 'Analysis failed. Please try again.';
-          }
+          } catch (err) { statusMsg.textContent = 'Analysis failed. Please try again.'; }
         };
       };
       reader.readAsDataURL(file);
@@ -364,7 +358,6 @@
       const container = document.getElementById('predictions');
       container.innerHTML = '';
       let best = { className: '', probability: 0 };
-
       for (let i = 0; i < prediction.length; i++) {
         const p = prediction[i];
         const pct = Math.round(p.probability * 100);
@@ -373,28 +366,17 @@
         const barClass = (lower.includes('dog')) ? 'bar-dog' : 'bar-cat';
         const bar = document.createElement('div');
         bar.className = 'prediction-bar';
-        bar.innerHTML =
-          '<div class="prediction-label">' + name + '  ' + pct + '%</div>' +
-          '<div class="bar-bg"><div class="bar-fill ' + barClass + '" style="width:' + pct + '%">' + pct + '%</div></div>';
+        bar.innerHTML = '<div class="prediction-label">' + name + '  ' + pct + '%</div><div class="bar-bg"><div class="bar-fill ' + barClass + '" style="width:' + pct + '%">' + pct + '%</div></div>';
         container.appendChild(bar);
         if (p.probability > best.probability) best = p;
       }
-
       const emoji = document.getElementById('result-emoji');
       const text = document.getElementById('result-text');
       const bestLower = best.className.toLowerCase();
       const pct = Math.round(best.probability * 100);
-
-      if (bestLower.includes('dog')) {
-        emoji.textContent = '🐶';
-        text.textContent = 'It\'s a dog! (' + pct + '%)';
-      } else if (bestLower.includes('cat')) {
-        emoji.textContent = '🐱';
-        text.textContent = 'It\'s a cat! (' + pct + '%)';
-      } else {
-        emoji.textContent = '🤔';
-        text.textContent = best.className + ' (' + pct + '%)';
-      }
+      if (bestLower.includes('dog')) { emoji.textContent = '🐶'; text.textContent = 'It\'s a dog! (' + pct + '%)'; }
+      else if (bestLower.includes('cat')) { emoji.textContent = '🐱'; text.textContent = 'It\'s a cat! (' + pct + '%)'; }
+      else { emoji.textContent = '🤔'; text.textContent = best.className + ' (' + pct + '%)'; }
     }
   </script>
 </body>

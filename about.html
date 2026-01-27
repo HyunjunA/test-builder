@@ -4,82 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-6316887055096303">
-  <meta name="description" content="About App Collection - A curated set of free online tools including a lotto number generator and AI-powered dog vs cat classifier.">
-  <title>About - App Collection</title>
+  <meta name="description" content="About App Collection - A curated set of 12+ free online tools including calculators, converters, generators, and an AI image classifier. All browser-based.">
+  <meta property="og:title" content="About App Collection - Free Online Tools">
+  <meta property="og:description" content="Learn about our mission to provide free, privacy-first online tools.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://test-builder-web.web.app/about.html">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://test-builder-web.web.app/about.html">
+  <title>About - App Collection | Free Online Tools</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303"
      crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
   <style>
-    .about-content {
-      text-align: left;
-      margin-top: 20px;
-      line-height: 1.8;
-      color: var(--text-primary);
-    }
-    .about-content h2 {
-      font-size: 1.3rem;
-      margin-top: 30px;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .about-content p {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-    }
-    .about-content ul {
-      padding-left: 20px;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-    }
-    .about-content li {
-      margin-bottom: 8px;
-    }
-    .feature-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 20px 0;
-    }
-    .feature-card {
-      background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
-      border: 1px solid var(--set-border);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-    }
-    .feature-card .feat-icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-    .feature-card .feat-title {
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .feature-card .feat-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-    @media (max-width: 500px) {
-      .feature-cards {
-        grid-template-columns: 1fr;
-      }
-    }
+    .about-content { text-align: left; margin-top: 20px; line-height: 1.8; color: var(--text-primary); }
+    .about-content h2 { font-size: 1.3rem; margin-top: 30px; margin-bottom: 10px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .about-content p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px; }
+    .about-content ul { padding-left: 20px; color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 12px; }
+    .about-content li { margin-bottom: 8px; }
+    .feature-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 20px 0; }
+    .feature-card { background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end)); border: 1px solid var(--set-border); border-radius: 16px; padding: 20px; text-align: center; }
+    .feature-card .feat-icon { font-size: 2.5rem; margin-bottom: 8px; }
+    .feature-card .feat-title { font-weight: 700; color: var(--text-primary); margin-bottom: 4px; font-size: 0.85rem; }
+    .feature-card .feat-desc { font-size: 0.8rem; color: var(--text-secondary); }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About App Collection",
+    "url": "https://test-builder-web.web.app/about.html",
+    "description": "About App Collection - 12+ free online tools including calculators, converters, generators, and AI classifier."
+  }
+  </script>
 </head>
-<body>
+<body class="has-nav">
   <nav class="site-nav">
     <div class="nav-inner">
       <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
       <div class="nav-links">
-        <a href="/lotto.html">Lotto</a>
-        <a href="/classify.html">AI Classifier</a>
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
         <a href="/about.html">About</a>
         <a href="/contact.html">Contact</a>
       </div>
@@ -98,36 +80,45 @@
       <p>App Collection is a curated set of free, easy-to-use online tools designed to bring fun and utility to your daily life. We believe that powerful tools should be accessible to everyone, without complicated sign-ups or hidden fees. Every tool we build runs entirely in your browser, ensuring fast performance and complete privacy.</p>
 
       <h2>What We Offer</h2>
-      <p>We currently provide the following tools, each carefully designed with user experience in mind:</p>
+      <p>We currently provide over 12 tools across four categories, each carefully designed with user experience in mind:</p>
 
       <div class="feature-cards">
-        <div class="feature-card">
-          <div class="feat-icon">🎱</div>
-          <div class="feat-title">Lotto Number Generator</div>
-          <div class="feat-desc">Generate random lottery numbers with customizable ranges and draw counts. Supports 14 languages and dark mode.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feat-icon">🐾</div>
-          <div class="feat-title">Dog vs Cat AI Classifier</div>
-          <div class="feat-desc">Use AI-powered image recognition to classify photos of dogs and cats in real time, via webcam or photo upload.</div>
-        </div>
+        <div class="feature-card"><div class="feat-icon">💰</div><div class="feat-title">Compound Interest</div><div class="feat-desc">Calculate investment growth over time</div></div>
+        <div class="feature-card"><div class="feat-icon">🏠</div><div class="feat-title">Mortgage Calculator</div><div class="feat-desc">Estimate monthly payments</div></div>
+        <div class="feature-card"><div class="feat-icon">🧾</div><div class="feat-title">Tax Calculator</div><div class="feat-desc">Estimate federal income tax</div></div>
+        <div class="feature-card"><div class="feat-icon">{ }</div><div class="feat-title">JSON Formatter</div><div class="feat-desc">Format and validate JSON</div></div>
+        <div class="feature-card"><div class="feat-icon">🔐</div><div class="feat-title">Password Generator</div><div class="feat-desc">Secure random passwords</div></div>
+        <div class="feature-card"><div class="feat-icon">📱</div><div class="feat-title">QR Code Generator</div><div class="feat-desc">Create QR codes instantly</div></div>
+        <div class="feature-card"><div class="feat-icon">⚖️</div><div class="feat-title">BMI Calculator</div><div class="feat-desc">Check your body mass index</div></div>
+        <div class="feature-card"><div class="feat-icon">🔄</div><div class="feat-title">Unit Converter</div><div class="feat-desc">Convert 8 unit categories</div></div>
+        <div class="feature-card"><div class="feat-icon">📝</div><div class="feat-title">Word Counter</div><div class="feat-desc">Count words and characters</div></div>
+        <div class="feature-card"><div class="feat-icon">🎨</div><div class="feat-title">Color Palette</div><div class="feat-desc">Generate color schemes</div></div>
+        <div class="feature-card"><div class="feat-icon">🎱</div><div class="feat-title">Lotto Generator</div><div class="feat-desc">Random lottery numbers</div></div>
+        <div class="feature-card"><div class="feat-icon">🐾</div><div class="feat-title">AI Classifier</div><div class="feat-desc">Dog vs cat AI recognition</div></div>
       </div>
 
       <h2>How It Works</h2>
       <p>All our tools are built with modern web technologies and run directly in your browser:</p>
       <ul>
-        <li><strong>Lotto Number Generator</strong> uses a cryptographically-aware random number algorithm to produce fair, unbiased lottery number sets. You can customize the maximum number and how many numbers to draw, and instantly generate 10 unique sets. The interface supports 14 languages including English, Korean, Japanese, Chinese, Spanish, French, German, Portuguese, Russian, Arabic, Hindi, Thai, Vietnamese, and Italian.</li>
-        <li><strong>Dog vs Cat AI Classifier</strong> is powered by TensorFlow.js and Google's Teachable Machine. The machine learning model runs entirely on your device, meaning your photos are never uploaded to any server. You can use your webcam for live classification or upload a photo for instant analysis with confidence percentages.</li>
+        <li><strong>Finance Tools</strong> — Compound interest, mortgage, and tax calculators use standard financial formulas to provide accurate estimates for your planning needs.</li>
+        <li><strong>Tech Tools</strong> — JSON formatter, password generator, and QR code tools help developers and everyday users with common digital tasks.</li>
+        <li><strong>Health &amp; Education</strong> — BMI calculator, unit converter, word counter, and color palette generator cover everyday utility needs.</li>
+        <li><strong>AI &amp; Fun</strong> — Our dog vs cat classifier uses TensorFlow.js for real-time image recognition, and the lotto generator creates random number sets in 14 languages.</li>
       </ul>
 
       <h2>Technology</h2>
-      <p>Our platform is built using vanilla HTML, CSS, and JavaScript with no heavy frameworks, ensuring lightning-fast load times and broad browser compatibility. We leverage the following technologies:</p>
+      <p>Our platform is built using vanilla HTML, CSS, and JavaScript with no heavy frameworks, ensuring lightning-fast load times and broad browser compatibility. We leverage:</p>
       <ul>
         <li><strong>TensorFlow.js</strong> for client-side machine learning inference</li>
-        <li><strong>Teachable Machine</strong> for pre-trained image classification models</li>
+        <li><strong>Canvas API</strong> for charts and QR code rendering</li>
+        <li><strong>Web Crypto API</strong> for secure password generation</li>
         <li><strong>Responsive Design</strong> with CSS Grid and Flexbox for optimal viewing on any device</li>
-        <li><strong>Progressive Enhancement</strong> ensuring core functionality works across all modern browsers</li>
       </ul>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-gw-3+1f-3d+2z" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
 
       <h2>Privacy First</h2>
       <p>We take your privacy seriously. Our AI classifier processes all images locally on your device and never transmits them to external servers. We use minimal cookies only for essential features like theme preference and language selection. For full details, please review our <a href="/privacy.html" style="color:#667eea;">Privacy Policy</a>.</p>

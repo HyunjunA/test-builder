@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google-adsense-account" content="ca-pub-6316887055096303">
+  <meta name="description" content="Free online Color Palette Generator. Create complementary, analogous, triadic, split-complementary, and monochromatic color schemes. Click to copy hex codes.">
+  <meta name="keywords" content="color palette generator, color scheme, complementary colors, analogous colors, triadic colors, hex color picker, web design colors">
+  <meta property="og:title" content="Color Palette Generator - Free Online Color Scheme Tool | App Collection">
+  <meta property="og:description" content="Generate beautiful color palettes based on color theory. Create complementary, analogous, triadic, and monochromatic schemes instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://test-builder-web.web.app/color-palette.html">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Color Palette Generator - Free Online Color Scheme Tool | App Collection">
+  <meta name="twitter:description" content="Generate beautiful color palettes based on color theory. Create complementary, analogous, triadic, and monochromatic schemes instantly.">
+  <link rel="canonical" href="https://test-builder-web.web.app/color-palette.html">
+  <title>Color Palette Generator - Free Online Color Scheme Tool | App Collection</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <script src="/shared.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Color Palette Generator",
+    "url": "https://test-builder-web.web.app/color-palette.html",
+    "description": "Free online Color Palette Generator. Create color schemes based on color theory including complementary, analogous, triadic, split-complementary, and monochromatic harmonies.",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "What is a color palette?", "acceptedAnswer": {"@type": "Answer", "text": "A color palette is a curated set of colors chosen to work harmoniously together. Color palettes are used in graphic design, web design, interior design, fashion, and art to create visually cohesive and appealing compositions."}},
+      {"@type": "Question", "name": "What is complementary color harmony?", "acceptedAnswer": {"@type": "Answer", "text": "Complementary colors are pairs of colors that sit directly opposite each other on the color wheel, 180 degrees apart. They create high contrast and visual vibrancy when used together, such as blue and orange or red and green."}},
+      {"@type": "Question", "name": "How do I copy a color from the palette?", "acceptedAnswer": {"@type": "Answer", "text": "Simply click on any color swatch in the generated palette. The hex color code will be automatically copied to your clipboard, and a brief confirmation message will appear."}},
+      {"@type": "Question", "name": "What is the difference between analogous and triadic schemes?", "acceptedAnswer": {"@type": "Answer", "text": "Analogous colors are adjacent on the color wheel (e.g., 30 degrees apart) and create harmonious, low-contrast palettes. Triadic colors are evenly spaced at 120 degrees apart, offering more variety and contrast while maintaining balance."}},
+      {"@type": "Question", "name": "Can I use these palettes for web design?", "acceptedAnswer": {"@type": "Answer", "text": "Absolutely. The hex codes generated are standard CSS-compatible color values ready to use in any web project. Click to copy and paste directly into your CSS, design tool, or style guide."}}
+    ]
+  }
+  </script>
+</head>
+<body class="has-nav">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">App Collection</a>
+      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <div class="nav-links">
+        <div class="nav-tools">
+          <button class="tools-toggle">Tools &#9660;</button>
+          <div class="tools-dropdown">
+            <a href="/lotto.html">Lotto Generator</a>
+            <a href="/classify.html">AI Classifier</a>
+            <a href="/compound-interest.html">Compound Interest</a>
+            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
+            <a href="/tax-calculator.html">Tax Calculator</a>
+            <a href="/json-formatter.html">JSON Formatter</a>
+            <a href="/password-generator.html">Password Generator</a>
+            <a href="/qr-code-generator.html">QR Code Generator</a>
+            <a href="/bmi-calculator.html">BMI Calculator</a>
+            <a href="/unit-converter.html">Unit Converter</a>
+            <a href="/word-counter.html">Word Counter</a>
+            <a href="/color-palette.html">Color Palette</a>
+          </div>
+        </div>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-wide">
+    <div class="main-content">
+      <header class="header">
+        <h1>Color Palette Generator</h1>
+        <p class="subtitle">Create beautiful color schemes based on color theory</p>
+      </header>
+
+      <div class="tool-row" style="justify-content:center;flex-wrap:wrap;gap:12px;">
+        <label class="tool-label" for="colorPicker" style="min-width:auto;">Base Color:</label>
+        <input type="color" id="colorPicker" value="#667eea" style="width:60px;height:40px;border:none;cursor:pointer;border-radius:8px;">
+        <input type="text" id="hexInput" class="tool-input" style="max-width:120px;" value="#667eea" maxlength="7">
+      </div>
+
+      <div class="tool-row" style="justify-content:center;flex-wrap:wrap;gap:8px;margin-top:12px;">
+        <button class="tool-btn" data-type="complementary" type="button">Complementary</button>
+        <button class="tool-btn-secondary" data-type="analogous" type="button">Analogous</button>
+        <button class="tool-btn-secondary" data-type="triadic" type="button">Triadic</button>
+        <button class="tool-btn-secondary" data-type="split" type="button">Split-Complementary</button>
+        <button class="tool-btn-secondary" data-type="mono" type="button">Monochromatic</button>
+      </div>
+
+      <div id="paletteOutput" class="palette-row" style="justify-content:center;margin-top:20px;"></div>
+      <p id="copyMsg" style="text-align:center;font-size:0.8rem;color:var(--text-secondary);margin-top:8px;min-height:1.2em;"></p>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="content-section">
+        <h2>Understanding Color Theory</h2>
+        <p>Color theory is a framework used by artists, designers, and scientists to understand how colors interact, combine, and affect human perception. At its core, color theory is built upon the color wheel, a circular diagram first developed by Sir Isaac Newton in 1666. The color wheel organizes colors by their chromatic relationships and serves as the foundation for creating harmonious color combinations. Understanding these relationships is essential for anyone working in visual design, whether for websites, logos, marketing materials, or interior spaces.</p>
+        <p>The color wheel is divided into primary colors (red, yellow, blue in traditional theory, or red, green, blue in digital light-based systems), secondary colors (created by mixing two primaries), and tertiary colors (created by mixing a primary with an adjacent secondary). In the digital world, colors are typically described using the HSL (Hue, Saturation, Lightness) or RGB (Red, Green, Blue) models. Our tool uses HSL internally because it maps naturally to the color wheel, making it intuitive to calculate color harmonies by adjusting the hue angle.</p>
+        <p>Color perception is also influenced by context. The same color can appear different depending on the colors surrounding it, a phenomenon known as simultaneous contrast. Warm colors like red, orange, and yellow tend to advance visually and evoke energy and excitement, while cool colors like blue, green, and purple tend to recede and evoke calmness and professionalism. Understanding these psychological effects helps designers make intentional color choices that support the mood and message of their projects.</p>
+      </div>
+
+      <div class="content-section">
+        <h2>Types of Color Harmonies</h2>
+        <p><strong>Complementary</strong> color harmony uses two colors that sit directly opposite each other on the color wheel, separated by 180 degrees. This creates maximum contrast and visual impact. Examples include blue and orange, red and green, or purple and yellow. Complementary schemes are excellent for creating bold, eye-catching designs but should be used carefully to avoid visual fatigue. One color is typically used as the dominant shade, with the complementary color serving as an accent.</p>
+        <p><strong>Analogous</strong> color harmony uses three colors that are adjacent on the color wheel, typically separated by about 30 degrees. This creates a serene, comfortable palette with low contrast and natural harmony. Analogous schemes are commonly found in nature, such as the greens and yellows of a forest or the blues and purples of a twilight sky. They work well for creating cohesive, unified designs where a subtle, polished look is desired.</p>
+        <p><strong>Triadic</strong> color harmony uses three colors evenly spaced around the color wheel at 120-degree intervals. This provides a balanced palette with more variety and vibrancy than analogous schemes while maintaining visual equilibrium. Triadic schemes can be challenging to balance effectively, so designers often use one color as the dominant shade and the other two as accents.</p>
+        <p><strong>Split-complementary</strong> harmony is a variation of complementary that uses a base color and the two colors adjacent to its complement (at 150 and 210 degrees). This provides the contrast of complementary schemes with less visual tension, making it easier to work with and more forgiving of design mistakes. It is an excellent choice for beginners exploring color theory.</p>
+        <p><strong>Monochromatic</strong> harmony uses a single hue with variations in saturation and lightness. This creates a sophisticated, elegant palette with inherent unity. Monochromatic schemes are particularly popular in minimalist design, branding, and user interfaces where a clean, focused aesthetic is desired. They are virtually impossible to get wrong because all the colors share the same base hue.</p>
+      </div>
+
+      <div class="ad-slot-horizontal">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="content-section">
+        <h2>Using Color in Web Design</h2>
+        <p>Color plays a critical role in web design, influencing user experience, brand perception, accessibility, and conversion rates. Studies have shown that up to 90 percent of initial judgments about a product or website are based on color alone. Choosing the right color palette can significantly impact how users feel about your brand and whether they take desired actions on your site.</p>
+        <p>When designing for the web, accessibility should be a primary consideration. The Web Content Accessibility Guidelines (WCAG) recommend a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text against their background colors. Ensuring sufficient contrast makes your content readable for users with visual impairments, including color blindness, which affects approximately 8 percent of men and 0.5 percent of women of Northern European descent. Always test your color palettes with accessibility tools before finalizing your design.</p>
+        <p>Color consistency across your website strengthens brand identity and improves usability. Establish a primary brand color, one or two secondary colors for accents and calls to action, and a set of neutral colors for backgrounds and text. Use your primary color consistently for key branding elements, and reserve bright accent colors for interactive elements like buttons, links, and highlights. This systematic approach creates visual hierarchy and guides users through your content intuitively.</p>
+        <p>Modern CSS makes working with color palettes easier than ever. CSS custom properties (variables) allow you to define your color palette once and reference it throughout your stylesheet. This makes it simple to update your entire color scheme by changing just a few values. Dark mode support can be implemented by defining alternate color values that swap when a user's system preference changes, providing a comfortable viewing experience in all lighting conditions.</p>
+      </div>
+
+      <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+          <summary>What is a color palette?</summary>
+          <div class="faq-answer">A color palette is a curated set of colors chosen to work harmoniously together. Color palettes are fundamental in graphic design, web design, interior design, fashion, and art, helping creators maintain visual cohesion and appeal throughout their projects.</div>
+        </details>
+        <details>
+          <summary>What is complementary color harmony?</summary>
+          <div class="faq-answer">Complementary colors sit directly opposite each other on the color wheel, 180 degrees apart. They create high contrast and visual vibrancy when used together. Classic complementary pairs include blue and orange, red and green, and purple and yellow.</div>
+        </details>
+        <details>
+          <summary>How do I copy a color from the generated palette?</summary>
+          <div class="faq-answer">Simply click on any color swatch in the generated palette. The hex color code is automatically copied to your clipboard, and a brief confirmation message appears below the palette. You can then paste the code directly into your CSS, design tool, or any application.</div>
+        </details>
+        <details>
+          <summary>What is the difference between analogous and triadic color schemes?</summary>
+          <div class="faq-answer">Analogous colors are adjacent on the color wheel (about 30 degrees apart), creating harmonious, low-contrast palettes. Triadic colors are evenly spaced at 120-degree intervals, offering more variety and contrast while maintaining visual balance. Analogous suits calm, cohesive designs; triadic suits vibrant, dynamic ones.</div>
+        </details>
+        <details>
+          <summary>Can I use these palettes for web design?</summary>
+          <div class="faq-answer">Yes. All hex codes generated are standard CSS-compatible color values ready for use in any web project. Click to copy and paste directly into your stylesheet, design software, or style guide. The tool generates web-safe colors that render consistently across modern browsers and devices.</div>
+        </details>
+      </div>
+
+      <div class="related-tools">
+        <h2>Related Tools</h2>
+        <div class="related-tools-grid">
+          <a href="/qr-code-generator.html" class="related-tool-card">
+            <div class="rt-icon">&#x1F4F1;</div>
+            <div class="rt-title">QR Code Generator</div>
+            <div class="rt-desc">Generate QR codes for URLs, text, and more</div>
+          </a>
+          <a href="/password-generator.html" class="related-tool-card">
+            <div class="rt-icon">&#x1F512;</div>
+            <div class="rt-title">Password Generator</div>
+            <div class="rt-desc">Generate strong, secure passwords with custom options</div>
+          </a>
+          <a href="/json-formatter.html" class="related-tool-card">
+            <div class="rt-icon">{ }</div>
+            <div class="rt-title">JSON Formatter</div>
+            <div class="rt-desc">Format and validate JSON data with syntax highlighting</div>
+          </a>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; 2024 App Collection. All rights reserved.</p>
+        <p class="footer-links">
+          <a href="/privacy.html">Privacy Policy</a> &middot;
+          <a href="/about.html">About</a> &middot;
+          <a href="/contact.html">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <div class="sidebar">
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+    </div>
+  </div>
+
+  <script src="/color-palette.js"></script>
+</body>
+</html>
