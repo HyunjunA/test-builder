@@ -10,16 +10,57 @@
     .ai-header h1 {
       font-size: 2rem;
     }
-    #webcam-container {
-      margin: 20px auto;
+    .upload-area {
+      margin: 25px auto;
+      max-width: 400px;
+      border: 3px dashed var(--input-border);
       border-radius: 16px;
-      overflow: hidden;
-      display: inline-block;
+      padding: 40px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .upload-area:hover, .upload-area.dragover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.05);
+    }
+    .upload-area p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    .upload-area .upload-icon {
+      font-size: 3rem;
+    }
+    .upload-area input[type="file"] {
+      display: none;
+    }
+    #preview-container {
+      display: none;
+      margin: 20px auto;
+      max-width: 350px;
+    }
+    #preview-container img {
+      width: 100%;
+      border-radius: 16px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
-    #webcam-container canvas {
-      display: block;
-      border-radius: 16px;
+    #result-area {
+      display: none;
+      margin-top: 25px;
+    }
+    #result-emoji {
+      font-size: 5rem;
+      margin-bottom: 5px;
+    }
+    #result-text {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    #predictions {
+      max-width: 350px;
+      margin: 20px auto 0;
     }
     .prediction-bar {
       margin: 8px 0;
@@ -36,12 +77,11 @@
       border-radius: 10px;
       height: 28px;
       overflow: hidden;
-      position: relative;
     }
     .bar-fill {
       height: 100%;
       border-radius: 10px;
-      transition: width 0.2s ease;
+      transition: width 0.5s ease;
       display: flex;
       align-items: center;
       padding-left: 10px;
@@ -50,28 +90,9 @@
       color: #fff;
       min-width: 40px;
     }
-    .bar-dog {
-      background: linear-gradient(135deg, #6eb5ff, #2196f3);
-    }
-    .bar-cat {
-      background: linear-gradient(135deg, #ff6b6b, #e53935);
-    }
-    #result-emoji {
-      font-size: 4rem;
-      margin-top: 15px;
-      transition: all 0.3s ease;
-    }
-    #result-text {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-top: 5px;
-    }
-    #predictions {
-      max-width: 350px;
-      margin: 20px auto 0;
-    }
-    .start-btn {
+    .bar-dog { background: linear-gradient(135deg, #6eb5ff, #2196f3); }
+    .bar-cat { background: linear-gradient(135deg, #ff6b6b, #e53935); }
+    .retry-btn {
       margin-top: 20px;
     }
     .status-msg {
@@ -97,18 +118,27 @@
     <div class="header ai-header">
       <div class="logo">🐾</div>
       <h1>강아지 vs 고양이 AI</h1>
-      <p class="subtitle">웹캠으로 강아지인지 고양이인지 실시간 판별합니다.</p>
+      <p class="subtitle">사진을 올리면 강아지 상인지 고양이 상인지 판별해드립니다.</p>
     </div>
 
-    <button class="start-btn" id="startBtn" type="button" onclick="init()">카메라 시작</button>
+    <div class="upload-area" id="uploadArea">
+      <div class="upload-icon">📷</div>
+      <p>클릭하거나 사진을 드래그해서 올려주세요</p>
+      <input type="file" id="fileInput" accept="image/*">
+    </div>
+
     <p id="statusMsg" class="status-msg"></p>
 
-    <div id="webcam-container"></div>
+    <div id="preview-container">
+      <img id="preview" alt="업로드된 이미지">
+    </div>
 
-    <div id="result-emoji"></div>
-    <div id="result-text"></div>
-
-    <div id="predictions"></div>
+    <div id="result-area">
+      <div id="result-emoji"></div>
+      <div id="result-text"></div>
+      <div id="predictions"></div>
+      <button class="retry-btn" id="retryBtn" type="button">다른 사진 분석하기</button>
+    </div>
 
     <a href="/index.html" class="back-link">← 메인으로 돌아가기</a>
   </div>
@@ -116,82 +146,117 @@
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
   <script>
-    const URL = "https://teachablemachine.withgoogle.com/models/K8tyDsrgp/";
-    let model, webcam, maxPredictions;
+    const MODEL_URL = "https://teachablemachine.withgoogle.com/models/K8tyDsrgp/";
+    let model = null;
 
-    async function init() {
-      const btn = document.getElementById('startBtn');
-      const statusMsg = document.getElementById('statusMsg');
-      btn.disabled = true;
-      btn.textContent = '로딩 중...';
-      statusMsg.textContent = '모델을 불러오고 카메라를 준비하는 중입니다...';
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const previewContainer = document.getElementById('preview-container');
+    const resultArea = document.getElementById('result-area');
+    const statusMsg = document.getElementById('statusMsg');
+    const retryBtn = document.getElementById('retryBtn');
 
+    // Load model on page load
+    (async function loadModel() {
+      statusMsg.textContent = 'AI 모델을 불러오는 중...';
       try {
-        const modelURL = URL + "model.json";
-        const metadataURL = URL + "metadata.json";
-        model = await tmImage.load(modelURL, metadataURL);
-        maxPredictions = model.getTotalClasses();
-
-        const flip = true;
-        webcam = new tmImage.Webcam(280, 280, flip);
-        await webcam.setup();
-        await webcam.play();
-
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
-        btn.style.display = 'none';
+        model = await tmImage.load(MODEL_URL + "model.json", MODEL_URL + "metadata.json");
         statusMsg.textContent = '';
+      } catch (e) {
+        statusMsg.textContent = '모델 로딩에 실패했습니다. 페이지를 새로고침해주세요.';
+      }
+    })();
 
-        // Build prediction bars
-        const container = document.getElementById('predictions');
-        for (let i = 0; i < maxPredictions; i++) {
-          const bar = document.createElement('div');
-          bar.className = 'prediction-bar';
-          bar.innerHTML =
-            '<div class="prediction-label" id="label-' + i + '"></div>' +
-            '<div class="bar-bg"><div class="bar-fill" id="bar-' + i + '"></div></div>';
-          container.appendChild(bar);
+    // Click to upload
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    // File selected
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) handleFile(e.target.files[0]);
+    });
+
+    // Drag & drop
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+    });
+
+    // Retry
+    retryBtn.addEventListener('click', () => {
+      previewContainer.style.display = 'none';
+      resultArea.style.display = 'none';
+      uploadArea.style.display = '';
+      fileInput.value = '';
+      document.getElementById('predictions').innerHTML = '';
+    });
+
+    async function handleFile(file) {
+      if (!file.type.startsWith('image/')) {
+        statusMsg.textContent = '이미지 파일만 업로드할 수 있습니다.';
+        return;
+      }
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        preview.src = e.target.result;
+        previewContainer.style.display = 'block';
+        uploadArea.style.display = 'none';
+
+        if (!model) {
+          statusMsg.textContent = '모델이 아직 로딩 중입니다. 잠시 후 다시 시도해주세요.';
+          return;
         }
 
-        window.requestAnimationFrame(loop);
-      } catch (e) {
-        statusMsg.textContent = '카메라 접근에 실패했습니다. 카메라 권한을 허용해주세요.';
-        btn.disabled = false;
-        btn.textContent = '다시 시도';
-      }
+        statusMsg.textContent = '분석 중...';
+
+        // Wait for image to load then predict
+        preview.onload = async () => {
+          try {
+            const prediction = await model.predict(preview);
+            showResults(prediction);
+            statusMsg.textContent = '';
+          } catch (err) {
+            statusMsg.textContent = '분석에 실패했습니다. 다시 시도해주세요.';
+          }
+        };
+      };
+      reader.readAsDataURL(file);
     }
 
-    async function loop() {
-      webcam.update();
-      await predict();
-      window.requestAnimationFrame(loop);
-    }
+    function showResults(prediction) {
+      resultArea.style.display = 'block';
+      const container = document.getElementById('predictions');
+      container.innerHTML = '';
 
-    async function predict() {
-      const prediction = await model.predict(webcam.canvas);
       let best = { className: '', probability: 0 };
 
-      for (let i = 0; i < maxPredictions; i++) {
+      for (let i = 0; i < prediction.length; i++) {
         const p = prediction[i];
         const pct = Math.round(p.probability * 100);
         const name = p.className;
-
-        document.getElementById('label-' + i).textContent = name + '  ' + pct + '%';
-        const bar = document.getElementById('bar-' + i);
-        bar.style.width = pct + '%';
-        bar.textContent = pct + '%';
-
         const lower = name.toLowerCase();
-        if (lower.includes('dog') || lower.includes('강아지') || lower.includes('개')) {
-          bar.className = 'bar-fill bar-dog';
-        } else if (lower.includes('cat') || lower.includes('고양이')) {
-          bar.className = 'bar-fill bar-cat';
-        } else {
-          bar.className = 'bar-fill bar-dog';
-        }
 
-        if (p.probability > best.probability) {
-          best = p;
-        }
+        const barClass = (lower.includes('dog') || lower.includes('강아지') || lower.includes('개'))
+          ? 'bar-dog' : 'bar-cat';
+
+        const bar = document.createElement('div');
+        bar.className = 'prediction-bar';
+        bar.innerHTML =
+          '<div class="prediction-label">' + name + '  ' + pct + '%</div>' +
+          '<div class="bar-bg"><div class="bar-fill ' + barClass + '" style="width:' + pct + '%">' + pct + '%</div></div>';
+        container.appendChild(bar);
+
+        if (p.probability > best.probability) best = p;
       }
 
       const emoji = document.getElementById('result-emoji');
@@ -201,10 +266,10 @@
 
       if (bestLower.includes('dog') || bestLower.includes('강아지') || bestLower.includes('개')) {
         emoji.textContent = '🐶';
-        text.textContent = '강아지! (' + pct + '%)';
+        text.textContent = '강아지 상입니다! (' + pct + '%)';
       } else if (bestLower.includes('cat') || bestLower.includes('고양이')) {
         emoji.textContent = '🐱';
-        text.textContent = '고양이! (' + pct + '%)';
+        text.textContent = '고양이 상입니다! (' + pct + '%)';
       } else {
         emoji.textContent = '🤔';
         text.textContent = best.className + ' (' + pct + '%)';
