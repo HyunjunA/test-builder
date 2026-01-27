@@ -1,40 +1,106 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f7f6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
 .container {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
     text-align: center;
-    max-width: 500px;
+    max-width: 700px;
     width: 100%;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.header {
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
 h1 {
-    color: #333;
+    color: #1a1a2e;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
     margin-bottom: 25px;
-    font-size: 2em;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
 }
 
 input[type="number"] {
-    padding: 10px 15px;
-    margin: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-    width: 80px;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    width: 100px;
     text-align: center;
-    -moz-appearance: textfield; /* Hide arrows for Firefox */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    -moz-appearance: textfield;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -43,56 +109,174 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
+input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+}
+
 button {
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 12px 25px;
+    padding: 16px 40px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
-    font-size: 1.1em;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
 button:hover {
-    background-color: #45a049;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+.btn-icon {
+    font-size: 1.3rem;
 }
 
 #result {
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px dashed #cccccc;
-    border-radius: 8px;
-    min-height: 80px;
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lotto-set {
+    background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.5s ease-out;
+    transition: all 0.3s ease;
+}
+
+.lotto-set:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.set-number {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.numbers-container {
     display: flex;
     flex-wrap: wrap;
+    gap: 8px;
     justify-content: center;
-    align-items: center;
-    gap: 10px;
-    background-color: #f9f9f9;
+    flex: 1;
 }
 
-#result span {
+.lotto-ball {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
-    background-color: #007bff;
+    font-size: 1rem;
+    font-weight: 700;
     color: white;
-    border-radius: 50%;
-    font-size: 1.2em;
-    font-weight: bold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0; /* Prevent shrinking on small screens */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Optional: Different colors for numbers for visual variety */
-#result span:nth-child(1) { background-color: #FF5733; } /* Reddish */
-#result span:nth-child(2) { background-color: #FFBD33; } /* Orangish */
-#result span:nth-child(3) { background-color: #33FF57; } /* Greenish */
-#result span:nth-child(4) { background-color: #3357FF; } /* Blueish */
-#result span:nth-child(5) { background-color: #BD33FF; } /* Purplish */
-#result span:nth-child(6) { background-color: #FF33BD; } /* Pinkish */
-#result span:nth-child(7) { background-color: #33FFBD; } /* Tealish */
+.lotto-ball::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+}
+
+/* Ball colors based on number ranges */
+.ball-yellow { background: linear-gradient(135deg, #ffd93d, #f9a825); }
+.ball-blue { background: linear-gradient(135deg, #6eb5ff, #2196f3); }
+.ball-red { background: linear-gradient(135deg, #ff6b6b, #e53935); }
+.ball-gray { background: linear-gradient(135deg, #a0a0a0, #616161); }
+.ball-green { background: linear-gradient(135deg, #69f0ae, #00c853); }
+
+footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+footer p {
+    color: #888;
+    font-size: 0.85rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    .logo {
+        font-size: 3rem;
+    }
+
+    .controls {
+        gap: 20px;
+    }
+
+    button {
+        padding: 14px 30px;
+        font-size: 1rem;
+    }
+
+    .lotto-ball {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+
+    .lotto-set {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
