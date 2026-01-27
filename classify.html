@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>강아지 vs 고양이 AI 분류기</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <style>
+    .ai-header h1 {
+      font-size: 2rem;
+    }
+    #webcam-container {
+      margin: 20px auto;
+      border-radius: 16px;
+      overflow: hidden;
+      display: inline-block;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    #webcam-container canvas {
+      display: block;
+      border-radius: 16px;
+    }
+    .prediction-bar {
+      margin: 8px 0;
+      text-align: left;
+    }
+    .prediction-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .bar-bg {
+      background: var(--input-border);
+      border-radius: 10px;
+      height: 28px;
+      overflow: hidden;
+      position: relative;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.2s ease;
+      display: flex;
+      align-items: center;
+      padding-left: 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      min-width: 40px;
+    }
+    .bar-dog {
+      background: linear-gradient(135deg, #6eb5ff, #2196f3);
+    }
+    .bar-cat {
+      background: linear-gradient(135deg, #ff6b6b, #e53935);
+    }
+    #result-emoji {
+      font-size: 4rem;
+      margin-top: 15px;
+      transition: all 0.3s ease;
+    }
+    #result-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 5px;
+    }
+    #predictions {
+      max-width: 350px;
+      margin: 20px auto 0;
+    }
+    .start-btn {
+      margin-top: 20px;
+    }
+    .status-msg {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .back-link:hover {
+      color: #667eea;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header ai-header">
+      <div class="logo">🐾</div>
+      <h1>강아지 vs 고양이 AI</h1>
+      <p class="subtitle">웹캠으로 강아지인지 고양이인지 실시간 판별합니다.</p>
+    </div>
+
+    <button class="start-btn" id="startBtn" type="button" onclick="init()">카메라 시작</button>
+    <p id="statusMsg" class="status-msg"></p>
+
+    <div id="webcam-container"></div>
+
+    <div id="result-emoji"></div>
+    <div id="result-text"></div>
+
+    <div id="predictions"></div>
+
+    <a href="/index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <script>
+    const URL = "https://teachablemachine.withgoogle.com/models/K8tyDsrgp/";
+    let model, webcam, maxPredictions;
+
+    async function init() {
+      const btn = document.getElementById('startBtn');
+      const statusMsg = document.getElementById('statusMsg');
+      btn.disabled = true;
+      btn.textContent = '로딩 중...';
+      statusMsg.textContent = '모델을 불러오고 카메라를 준비하는 중입니다...';
+
+      try {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        const flip = true;
+        webcam = new tmImage.Webcam(280, 280, flip);
+        await webcam.setup();
+        await webcam.play();
+
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        btn.style.display = 'none';
+        statusMsg.textContent = '';
+
+        // Build prediction bars
+        const container = document.getElementById('predictions');
+        for (let i = 0; i < maxPredictions; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'prediction-bar';
+          bar.innerHTML =
+            '<div class="prediction-label" id="label-' + i + '"></div>' +
+            '<div class="bar-bg"><div class="bar-fill" id="bar-' + i + '"></div></div>';
+          container.appendChild(bar);
+        }
+
+        window.requestAnimationFrame(loop);
+      } catch (e) {
+        statusMsg.textContent = '카메라 접근에 실패했습니다. 카메라 권한을 허용해주세요.';
+        btn.disabled = false;
+        btn.textContent = '다시 시도';
+      }
+    }
+
+    async function loop() {
+      webcam.update();
+      await predict();
+      window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+      const prediction = await model.predict(webcam.canvas);
+      let best = { className: '', probability: 0 };
+
+      for (let i = 0; i < maxPredictions; i++) {
+        const p = prediction[i];
+        const pct = Math.round(p.probability * 100);
+        const name = p.className;
+
+        document.getElementById('label-' + i).textContent = name + '  ' + pct + '%';
+        const bar = document.getElementById('bar-' + i);
+        bar.style.width = pct + '%';
+        bar.textContent = pct + '%';
+
+        const lower = name.toLowerCase();
+        if (lower.includes('dog') || lower.includes('강아지') || lower.includes('개')) {
+          bar.className = 'bar-fill bar-dog';
+        } else if (lower.includes('cat') || lower.includes('고양이')) {
+          bar.className = 'bar-fill bar-cat';
+        } else {
+          bar.className = 'bar-fill bar-dog';
+        }
+
+        if (p.probability > best.probability) {
+          best = p;
+        }
+      }
+
+      const emoji = document.getElementById('result-emoji');
+      const text = document.getElementById('result-text');
+      const bestLower = best.className.toLowerCase();
+      const pct = Math.round(best.probability * 100);
+
+      if (bestLower.includes('dog') || bestLower.includes('강아지') || bestLower.includes('개')) {
+        emoji.textContent = '🐶';
+        text.textContent = '강아지! (' + pct + '%)';
+      } else if (bestLower.includes('cat') || bestLower.includes('고양이')) {
+        emoji.textContent = '🐱';
+        text.textContent = '고양이! (' + pct + '%)';
+      } else {
+        emoji.textContent = '🤔';
+        text.textContent = best.className + ' (' + pct + '%)';
+      }
+    }
+  </script>
+</body>
+</html>
