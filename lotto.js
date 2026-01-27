@@ -3,8 +3,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawCountInput = document.getElementById('drawCount');
     const drawButton = document.getElementById('drawButton');
     const resultDiv = document.getElementById('result');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
 
     const SET_COUNT = 10; // 한번에 생성할 세트 수
+
+    // 테마 관리
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+    }
+
+    function updateThemeIcon(theme) {
+        themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    }
+
+    // 테마 초기화 및 이벤트 리스너
+    initTheme();
+    themeToggle.addEventListener('click', toggleTheme);
 
     // 번호에 따른 공 색상 반환
     function getBallColor(number) {
