@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-6316887055096303">
-  <title>Dog vs Cat AI Classifier</title>
+  <meta name="description" content="Free AI-powered Dog vs Cat Classifier. Upload a photo or use your webcam to instantly identify whether an image contains a dog or cat using TensorFlow.js machine learning.">
+  <meta name="keywords" content="dog vs cat AI, image classifier, pet identifier, machine learning, TensorFlow.js, webcam AI">
+  <meta property="og:title" content="Dog vs Cat AI Classifier - App Collection">
+  <meta property="og:description" content="Upload a photo or use your webcam to classify dogs and cats instantly with AI-powered image recognition.">
+  <meta property="og:type" content="website">
+  <title>Dog vs Cat AI Classifier - App Collection</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303"
      crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -108,7 +113,19 @@
     .back-link:hover { color: #667eea; }
   </style>
 </head>
-<body>
+<body class="has-nav">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">App Collection</a>
+      <div class="nav-links">
+        <a href="/lotto.html">Lotto</a>
+        <a href="/classify.html">AI Classifier</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="header ai-header">
       <div class="logo">🐾</div>
@@ -150,7 +167,37 @@
       </div>
     </div>
 
+    <div class="content-section">
+      <h2>How It Works</h2>
+      <p>Our Dog vs Cat AI Classifier uses a machine learning model trained with Google's Teachable Machine and runs on TensorFlow.js. The entire classification process happens in your browser, meaning your photos are never uploaded to any server. Your privacy is fully protected.</p>
+      <p><strong>Two ways to classify:</strong></p>
+      <ul>
+        <li><strong>Webcam Mode:</strong> Grant camera access and get real-time, continuous classification as you point your camera at a dog or cat. Confidence scores update live.</li>
+        <li><strong>Upload Mode:</strong> Click or drag-and-drop any image file. The AI will analyze it instantly and show you the result with a confidence percentage.</li>
+      </ul>
+      <p>The model outputs a confidence score for each category (dog and cat), displayed as visual progress bars so you can see exactly how certain the AI is about its prediction.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Tips for Best Results</h2>
+      <ul>
+        <li>Use clear, well-lit photos for the most accurate classification.</li>
+        <li>The AI works best when the animal is the main subject of the image.</li>
+        <li>Both close-up portraits and full-body shots are supported.</li>
+        <li>For webcam mode, ensure your camera has permission enabled in your browser settings.</li>
+      </ul>
+    </div>
+
     <a href="/index.html" class="back-link">&larr; Back to Main</a>
+
+    <footer>
+      <p>&copy; 2024 App Collection. All rights reserved.</p>
+      <p class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a> &middot;
+        <a href="/about.html">About</a> &middot;
+        <a href="/contact.html">Contact</a>
+      </p>
+    </footer>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>

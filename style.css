@@ -413,6 +413,99 @@ footer p {
     border-top: 1px solid var(--footer-border);
 }
 
+/* Site Navigation */
+.site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--container-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--set-border);
+    padding: 0 20px;
+}
+.nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+}
+.nav-logo {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+.nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color 0.3s;
+}
+.nav-links a:hover {
+    color: #667eea;
+}
+body.has-nav {
+    padding-top: 76px;
+}
+
+/* Footer links */
+.footer-links {
+    margin-top: 8px;
+}
+.footer-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.3s;
+}
+.footer-links a:hover {
+    color: #667eea;
+}
+
+/* Content sections */
+.content-section {
+    text-align: left;
+    margin-top: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
+    border: 1px solid var(--set-border);
+    border-radius: 16px;
+    line-height: 1.7;
+}
+.content-section h2 {
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.content-section p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.content-section ul {
+    padding-left: 18px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.content-section li {
+    margin-bottom: 4px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {

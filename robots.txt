@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://test-builder-web.web.app/sitemap.xml
