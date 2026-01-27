@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제휴 문의</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="/style.css" rel="stylesheet">
+  <style>
+    .contact-form {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--input-border);
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .submit-btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+    .back-link:hover {
+      color: #667eea;
+    }
+    .form-message {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 600;
+      display: none;
+    }
+    .form-message.success {
+      display: block;
+      background: rgba(0, 200, 83, 0.1);
+      color: #00c853;
+    }
+    .form-message.error {
+      display: block;
+      background: rgba(229, 57, 53, 0.1);
+      color: #e53935;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>제휴 문의</h1>
+      <p class="subtitle">제휴 및 비즈니스 관련 문의를 남겨주세요.</p>
+    </div>
+
+    <form class="contact-form" id="contactForm" action="https://formspree.io/f/xlgbpwnd" method="POST">
+      <div class="form-group">
+        <label for="name">이름 / 회사명 *</label>
+        <input type="text" id="name" name="name" required placeholder="홍길동 / ABC 주식회사">
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일 *</label>
+        <input type="email" id="email" name="email" required placeholder="example@company.com">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">연락처</label>
+        <input type="tel" id="phone" name="phone" placeholder="010-1234-5678">
+      </div>
+
+      <div class="form-group">
+        <label for="type">문의 유형 *</label>
+        <select id="type" name="type" required>
+          <option value="" disabled selected>선택해주세요</option>
+          <option value="제휴 제안">제휴 제안</option>
+          <option value="광고 문의">광고 문의</option>
+          <option value="API 연동">API 연동</option>
+          <option value="기타">기타</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">문의 내용 *</label>
+        <textarea id="message" name="message" required placeholder="문의 내용을 자세히 적어주세요."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">문의 보내기</button>
+
+      <div id="formMessage" class="form-message"></div>
+    </form>
+
+    <a href="/index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = '전송 중...';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          msg.className = 'form-message success';
+          msg.textContent = '문의가 성공적으로 전송되었습니다. 감사합니다!';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch {
+        msg.className = 'form-message error';
+        msg.textContent = '전송에 실패했습니다. 다시 시도해주세요.';
+      }
+      btn.disabled = false;
+      btn.textContent = '문의 보내기';
+    });
+  </script>
+</body>
+</html>
