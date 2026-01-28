@@ -1717,6 +1717,9 @@
   let autoRotate = true;
   let targetRotationY = 0;
   let currentRotationY = 0;
+  let isDragging = false;
+  let previousMouseX = 0;
+  let threeJSReady = false;
 
   // Muscle highlight colors
   const muscleColors = {
@@ -1732,10 +1735,30 @@
 
   let currentHighlight = 'chest';
 
+  // CapsuleGeometry polyfill for older Three.js versions
+  function makeCapsuleGeometry(radius, length, capSeg, radSeg) {
+    if (typeof THREE.CapsuleGeometry === 'function') {
+      return new THREE.CapsuleGeometry(radius, length, capSeg, radSeg);
+    }
+    // Fallback: rounded cylinder approximation
+    return new THREE.CylinderGeometry(radius, radius, length + radius * 2, radSeg, 1, false);
+  }
+
   function init3D() {
     const container = document.getElementById('canvas-container');
     const width = container.clientWidth;
     const height = container.clientHeight;
+
+    // WebGL check
+    try {
+      var testCanvas = document.createElement('canvas');
+      var gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+      if (!gl) throw new Error('No WebGL');
+    } catch (e) {
+      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;text-align:center;padding:40px;"><div><p style="font-size:1.2rem;margin-bottom:10px;">3D view requires WebGL</p><p>Your browser or device does not support WebGL. You can still browse exercises below.</p></div></div>';
+      threeJSReady = true;
+      return;
+    }
 
     // Scene
     scene = new THREE.Scene();
@@ -1747,7 +1770,7 @@
     camera.position.y = 0.5;
 
     // Renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
@@ -1773,11 +1796,51 @@
     createStylizedBody();
     scene.add(bodyGroup);
 
+    // Touch & mouse drag rotation
+    setupDragControls(container);
+
+    threeJSReady = true;
+
     // Start animation
     animate();
 
     // Handle resize
     window.addEventListener('resize', onWindowResize);
+  }
+
+  function setupDragControls(container) {
+    // Mouse
+    container.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      previousMouseX = e.clientX;
+      autoRotate = false;
+      document.getElementById('toggleAutoRotate').classList.remove('active');
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      var delta = e.clientX - previousMouseX;
+      targetRotationY += delta * 0.01;
+      previousMouseX = e.clientX;
+    });
+    window.addEventListener('mouseup', function() { isDragging = false; });
+
+    // Touch
+    var touchStartX = 0;
+    container.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        touchStartX = e.touches[0].clientX;
+        autoRotate = false;
+        document.getElementById('toggleAutoRotate').classList.remove('active');
+      }
+    }, { passive: true });
+    container.addEventListener('touchmove', function(e) {
+      if (!isDragging || e.touches.length !== 1) return;
+      var delta = e.touches[0].clientX - touchStartX;
+      targetRotationY += delta * 0.01;
+      touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    container.addEventListener('touchend', function() { isDragging = false; }, { passive: true });
   }
 
   function createStylizedBody() {
@@ -1830,7 +1893,7 @@
     bodyGroup.add(rightShoulder);
 
     // Upper Arms
-    const upperArmGeometry = new THREE.CapsuleGeometry(0.1, 0.4, 8, 8);
+    const upperArmGeometry = makeCapsuleGeometry(0.1, 0.4, 8, 8);
 
     const leftUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial.clone());
     leftUpperArm.position.set(-0.65, 0.5, 0);
@@ -1845,7 +1908,7 @@
     bodyGroup.add(rightUpperArm);
 
     // Lower Arms
-    const lowerArmGeometry = new THREE.CapsuleGeometry(0.08, 0.35, 8, 8);
+    const lowerArmGeometry = makeCapsuleGeometry(0.08, 0.35, 8, 8);
 
     const leftLowerArm = new THREE.Mesh(lowerArmGeometry, bodyMaterial.clone());
     leftLowerArm.position.set(-0.72, 0.05, 0);
@@ -1867,7 +1930,7 @@
     bodyGroup.add(hips);
 
     // Upper Legs
-    const upperLegGeometry = new THREE.CapsuleGeometry(0.15, 0.5, 8, 8);
+    const upperLegGeometry = makeCapsuleGeometry(0.15, 0.5, 8, 8);
 
     const leftUpperLeg = new THREE.Mesh(upperLegGeometry, bodyMaterial.clone());
     leftUpperLeg.position.set(-0.2, -0.8, 0);
@@ -1880,7 +1943,7 @@
     bodyGroup.add(rightUpperLeg);
 
     // Lower Legs
-    const lowerLegGeometry = new THREE.CapsuleGeometry(0.1, 0.5, 8, 8);
+    const lowerLegGeometry = makeCapsuleGeometry(0.1, 0.5, 8, 8);
 
     const leftLowerLeg = new THREE.Mesh(lowerLegGeometry, bodyMaterial.clone());
     leftLowerLeg.position.set(-0.2, -1.45, 0);
@@ -2159,15 +2222,19 @@
   // INITIALIZATION
   // ==========================================
   function init() {
-    init3D();
+    try {
+      init3D();
+    } catch (e) {
+      console.warn('3D initialization failed:', e);
+      var container = document.getElementById('canvas-container');
+      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;text-align:center;padding:40px;"><div><p style="font-size:1.2rem;margin-bottom:10px;">3D model could not load</p><p>You can still browse all exercises below.</p></div></div>';
+    }
     setupEventListeners();
     updatePanelInfo();
     renderExerciseList();
 
-    // Hide loading screen
-    setTimeout(() => {
-      document.getElementById('loadingScreen').classList.add('hidden');
-    }, 1000);
+    // Hide loading screen immediately
+    document.getElementById('loadingScreen').classList.add('hidden');
 
     // Set initial auto-rotate button state
     document.getElementById('toggleAutoRotate').classList.add('active');
