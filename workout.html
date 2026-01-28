@@ -4,697 +4,833 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-adsense-account" content="ca-pub-6316887055096303">
-  <meta name="description" content="Free Body-Driven Workout Guide. Explore human anatomy interactively, learn about muscles, and discover exercises for each body part. No sign-up required.">
-  <meta name="keywords" content="workout guide, muscle anatomy, exercise guide, body parts, fitness, strength training, muscle groups">
-  <meta property="og:title" content="Body-Driven Workout Guide - Interactive Muscle & Exercise Explorer | App Collection">
-  <meta property="og:description" content="Explore human anatomy interactively. Learn about muscles and discover targeted exercises for each body part with our free workout guide.">
+  <meta name="description" content="Free 3D Interactive Bodyweight Workout Guide. Explore muscles on a 3D human model and learn calisthenics exercises for all fitness levels. No equipment needed.">
+  <meta name="keywords" content="bodyweight workout, calisthenics, home workout, no equipment exercise, 3D muscle anatomy, fitness guide, push ups, pull ups, squats">
+  <meta property="og:title" content="3D Bodyweight Workout Guide - Interactive Calisthenics Training | App Collection">
+  <meta property="og:description" content="Master bodyweight exercises with our interactive 3D guide. Perfect for beginners to advanced athletes. No gym required.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://test-builder-web.web.app/workout.html">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Body-Driven Workout Guide - Interactive Muscle & Exercise Explorer | App Collection">
-  <meta name="twitter:description" content="Explore human anatomy interactively. Learn about muscles and discover targeted exercises for each body part.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="3D Bodyweight Workout Guide - Interactive Calisthenics Training">
+  <meta name="twitter:description" content="Master bodyweight exercises with our interactive 3D guide. Perfect for beginners to advanced athletes.">
   <link rel="canonical" href="https://test-builder-web.web.app/workout.html">
-  <title>Body-Driven Workout Guide - Interactive Muscle & Exercise Explorer | App Collection</title>
+  <title>3D Bodyweight Workout Guide - Interactive Calisthenics Training | App Collection</title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6316887055096303" crossorigin="anonymous"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="/style.css" rel="stylesheet">
-  <script src="/shared.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Body-Driven Workout Guide",
+    "name": "3D Bodyweight Workout Guide",
     "url": "https://test-builder-web.web.app/workout.html",
-    "description": "Interactive workout guide that lets you explore human anatomy, learn about muscles, and discover targeted exercises for each body part.",
+    "description": "Interactive 3D bodyweight workout guide for calisthenics training. Learn proper form and progressions for all fitness levels.",
     "applicationCategory": "HealthApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type": "Question", "name": "What is body-part based workout training?", "acceptedAnswer": {"@type": "Answer", "text": "Body-part based workout training is a method where you target specific muscle groups during each training session. This approach allows you to focus on particular areas, understand muscle function, and select exercises that effectively work those muscles."}},
-      {"@type": "Question", "name": "How do I choose exercises for specific muscles?", "acceptedAnswer": {"@type": "Answer", "text": "Select exercises based on the primary function of the target muscle. For example, chest muscles are responsible for pushing movements, so exercises like bench press and push-ups are effective. Understanding muscle anatomy helps you choose the right exercises."}},
-      {"@type": "Question", "name": "What equipment do I need for strength training?", "acceptedAnswer": {"@type": "Answer", "text": "You can start with bodyweight exercises that require no equipment. As you progress, dumbbells, barbells, resistance bands, and machines can add variety and resistance. Many effective exercises can be done with minimal equipment."}},
-      {"@type": "Question", "name": "How many sets and reps should I do?", "acceptedAnswer": {"@type": "Answer", "text": "For muscle building, 3-4 sets of 8-12 reps is generally recommended. For strength, 4-6 sets of 1-5 reps with heavier weight works well. Beginners should start with lighter weights and focus on proper form before increasing intensity."}}
-    ]
-  }
-  </script>
   <style>
-    .workout-app {
-      max-width: 900px;
-      margin: 0 auto;
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-card: #1a1a25;
+      --bg-card-hover: #22222f;
+      --accent-primary: #6366f1;
+      --accent-secondary: #8b5cf6;
+      --accent-tertiary: #a855f7;
+      --accent-gradient: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #2a2a3a;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --glow-primary: rgba(99, 102, 241, 0.4);
+      --glow-secondary: rgba(139, 92, 246, 0.3);
     }
-    .view-container {
-      display: none;
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    .view-container.active {
-      display: block;
+
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-    .breadcrumb {
+
+    /* Animated Background */
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+    }
+
+    /* Navigation */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: rgba(10, 10, 15, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      font-size: 0.9rem;
-      flex-wrap: wrap;
-    }
-    .breadcrumb-item {
-      color: var(--accent);
-      cursor: pointer;
-      text-decoration: underline;
-    }
-    .breadcrumb-item:hover {
-      opacity: 0.8;
-    }
-    .breadcrumb-separator {
-      color: var(--text-secondary);
-    }
-    .breadcrumb-current {
-      color: var(--text-primary);
-      font-weight: 600;
+      padding: 0 40px;
     }
 
-    /* Body Overview */
-    .body-view-toggle {
+    .nav-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      margin-left: auto;
       display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 24px;
+      gap: 30px;
     }
-    .body-view-toggle button {
-      padding: 10px 24px;
-      border: 2px solid var(--accent);
-      background: transparent;
-      color: var(--accent);
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
     }
-    .body-view-toggle button.active {
-      background: var(--accent);
-      color: #fff;
+
+    .nav-links a:hover {
+      color: var(--text-primary);
     }
-    .body-view-toggle button:hover:not(.active) {
-      background: rgba(102, 126, 234, 0.1);
+
+    /* Main Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+      padding-top: 70px;
     }
-    .body-diagram {
+
+    /* 3D Viewer Panel */
+    .viewer-panel {
+      flex: 1;
       position: relative;
-      max-width: 320px;
-      margin: 0 auto 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 70px);
+      background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
     }
-    .body-svg {
+
+    #canvas-container {
       width: 100%;
-      height: auto;
-    }
-    .body-part {
-      cursor: pointer;
-      transition: all 0.3s;
-      fill: var(--card-bg, #f0f0f0);
-      stroke: var(--text-secondary);
-      stroke-width: 1.5;
-    }
-    .body-part:hover {
-      fill: rgba(102, 126, 234, 0.3);
-      stroke: var(--accent);
-      stroke-width: 2.5;
-    }
-    .body-part-label {
-      font-size: 10px;
-      fill: var(--text-primary);
-      pointer-events: none;
-      font-weight: 600;
-    }
-    .body-part-hint {
-      text-align: center;
-      color: var(--text-secondary);
-      margin-top: 16px;
+      height: 60vh;
+      min-height: 400px;
+      position: relative;
     }
 
-    /* Muscle List */
-    .muscle-list {
-      display: grid;
-      gap: 16px;
-    }
-    .muscle-card {
-      background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
-      border: 1px solid var(--set-border);
-      border-radius: 16px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .muscle-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-    }
-    .muscle-card h3 {
-      margin: 0 0 8px;
-      color: var(--text-primary);
-      font-size: 1.1rem;
-    }
-    .muscle-card p {
-      margin: 0;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-    .muscle-location {
-      display: inline-block;
-      background: rgba(102, 126, 234, 0.15);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      margin-top: 10px;
+    #canvas-container canvas {
+      width: 100% !important;
+      height: 100% !important;
     }
 
-    /* Muscle Detail */
-    .muscle-detail-header {
-      text-align: center;
-      margin-bottom: 30px;
+    .viewer-controls {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 15px;
+      background: rgba(26, 26, 37, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 15px 25px;
+      border-radius: 50px;
+      border: 1px solid var(--border-color);
     }
-    .muscle-detail-header h2 {
-      margin: 0 0 10px;
-      font-size: 1.8rem;
-    }
-    .muscle-info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-    .muscle-info-box {
-      background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
-      border: 1px solid var(--set-border);
-      border-radius: 12px;
-      padding: 16px;
-    }
-    .muscle-info-box h4 {
-      margin: 0 0 8px;
-      color: var(--accent);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-    }
-    .muscle-info-box p {
-      margin: 0;
+
+    .control-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-card);
       color: var(--text-primary);
-      font-size: 0.95rem;
-    }
-    .exercises-section h3 {
-      margin: 0 0 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
       font-size: 1.2rem;
     }
+
+    .control-btn:hover {
+      background: var(--accent-primary);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--glow-primary);
+    }
+
+    .control-btn.active {
+      background: var(--accent-gradient);
+      box-shadow: 0 0 25px var(--glow-primary);
+    }
+
+    .muscle-indicator {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(26, 26, 37, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      border-radius: 15px;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .muscle-indicator.visible {
+      opacity: 1;
+    }
+
+    .muscle-indicator h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .muscle-indicator p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Body Part Selector */
+    .body-parts-selector {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+      max-width: 600px;
+    }
+
+    .body-part-btn {
+      padding: 12px 24px;
+      border-radius: 25px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .body-part-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      transform: translateY(-2px);
+    }
+
+    .body-part-btn.active {
+      background: var(--accent-gradient);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 5px 20px var(--glow-primary);
+    }
+
+    /* Content Panel */
+    .content-panel {
+      width: 480px;
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border-color);
+      overflow-y: auto;
+      max-height: calc(100vh - 70px);
+    }
+
+    .panel-header {
+      padding: 30px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-header h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .panel-header p {
+      color: var(--text-secondary);
+    }
+
+    /* Level Tabs */
+    .level-tabs {
+      display: flex;
+      padding: 20px 30px;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .level-tab {
+      flex: 1;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .level-tab:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .level-tab.active {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .level-tab.beginner.active { background: var(--success); }
+    .level-tab.intermediate.active { background: var(--warning); }
+    .level-tab.advanced.active { background: var(--danger); }
 
     /* Exercise List */
     .exercise-list {
-      display: grid;
-      gap: 12px;
+      padding: 20px;
     }
+
     .exercise-card {
-      background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
-      border: 1px solid var(--set-border);
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s;
+    }
+
+    .exercise-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-primary);
+      transform: translateX(5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .exercise-card-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 12px;
+    }
+
+    .exercise-icon {
+      width: 50px;
+      height: 50px;
       border-radius: 12px;
-      padding: 16px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .exercise-title {
+      flex: 1;
+    }
+
+    .exercise-title h4 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .exercise-title span {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .exercise-stats {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Exercise Detail Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      background: var(--bg-secondary);
+      border-radius: 24px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 30px;
+      background: var(--accent-gradient);
+      position: relative;
+    }
+
+    .modal-header h2 {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .modal-header p {
+      opacity: 0.9;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 1.5rem;
       cursor: pointer;
       transition: all 0.3s;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
     }
-    .exercise-card:hover {
-      transform: translateX(4px);
-      border-color: var(--accent);
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(90deg);
     }
-    .exercise-card-main h4 {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      color: var(--text-primary);
+
+    .modal-body {
+      padding: 30px;
+      overflow-y: auto;
+      max-height: calc(90vh - 150px);
     }
-    .exercise-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .exercise-tag {
-      font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 10px;
+
+    .level-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 600;
+      margin-bottom: 20px;
     }
-    .tag-difficulty {
-      background: #e8f5e9;
-      color: #2e7d32;
+
+    .level-badge.beginner { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .level-badge.intermediate { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+    .level-badge.advanced { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+
+    .exercise-section {
+      margin-bottom: 30px;
     }
-    .tag-difficulty.intermediate {
-      background: #fff3e0;
-      color: #ef6c00;
+
+    .exercise-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .tag-difficulty.advanced {
-      background: #ffebee;
-      color: #c62828;
+
+    .exercise-section h3::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: var(--accent-gradient);
+      border-radius: 2px;
     }
-    .tag-equipment {
-      background: rgba(102, 126, 234, 0.15);
-      color: var(--accent);
+
+    .programming-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
     }
-    .exercise-card-arrow {
+
+    .programming-item {
+      background: var(--bg-card);
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .programming-item .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .programming-item .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .steps-list {
+      counter-reset: step;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      background: var(--bg-card);
+      border-radius: 12px;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      flex: 1;
+      line-height: 1.6;
       color: var(--text-secondary);
+    }
+
+    .tips-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .tip-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 15px;
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 10px;
+      border-left: 3px solid var(--warning);
+    }
+
+    .tip-item .icon {
       font-size: 1.2rem;
     }
 
-    /* Exercise Detail */
-    .exercise-detail-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .exercise-detail-header h2 {
-      margin: 0 0 12px;
-      font-size: 1.6rem;
-    }
-    .exercise-meta {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-    .exercise-section {
-      background: linear-gradient(135deg, var(--set-bg-start), var(--set-bg-end));
-      border: 1px solid var(--set-border);
+    /* Animation Preview */
+    .animation-preview {
+      width: 100%;
+      height: 200px;
+      background: var(--bg-card);
       border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-    .exercise-section h3 {
-      margin: 0 0 16px;
-      color: var(--accent);
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .exercise-section p {
-      margin: 0;
-      line-height: 1.7;
-      color: var(--text-primary);
-    }
-    .step-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      counter-reset: step-counter;
-    }
-    .step-list li {
-      counter-increment: step-counter;
-      padding: 12px 0;
-      padding-left: 44px;
-      position: relative;
-      border-bottom: 1px solid var(--set-border);
-    }
-    .step-list li:last-child {
-      border-bottom: none;
-    }
-    .step-list li::before {
-      content: counter(step-counter);
-      position: absolute;
-      left: 0;
-      top: 12px;
-      width: 28px;
-      height: 28px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 0.85rem;
+      margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
     }
-    .recommendation-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 16px;
+
+    .exercise-animation {
+      width: 120px;
+      height: 180px;
+      position: relative;
     }
-    .rec-item {
-      text-align: center;
+
+    .stick-figure {
+      position: absolute;
+      width: 100%;
+      height: 100%;
     }
-    .rec-item .rec-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-    .rec-item .rec-label {
+
+    /* Disclaimer */
+    .disclaimer {
+      padding: 20px 30px;
+      background: rgba(99, 102, 241, 0.05);
+      border-top: 1px solid var(--border-color);
       font-size: 0.8rem;
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-    .tips-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .tips-list li {
-      padding: 10px 0;
-      padding-left: 28px;
-      position: relative;
-      border-bottom: 1px solid var(--set-border);
-    }
-    .tips-list li:last-child {
-      border-bottom: none;
-    }
-    .tips-list li::before {
-      content: "!";
-      position: absolute;
-      left: 0;
-      top: 10px;
-      width: 20px;
-      height: 20px;
-      background: #ffca28;
-      color: #333;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 0.75rem;
-    }
-    .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
-      background: transparent;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      margin-bottom: 20px;
-    }
-    .back-btn:hover {
-      background: var(--accent);
-      color: #fff;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
-    /* Dark mode adjustments */
-    [data-theme="dark"] .body-part {
-      fill: var(--input-bg);
-      stroke: var(--text-secondary);
-    }
-    [data-theme="dark"] .body-part:hover {
-      fill: rgba(102, 126, 234, 0.4);
-    }
-    [data-theme="dark"] .tag-difficulty {
-      background: rgba(46, 125, 50, 0.2);
-    }
-    [data-theme="dark"] .tag-difficulty.intermediate {
-      background: rgba(239, 108, 0, 0.2);
-    }
-    [data-theme="dark"] .tag-difficulty.advanced {
-      background: rgba(198, 40, 40, 0.2);
-    }
-    [data-theme="dark"] .tips-list li::before {
-      color: #333;
-    }
-
-    @media (max-width: 600px) {
-      .muscle-info-grid {
-        grid-template-columns: 1fr;
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .app-container {
+        flex-direction: column;
       }
-      .recommendation-grid {
+
+      .content-panel {
+        width: 100%;
+        max-height: none;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .viewer-panel {
+        min-height: 50vh;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .panel-header {
+        padding: 20px;
+      }
+
+      .level-tabs {
+        padding: 15px 20px;
+      }
+
+      .exercise-list {
+        padding: 15px;
+      }
+
+      .modal-body {
+        padding: 20px;
+      }
+
+      .programming-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .viewer-controls {
+        padding: 10px 15px;
+        gap: 10px;
+      }
+
+      .control-btn {
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-primary);
+    }
+
+    /* Loading */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--border-color);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    .loading-text {
+      margin-top: 20px;
+      color: var(--text-secondary);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
   </style>
 </head>
-<body class="has-nav">
-  <nav class="site-nav">
-    <div class="nav-inner">
-      <a href="/index.html" class="nav-logo">App Collection</a>
-      <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-      <div class="nav-links">
-        <div class="nav-tools">
-          <button class="tools-toggle">Tools &#9660;</button>
-          <div class="tools-dropdown">
-            <a href="/lotto.html">Lotto Generator</a>
-            <a href="/classify.html">AI Classifier</a>
-            <a href="/compound-interest.html">Compound Interest</a>
-            <a href="/mortgage-calculator.html">Mortgage Calculator</a>
-            <a href="/tax-calculator.html">Tax Calculator</a>
-            <a href="/json-formatter.html">JSON Formatter</a>
-            <a href="/password-generator.html">Password Generator</a>
-            <a href="/qr-code-generator.html">QR Code Generator</a>
-            <a href="/bmi-calculator.html">BMI Calculator</a>
-            <a href="/unit-converter.html">Unit Converter</a>
-            <a href="/word-counter.html">Word Counter</a>
-            <a href="/color-palette.html">Color Palette</a>
-            <a href="/workout.html">Workout Guide</a>
-          </div>
-        </div>
-        <a href="/about.html">About</a>
-        <a href="/contact.html">Contact</a>
-      </div>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader"></div>
+    <p class="loading-text">Loading 3D Model...</p>
+  </div>
+
+  <!-- Background Animation -->
+  <div class="bg-animation"></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="/index.html" class="nav-brand">App Collection</a>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
     </div>
   </nav>
 
-  <div class="container-wide">
-    <div class="main-content">
-      <header class="header">
-        <h1>Body-Driven Workout Guide</h1>
-        <p class="subtitle">Explore muscles by body part and discover targeted exercises</p>
-      </header>
-
-      <div class="workout-app">
-        <!-- View 1: Body Overview -->
-        <div id="bodyOverview" class="view-container active">
-          <div class="body-view-toggle">
-            <button id="frontViewBtn" class="active">Front View</button>
-            <button id="backViewBtn">Back View</button>
-          </div>
-
-          <div class="body-diagram">
-            <!-- Front View SVG -->
-            <svg id="frontBodySvg" class="body-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
-              <!-- Head & Neck -->
-              <ellipse class="body-part" data-part="head-neck" cx="100" cy="35" rx="28" ry="32"/>
-              <text class="body-part-label" x="100" y="38" text-anchor="middle">Head</text>
-
-              <!-- Shoulders -->
-              <ellipse class="body-part" data-part="shoulders" cx="55" cy="95" rx="20" ry="15"/>
-              <ellipse class="body-part" data-part="shoulders" cx="145" cy="95" rx="20" ry="15"/>
-              <text class="body-part-label" x="55" y="98" text-anchor="middle">Shoulder</text>
-              <text class="body-part-label" x="145" y="98" text-anchor="middle">Shoulder</text>
-
-              <!-- Chest -->
-              <path class="body-part" data-part="chest" d="M70,85 Q100,80 130,85 L135,130 Q100,140 65,130 Z"/>
-              <text class="body-part-label" x="100" y="115" text-anchor="middle">Chest</text>
-
-              <!-- Arms -->
-              <path class="body-part" data-part="arms" d="M35,100 L25,160 L35,165 L50,110 Z"/>
-              <path class="body-part" data-part="arms" d="M165,100 L175,160 L165,165 L150,110 Z"/>
-              <text class="body-part-label" x="32" y="135" text-anchor="middle">Arm</text>
-              <text class="body-part-label" x="168" y="135" text-anchor="middle">Arm</text>
-
-              <!-- Forearms -->
-              <path class="body-part" data-part="arms" d="M25,165 L18,230 L30,232 L40,170 Z"/>
-              <path class="body-part" data-part="arms" d="M175,165 L182,230 L170,232 L160,170 Z"/>
-
-              <!-- Core -->
-              <path class="body-part" data-part="core" d="M70,135 L65,210 Q100,215 135,210 L130,135 Q100,145 70,135"/>
-              <text class="body-part-label" x="100" y="175" text-anchor="middle">Core</text>
-
-              <!-- Glutes/Hips (front view - hip flexors) -->
-              <path class="body-part" data-part="glutes" d="M65,210 L60,240 Q100,245 140,240 L135,210 Q100,220 65,210"/>
-              <text class="body-part-label" x="100" y="230" text-anchor="middle">Hips</text>
-
-              <!-- Legs -->
-              <path class="body-part" data-part="legs" d="M60,245 L55,330 L75,330 L85,250 Q72,248 60,245"/>
-              <path class="body-part" data-part="legs" d="M140,245 L145,330 L125,330 L115,250 Q128,248 140,245"/>
-              <text class="body-part-label" x="67" y="290" text-anchor="middle">Leg</text>
-              <text class="body-part-label" x="133" y="290" text-anchor="middle">Leg</text>
-
-              <!-- Lower Legs -->
-              <path class="body-part" data-part="legs" d="M55,335 L52,390 L72,390 L75,335 Z"/>
-              <path class="body-part" data-part="legs" d="M145,335 L148,390 L128,390 L125,335 Z"/>
-            </svg>
-
-            <!-- Back View SVG -->
-            <svg id="backBodySvg" class="body-svg" viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg" style="display:none;">
-              <!-- Head & Neck -->
-              <ellipse class="body-part" data-part="head-neck" cx="100" cy="35" rx="28" ry="32"/>
-              <text class="body-part-label" x="100" y="38" text-anchor="middle">Head</text>
-
-              <!-- Shoulders (rear) -->
-              <ellipse class="body-part" data-part="shoulders" cx="55" cy="95" rx="20" ry="15"/>
-              <ellipse class="body-part" data-part="shoulders" cx="145" cy="95" rx="20" ry="15"/>
-              <text class="body-part-label" x="55" y="98" text-anchor="middle">Rear Delt</text>
-              <text class="body-part-label" x="145" y="98" text-anchor="middle">Rear Delt</text>
-
-              <!-- Upper Back -->
-              <path class="body-part" data-part="back" d="M70,85 Q100,80 130,85 L130,130 Q100,125 70,130 Z"/>
-              <text class="body-part-label" x="100" y="108" text-anchor="middle">Upper Back</text>
-
-              <!-- Lower Back -->
-              <path class="body-part" data-part="back" d="M70,135 L72,190 Q100,195 128,190 L130,135 Q100,130 70,135"/>
-              <text class="body-part-label" x="100" y="165" text-anchor="middle">Lower Back</text>
-
-              <!-- Arms (Triceps) -->
-              <path class="body-part" data-part="arms" d="M35,100 L25,160 L35,165 L50,110 Z"/>
-              <path class="body-part" data-part="arms" d="M165,100 L175,160 L165,165 L150,110 Z"/>
-              <text class="body-part-label" x="32" y="135" text-anchor="middle">Tricep</text>
-              <text class="body-part-label" x="168" y="135" text-anchor="middle">Tricep</text>
-
-              <!-- Forearms -->
-              <path class="body-part" data-part="arms" d="M25,165 L18,230 L30,232 L40,170 Z"/>
-              <path class="body-part" data-part="arms" d="M175,165 L182,230 L170,232 L160,170 Z"/>
-
-              <!-- Glutes -->
-              <path class="body-part" data-part="glutes" d="M68,195 L60,250 Q100,260 140,250 L132,195 Q100,200 68,195"/>
-              <text class="body-part-label" x="100" y="230" text-anchor="middle">Glutes</text>
-
-              <!-- Hamstrings -->
-              <path class="body-part" data-part="legs" d="M60,255 L55,330 L75,330 L85,260 Q72,258 60,255"/>
-              <path class="body-part" data-part="legs" d="M140,255 L145,330 L125,330 L115,260 Q128,258 140,255"/>
-              <text class="body-part-label" x="67" y="295" text-anchor="middle">Hamstring</text>
-              <text class="body-part-label" x="133" y="295" text-anchor="middle">Hamstring</text>
-
-              <!-- Calves -->
-              <path class="body-part" data-part="legs" d="M55,335 L52,390 L72,390 L75,335 Z"/>
-              <path class="body-part" data-part="legs" d="M145,335 L148,390 L128,390 L125,335 Z"/>
-              <text class="body-part-label" x="63" y="365" text-anchor="middle">Calf</text>
-              <text class="body-part-label" x="137" y="365" text-anchor="middle">Calf</text>
-            </svg>
-          </div>
-
-          <p class="body-part-hint">Tap on a body part to explore its muscles and exercises</p>
-        </div>
-
-        <!-- View 2: Muscle List -->
-        <div id="muscleList" class="view-container">
-          <div class="breadcrumb">
-            <span class="breadcrumb-item" data-view="bodyOverview">Body</span>
-            <span class="breadcrumb-separator">/</span>
-            <span id="muscleListTitle" class="breadcrumb-current">Chest</span>
-          </div>
-          <div id="muscleListContent" class="muscle-list"></div>
-        </div>
-
-        <!-- View 3: Muscle Detail -->
-        <div id="muscleDetail" class="view-container">
-          <div class="breadcrumb">
-            <span class="breadcrumb-item" data-view="bodyOverview">Body</span>
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-item" data-view="muscleList" id="muscleDetailPartLink">Chest</span>
-            <span class="breadcrumb-separator">/</span>
-            <span id="muscleDetailTitle" class="breadcrumb-current">Pectoralis Major</span>
-          </div>
-          <div id="muscleDetailContent"></div>
-        </div>
-
-        <!-- View 4: Exercise Detail -->
-        <div id="exerciseDetail" class="view-container">
-          <div class="breadcrumb">
-            <span class="breadcrumb-item" data-view="bodyOverview">Body</span>
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-item" data-view="muscleList" id="exerciseDetailPartLink">Chest</span>
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-item" data-view="muscleDetail" id="exerciseDetailMuscleLink">Pectoralis Major</span>
-            <span class="breadcrumb-separator">/</span>
-            <span id="exerciseDetailTitle" class="breadcrumb-current">Bench Press</span>
-          </div>
-          <div id="exerciseDetailContent"></div>
-        </div>
+  <!-- Main App -->
+  <div class="app-container">
+    <!-- 3D Viewer Panel -->
+    <div class="viewer-panel">
+      <div class="muscle-indicator" id="muscleIndicator">
+        <h3 id="muscleName">Chest</h3>
+        <p id="muscleDesc">Click to view exercises</p>
       </div>
 
-      <div class="ad-slot-horizontal" style="margin-top:30px;">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <div id="canvas-container"></div>
+
+      <div class="body-parts-selector">
+        <button class="body-part-btn active" data-part="chest">Chest</button>
+        <button class="body-part-btn" data-part="back">Back</button>
+        <button class="body-part-btn" data-part="shoulders">Shoulders</button>
+        <button class="body-part-btn" data-part="arms">Arms</button>
+        <button class="body-part-btn" data-part="core">Core</button>
+        <button class="body-part-btn" data-part="legs">Legs</button>
+        <button class="body-part-btn" data-part="fullbody">Full Body</button>
       </div>
 
-      <div class="content-section">
-        <h2>About This Workout Guide</h2>
-        <p>This interactive Body-Driven Workout Guide helps you understand human anatomy and discover effective exercises for each muscle group. By exploring the body visually, you can learn which muscles are located where, understand their primary functions, and find targeted exercises to strengthen them.</p>
-        <p>Whether you're a beginner looking to learn the basics of strength training or an intermediate lifter wanting to target specific muscles, this guide provides the anatomical knowledge and exercise information you need. Each exercise includes detailed instructions, recommended sets and reps, and important tips to help you train safely and effectively.</p>
+      <div class="viewer-controls">
+        <button class="control-btn" id="rotateLeftBtn" title="Rotate Left">&#8592;</button>
+        <button class="control-btn" id="resetViewBtn" title="Reset View">&#8634;</button>
+        <button class="control-btn" id="rotateRightBtn" title="Rotate Right">&#8594;</button>
+        <button class="control-btn" id="toggleAutoRotate" title="Auto Rotate">&#10227;</button>
       </div>
-
-      <div class="content-section">
-        <h2>How to Use This Guide</h2>
-        <p><strong>Step 1:</strong> Click on a body part in the interactive diagram above. You can switch between front and back views to access all major muscle groups.</p>
-        <p><strong>Step 2:</strong> Review the list of muscles in that body part. Each muscle card shows the muscle name, its primary function, and its location.</p>
-        <p><strong>Step 3:</strong> Select a muscle to see detailed information including its function, role in movement, and a list of exercises that target it.</p>
-        <p><strong>Step 4:</strong> Choose an exercise to view complete instructions including step-by-step guidance, recommended sets and reps, breathing cues, and common mistakes to avoid.</p>
-      </div>
-
-      <div class="ad-slot-horizontal">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      </div>
-
-      <div class="faq-section">
-        <h2>Frequently Asked Questions</h2>
-        <details>
-          <summary>What is body-part based workout training?</summary>
-          <div class="faq-answer">Body-part based workout training is a method where you target specific muscle groups during each training session. This approach allows you to focus on particular areas, understand muscle function, and select exercises that effectively work those muscles. It's popular among bodybuilders and those looking to develop balanced muscular development.</div>
-        </details>
-        <details>
-          <summary>How do I choose exercises for specific muscles?</summary>
-          <div class="faq-answer">Select exercises based on the primary function of the target muscle. For example, chest muscles are responsible for pushing movements, so exercises like bench press and push-ups are effective. Understanding muscle anatomy helps you choose the right exercises and ensures balanced development.</div>
-        </details>
-        <details>
-          <summary>What equipment do I need for strength training?</summary>
-          <div class="faq-answer">You can start with bodyweight exercises that require no equipment. As you progress, dumbbells, barbells, resistance bands, and machines can add variety and resistance. Many effective exercises can be done with minimal equipment, making strength training accessible for home and gym workouts alike.</div>
-        </details>
-        <details>
-          <summary>How many sets and reps should I do?</summary>
-          <div class="faq-answer">For muscle building (hypertrophy), 3-4 sets of 8-12 reps is generally recommended. For strength, 4-6 sets of 1-5 reps with heavier weight works well. For endurance, 2-3 sets of 15-20 reps with lighter weight is effective. Beginners should start with lighter weights and focus on proper form before increasing intensity.</div>
-        </details>
-        <details>
-          <summary>How important is proper form?</summary>
-          <div class="faq-answer">Proper form is crucial for both safety and effectiveness. Good form ensures you're targeting the intended muscles, prevents injuries, and allows for progressive overload over time. Always prioritize form over weight, especially when learning new exercises.</div>
-        </details>
-      </div>
-
-      <div class="related-tools">
-        <h2>Related Tools</h2>
-        <div class="related-tools-grid">
-          <a href="/bmi-calculator.html" class="related-tool-card">
-            <div class="rt-icon">&#x2696;</div>
-            <div class="rt-title">BMI Calculator</div>
-            <div class="rt-desc">Calculate your Body Mass Index and healthy weight range</div>
-          </a>
-          <a href="/unit-converter.html" class="related-tool-card">
-            <div class="rt-icon">&#x1F504;</div>
-            <div class="rt-title">Unit Converter</div>
-            <div class="rt-desc">Convert between units of length, weight, and more</div>
-          </a>
-          <a href="/word-counter.html" class="related-tool-card">
-            <div class="rt-icon">&#x1F4DD;</div>
-            <div class="rt-title">Word Counter</div>
-            <div class="rt-desc">Count words, characters, and estimate reading time</div>
-          </a>
-        </div>
-      </div>
-
-      <footer>
-        <p>&copy; 2024 App Collection. All rights reserved.</p>
-        <p class="footer-links">
-          <a href="/privacy.html">Privacy Policy</a> &middot;
-          <a href="/about.html">About</a> &middot;
-          <a href="/contact.html">Contact</a>
-        </p>
-      </footer>
     </div>
 
-    <div class="sidebar">
-      <div class="ad-slot">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <!-- Content Panel -->
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2 id="panelTitle">Chest Exercises</h2>
+        <p id="panelSubtitle">Bodyweight exercises to build a powerful chest</p>
       </div>
-      <div class="ad-slot">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6316887055096303" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+
+      <div class="level-tabs">
+        <button class="level-tab beginner active" data-level="beginner">Beginner</button>
+        <button class="level-tab intermediate" data-level="intermediate">Intermediate</button>
+        <button class="level-tab advanced" data-level="advanced">Advanced</button>
+      </div>
+
+      <div class="exercise-list" id="exerciseList">
+        <!-- Exercise cards will be inserted here -->
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> This guide is for educational purposes only and is not intended as medical or professional fitness advice. Always consult with a healthcare provider before starting any new exercise program. Listen to your body and stop if you experience pain. Results vary based on individual effort, consistency, and other factors.
+      </div>
+    </div>
+  </div>
+
+  <!-- Exercise Detail Modal -->
+  <div class="modal-overlay" id="exerciseModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Push-Up</h2>
+        <p id="modalSubtitle">Master the fundamental pushing exercise</p>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content will be inserted here -->
       </div>
     </div>
   </div>

@@ -1,2082 +1,2183 @@
 (function() {
   'use strict';
 
-  // Body parts data with muscles
-  const bodyPartsData = {
-    'head-neck': {
-      name: 'Head & Neck',
-      muscles: [
-        {
-          id: 'sternocleidomastoid',
-          name: 'Sternocleidomastoid',
-          function: 'Rotates and flexes the neck',
-          role: 'Responsible for turning the head side to side and tilting the chin down toward the chest',
-          location: 'Front and side of the neck'
-        },
-        {
-          id: 'trapezius-upper',
-          name: 'Upper Trapezius',
-          function: 'Elevates and rotates the shoulder blade',
-          role: 'Supports head movement and shoulder elevation, commonly involved in shrugging motions',
-          location: 'Back of neck extending to shoulders'
-        }
-      ]
-    },
-    'chest': {
+  // ==========================================
+  // EXERCISE DATABASE - Bodyweight Only
+  // ==========================================
+  const exerciseData = {
+    chest: {
       name: 'Chest',
-      muscles: [
+      subtitle: 'Bodyweight exercises to build a powerful chest',
+      beginner: [
         {
-          id: 'pectoralis-major',
-          name: 'Pectoralis Major',
-          function: 'Horizontal adduction, flexion, and internal rotation of the arm',
-          role: 'Primary muscle for pushing movements like bench press and push-ups',
-          location: 'Large fan-shaped muscle covering upper chest'
+          id: 'wall-pushup',
+          name: 'Wall Push-Up',
+          icon: '🧱',
+          targetMuscles: 'Chest, Shoulders, Triceps',
+          sets: '3',
+          reps: '12-15',
+          rest: '60s',
+          description: 'The perfect starting point for building pushing strength. By using a wall, you reduce the load on your chest and arms while learning proper push-up mechanics.',
+          steps: [
+            'Stand facing a wall, about arm\'s length away',
+            'Place your palms flat on the wall at shoulder height and shoulder-width apart',
+            'Keep your body in a straight line from head to heels',
+            'Bend your elbows and lean your chest toward the wall',
+            'Push back to the starting position with control',
+            'Maintain core engagement throughout the movement'
+          ],
+          tips: [
+            'Keep your elbows at a 45-degree angle, not flared out',
+            'Move closer to the wall to make it easier, farther to make it harder',
+            'Focus on controlled movement rather than speed',
+            'Breathe in as you lower, breathe out as you push'
+          ],
+          breathing: 'Inhale as you lower toward the wall, exhale as you push away'
         },
         {
-          id: 'pectoralis-minor',
-          name: 'Pectoralis Minor',
-          function: 'Stabilizes and depresses the shoulder blade',
-          role: 'Assists in pulling the shoulder forward and downward, supports breathing',
-          location: 'Beneath the pectoralis major, attached to ribs 3-5'
+          id: 'incline-pushup',
+          name: 'Incline Push-Up',
+          icon: '📐',
+          targetMuscles: 'Lower Chest, Shoulders, Triceps',
+          sets: '3',
+          reps: '10-12',
+          rest: '60s',
+          description: 'A progression from wall push-ups using an elevated surface like a bench, chair, or stairs. This reduces body weight resistance while building strength for floor push-ups.',
+          steps: [
+            'Place your hands on an elevated surface shoulder-width apart',
+            'Walk your feet back until your body forms a straight line',
+            'Lower your chest toward the surface by bending your elbows',
+            'Go down until your chest nearly touches the surface',
+            'Push back up to full arm extension',
+            'Keep your core tight and body aligned throughout'
+          ],
+          tips: [
+            'The higher the surface, the easier the exercise',
+            'Progress by using lower surfaces over time',
+            'Keep your head neutral - don\'t look up or down',
+            'Squeeze your glutes to maintain body alignment'
+          ],
+          breathing: 'Inhale on the way down, exhale on the way up'
         },
         {
-          id: 'serratus-anterior',
-          name: 'Serratus Anterior',
-          function: 'Protracts and stabilizes the scapula',
-          role: 'Essential for pushing movements and overhead pressing, prevents winging of the scapula',
-          location: 'Side of chest, along the ribs'
+          id: 'knee-pushup',
+          name: 'Knee Push-Up',
+          icon: '🦵',
+          targetMuscles: 'Chest, Shoulders, Triceps',
+          sets: '3',
+          reps: '10-15',
+          rest: '60s',
+          description: 'An excellent stepping stone to full push-ups. By placing your knees on the ground, you reduce the load while maintaining proper upper body mechanics.',
+          steps: [
+            'Start on all fours with hands slightly wider than shoulder-width',
+            'Walk your hands forward and lower your hips until body is straight from knees to head',
+            'Cross your ankles and lift your feet off the ground',
+            'Lower your chest toward the floor with control',
+            'Push back up until arms are fully extended',
+            'Maintain a straight line from your knees to your head'
+          ],
+          tips: [
+            'Don\'t let your hips sag or pike up',
+            'Keep elbows at 45 degrees from your body',
+            'Go all the way down - chest should nearly touch the floor',
+            'Place a mat under your knees for comfort'
+          ],
+          breathing: 'Inhale as you descend, exhale as you press up'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'standard-pushup',
+          name: 'Standard Push-Up',
+          icon: '💪',
+          targetMuscles: 'Chest, Shoulders, Triceps, Core',
+          sets: '4',
+          reps: '12-20',
+          rest: '60s',
+          description: 'The fundamental bodyweight pushing exercise. Master this movement and you\'ll build a solid foundation for all pressing movements.',
+          steps: [
+            'Start in a high plank position with hands slightly wider than shoulders',
+            'Your body should form a straight line from head to heels',
+            'Engage your core and squeeze your glutes',
+            'Lower your body by bending your elbows until chest nearly touches the ground',
+            'Keep elbows at approximately 45 degrees from your body',
+            'Push through your palms to return to the starting position'
+          ],
+          tips: [
+            'Don\'t let your hips sag or pike up during the movement',
+            'Keep your neck neutral - look at a spot on the floor ahead of you',
+            'Spread your fingers for a stable base',
+            'Quality over quantity - full range of motion is essential'
+          ],
+          breathing: 'Inhale on the descent, exhale forcefully on the way up'
+        },
+        {
+          id: 'wide-pushup',
+          name: 'Wide Push-Up',
+          icon: '↔️',
+          targetMuscles: 'Outer Chest, Shoulders',
+          sets: '3',
+          reps: '10-15',
+          rest: '60s',
+          description: 'By placing your hands wider than shoulder-width, you shift more emphasis to the chest muscles, particularly the outer chest fibers.',
+          steps: [
+            'Start in push-up position with hands placed 1.5x shoulder-width apart',
+            'Point your fingers slightly outward for wrist comfort',
+            'Keep your body in a straight line and core engaged',
+            'Lower your chest toward the ground',
+            'Go as low as comfortable while maintaining form',
+            'Push back up to the starting position'
+          ],
+          tips: [
+            'Don\'t go wider than you can control',
+            'You may not go as deep as standard push-ups - that\'s normal',
+            'Focus on squeezing your chest at the top',
+            'Keep elbows tracking over wrists'
+          ],
+          breathing: 'Inhale going down, exhale pressing up'
+        },
+        {
+          id: 'diamond-pushup',
+          name: 'Diamond Push-Up',
+          icon: '💎',
+          targetMuscles: 'Inner Chest, Triceps',
+          sets: '3',
+          reps: '8-12',
+          rest: '75s',
+          description: 'A challenging variation that targets the inner chest and places significant emphasis on the triceps. Great for building arm definition.',
+          steps: [
+            'Start in push-up position with hands together under your chest',
+            'Form a diamond shape with your thumbs and index fingers touching',
+            'Keep your body straight and core engaged',
+            'Lower your chest toward your hands',
+            'Go down until your chest nearly touches your hands',
+            'Push back up while keeping elbows close to your body'
+          ],
+          tips: [
+            'Keep your elbows tucked close to your sides',
+            'If wrists hurt, slightly separate your hands',
+            'This is harder than standard push-ups - reduce reps if needed',
+            'Focus on triceps squeeze at the top'
+          ],
+          breathing: 'Controlled breath - inhale down, exhale up'
+        }
+      ],
+      advanced: [
+        {
+          id: 'decline-pushup',
+          name: 'Decline Push-Up',
+          icon: '⬇️',
+          targetMuscles: 'Upper Chest, Shoulders, Triceps',
+          sets: '4',
+          reps: '10-15',
+          rest: '75s',
+          description: 'Elevating your feet increases the load on your upper chest and shoulders. A challenging variation that builds impressive upper body strength.',
+          steps: [
+            'Place your feet on an elevated surface (bench, chair, or stairs)',
+            'Walk your hands out until you\'re in a push-up position',
+            'Your body should form a straight line from ankles to head',
+            'Lower your chest toward the ground',
+            'Go down until your nose nearly touches the floor',
+            'Push back up with power while maintaining alignment'
+          ],
+          tips: [
+            'The higher your feet, the harder the exercise',
+            'Keep your core extra tight to prevent lower back sag',
+            'Start with a low elevation and progress gradually',
+            'Don\'t let your head drop - keep neck neutral'
+          ],
+          breathing: 'Deep inhale on descent, powerful exhale on ascent'
+        },
+        {
+          id: 'archer-pushup',
+          name: 'Archer Push-Up',
+          icon: '🏹',
+          targetMuscles: 'Chest, Shoulders, Triceps (Unilateral)',
+          sets: '3',
+          reps: '6-8 each side',
+          rest: '90s',
+          description: 'A unilateral push-up variation that shifts most of the work to one arm while the other assists. An excellent progression toward one-arm push-ups.',
+          steps: [
+            'Start in a wide push-up position with arms extended',
+            'Turn one hand so fingers point outward',
+            'Lower your body toward the hand that\'s facing forward',
+            'The other arm stays straight, sliding outward for support',
+            'Push back up, focusing on the working arm',
+            'Complete all reps on one side, then switch'
+          ],
+          tips: [
+            'Start with partial range of motion and progress',
+            'Keep the supporting arm as straight as possible',
+            'Focus on the working side doing 80% of the work',
+            'Go slow - control is more important than depth'
+          ],
+          breathing: 'Inhale as you lower, exhale as you push up'
+        },
+        {
+          id: 'clap-pushup',
+          name: 'Clap Push-Up',
+          icon: '👏',
+          targetMuscles: 'Chest, Shoulders, Triceps (Explosive)',
+          sets: '3',
+          reps: '5-10',
+          rest: '90s',
+          description: 'A plyometric push-up that develops explosive pushing power. Excellent for athletes and those seeking advanced chest development.',
+          steps: [
+            'Start in a standard push-up position',
+            'Lower your chest toward the ground with control',
+            'Explosively push up so your hands leave the ground',
+            'Quickly clap your hands together at the peak',
+            'Land with soft elbows to absorb impact',
+            'Immediately descend into the next rep'
+          ],
+          tips: [
+            'Master explosive push-ups without the clap first',
+            'Land with slightly bent elbows to protect joints',
+            'Keep your core extremely tight throughout',
+            'Start with fewer reps - quality over quantity',
+            'Ensure adequate warm-up before attempting'
+          ],
+          breathing: 'Quick inhale at bottom, sharp exhale on explosion'
+        },
+        {
+          id: 'pseudo-planche-pushup',
+          name: 'Pseudo Planche Push-Up',
+          icon: '🤸',
+          targetMuscles: 'Chest, Front Delts, Core',
+          sets: '3',
+          reps: '6-10',
+          rest: '90s',
+          description: 'A challenging variation with hands positioned toward the hips and fingers pointing backward or outward. Mimics the planche position and builds serious strength.',
+          steps: [
+            'Start in push-up position but place hands near your hips',
+            'Turn fingers outward or backward for wrist comfort',
+            'Lean your shoulders forward past your hands',
+            'Lower your body while maintaining the forward lean',
+            'Push back up, keeping shoulders ahead of hands',
+            'Maintain hollow body position throughout'
+          ],
+          tips: [
+            'Start with hands only slightly back from normal position',
+            'Lean forward more as you get stronger',
+            'Keep your core extremely tight - no sagging',
+            'Wrist flexibility is important - warm up thoroughly'
+          ],
+          breathing: 'Controlled breathing throughout the movement'
         }
       ]
     },
-    'back': {
+
+    back: {
       name: 'Back',
-      muscles: [
+      subtitle: 'Build a strong, wide back with these pulling exercises',
+      beginner: [
         {
-          id: 'latissimus-dorsi',
-          name: 'Latissimus Dorsi',
-          function: 'Adduction, extension, and internal rotation of the arm',
-          role: 'Primary muscle for pulling movements like pull-ups and rows',
-          location: 'Large muscle spanning mid to lower back'
+          id: 'prone-y-raise',
+          name: 'Prone Y-Raise',
+          icon: '🙆',
+          targetMuscles: 'Upper Back, Rear Delts, Traps',
+          sets: '3',
+          reps: '12-15',
+          rest: '45s',
+          description: 'A floor exercise that strengthens the upper back and improves posture. Perfect for those new to back training or as a warm-up.',
+          steps: [
+            'Lie face down on the floor with arms extended overhead',
+            'Position arms in a Y-shape, thumbs pointing up',
+            'Squeeze your shoulder blades together',
+            'Lift your arms off the ground as high as comfortable',
+            'Hold briefly at the top',
+            'Lower with control and repeat'
+          ],
+          tips: [
+            'Keep your forehead on the ground or a towel',
+            'Don\'t use momentum - lift with control',
+            'Focus on squeezing your shoulder blades',
+            'Keep arms straight throughout the movement'
+          ],
+          breathing: 'Exhale as you lift, inhale as you lower'
         },
         {
-          id: 'rhomboids',
-          name: 'Rhomboids',
-          function: 'Retracts and elevates the scapula',
-          role: 'Pulls shoulder blades together, important for posture',
-          location: 'Between the spine and shoulder blades'
+          id: 'superman',
+          name: 'Superman Hold',
+          icon: '🦸',
+          targetMuscles: 'Lower Back, Glutes, Upper Back',
+          sets: '3',
+          reps: '10-12',
+          rest: '45s',
+          description: 'A fundamental back exercise that strengthens the entire posterior chain. Essential for back health and posture.',
+          steps: [
+            'Lie face down with arms extended overhead',
+            'Keep legs straight and together',
+            'Simultaneously lift arms, chest, and legs off the ground',
+            'Squeeze your glutes and lower back',
+            'Hold for 2-3 seconds at the top',
+            'Lower everything back down with control'
+          ],
+          tips: [
+            'Don\'t hyperextend your neck - keep it neutral',
+            'Squeeze your glutes to protect your lower back',
+            'Start with shorter holds and progress',
+            'Keep arms and legs straight'
+          ],
+          breathing: 'Exhale as you lift, hold breath briefly, inhale as you lower'
         },
         {
-          id: 'erector-spinae',
-          name: 'Erector Spinae',
-          function: 'Extends and stabilizes the spine',
-          role: 'Maintains upright posture and assists in bending and lifting',
-          location: 'Runs along both sides of the spine'
+          id: 'doorway-row',
+          name: 'Doorway Row',
+          icon: '🚪',
+          targetMuscles: 'Lats, Rhomboids, Biceps',
+          sets: '3',
+          reps: '10-12 each side',
+          rest: '60s',
+          description: 'A beginner-friendly rowing movement using a doorframe. Teaches the pulling pattern while allowing you to adjust difficulty.',
+          steps: [
+            'Stand facing the edge of an open doorframe',
+            'Grip the doorframe with one hand at chest height',
+            'Walk your feet toward the door, leaning back',
+            'Keep your body straight from head to heels',
+            'Pull your chest toward the doorframe',
+            'Lower yourself back with control'
+          ],
+          tips: [
+            'The more you lean back, the harder it gets',
+            'Keep your elbow close to your body as you pull',
+            'Squeeze your shoulder blade at the top',
+            'Make sure the door is secure before starting'
+          ],
+          breathing: 'Exhale as you pull, inhale as you lower'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'inverted-row',
+          name: 'Inverted Row',
+          icon: '🔄',
+          targetMuscles: 'Lats, Rhomboids, Rear Delts, Biceps',
+          sets: '4',
+          reps: '8-12',
+          rest: '75s',
+          description: 'The bodyweight equivalent of a barbell row. Use a sturdy table, low bar, or gymnastics rings to perform this essential back builder.',
+          steps: [
+            'Lie under a sturdy table or low bar',
+            'Grip the edge with hands shoulder-width apart',
+            'Extend your legs and keep body in a straight line',
+            'Pull your chest up toward the bar/table',
+            'Squeeze your shoulder blades together at the top',
+            'Lower yourself with control until arms are straight'
+          ],
+          tips: [
+            'Keep your body rigid - don\'t let hips sag',
+            'Bend knees to make it easier, elevate feet to make it harder',
+            'Pull to your chest, not your neck',
+            'Focus on driving elbows back, not just bending arms'
+          ],
+          breathing: 'Exhale on the pull, inhale on the descent'
         },
         {
-          id: 'trapezius-mid',
-          name: 'Middle Trapezius',
-          function: 'Retracts the scapula',
-          role: 'Pulls shoulder blades back, crucial for rowing movements',
-          location: 'Middle portion of the upper back'
+          id: 'reverse-snow-angel',
+          name: 'Reverse Snow Angel',
+          icon: '👼',
+          targetMuscles: 'Upper Back, Rear Delts, Rotator Cuff',
+          sets: '3',
+          reps: '10-12',
+          rest: '60s',
+          description: 'A dynamic floor exercise that works the upper back through a full range of motion. Excellent for posture and shoulder health.',
+          steps: [
+            'Lie face down with arms at your sides, palms down',
+            'Lift your chest slightly off the ground',
+            'Raise your arms and sweep them overhead in an arc',
+            'Keep arms lifted throughout the entire movement',
+            'Reverse the motion back to the starting position',
+            'Maintain the chest lift throughout all reps'
+          ],
+          tips: [
+            'Keep arms straight throughout the movement',
+            'Move slowly and with control',
+            'Don\'t let arms touch the ground during the sweep',
+            'Squeeze shoulder blades together throughout'
+          ],
+          breathing: 'Breathe naturally, exhale on the hardest part'
+        },
+        {
+          id: 'australian-pullup',
+          name: 'Australian Pull-Up (Feet Elevated)',
+          icon: '🇦🇺',
+          targetMuscles: 'Lats, Rhomboids, Biceps, Core',
+          sets: '3',
+          reps: '8-10',
+          rest: '75s',
+          description: 'An advanced inverted row variation with elevated feet that increases difficulty. A great progression toward full pull-ups.',
+          steps: [
+            'Set up under a bar at about waist height',
+            'Place your feet on an elevated surface',
+            'Grip the bar with hands shoulder-width or wider',
+            'Keep your body in a straight line',
+            'Pull your chest to the bar',
+            'Lower with control to full arm extension'
+          ],
+          tips: [
+            'The higher your feet, the harder the exercise',
+            'Keep your body rigid throughout',
+            'Pull elbows back and down',
+            'Try different grip widths to target different areas'
+          ],
+          breathing: 'Exhale as you pull up, inhale lowering down'
+        }
+      ],
+      advanced: [
+        {
+          id: 'pullup',
+          name: 'Pull-Up',
+          icon: '⬆️',
+          targetMuscles: 'Lats, Biceps, Rear Delts, Core',
+          sets: '4',
+          reps: '6-12',
+          rest: '90s',
+          description: 'The king of bodyweight back exercises. Master this movement for incredible lat development and upper body pulling strength.',
+          steps: [
+            'Hang from a bar with hands slightly wider than shoulders',
+            'Use an overhand (pronated) grip',
+            'Engage your core and depress your shoulders',
+            'Pull yourself up by driving elbows down and back',
+            'Continue until your chin clears the bar',
+            'Lower with control to full arm extension'
+          ],
+          tips: [
+            'Initiate the pull by engaging lats, not just arms',
+            'Avoid swinging or kipping',
+            'Full range of motion - dead hang to chin over bar',
+            'Keep your core tight to prevent swinging'
+          ],
+          breathing: 'Exhale as you pull up, inhale as you lower'
+        },
+        {
+          id: 'wide-grip-pullup',
+          name: 'Wide-Grip Pull-Up',
+          icon: '🦅',
+          targetMuscles: 'Lats (Width), Teres Major',
+          sets: '3',
+          reps: '5-10',
+          rest: '90s',
+          description: 'A pull-up variation with wider hand placement that emphasizes lat width. Builds the V-taper physique.',
+          steps: [
+            'Grip the bar with hands 1.5x shoulder-width apart',
+            'Hang with arms fully extended',
+            'Pull yourself up, leading with your chest',
+            'Try to touch your upper chest to the bar',
+            'Lower with control to full extension',
+            'Maintain shoulder engagement throughout'
+          ],
+          tips: [
+            'Focus on pulling elbows down to your sides',
+            'Don\'t go so wide that you lose range of motion',
+            'Keep chest up and proud throughout',
+            'Control the descent - don\'t drop'
+          ],
+          breathing: 'Exhale pulling up, inhale lowering down'
+        },
+        {
+          id: 'archer-pullup',
+          name: 'Archer Pull-Up',
+          icon: '🏹',
+          targetMuscles: 'Lats, Biceps (Unilateral)',
+          sets: '3',
+          reps: '4-6 each side',
+          rest: '120s',
+          description: 'A unilateral pull-up variation that shifts most of the load to one arm. An excellent progression toward the one-arm pull-up.',
+          steps: [
+            'Grip the bar extra wide with overhand grip',
+            'Pull yourself up toward one hand',
+            'The working arm does most of the work',
+            'The other arm stays relatively straight for assistance',
+            'Lower with control and repeat',
+            'Complete all reps on one side, then switch'
+          ],
+          tips: [
+            'Start with a wider grip than normal pull-ups',
+            'The assisting arm provides minimal help',
+            'Focus on the working lat doing the pulling',
+            'Progress by using the assist arm less over time'
+          ],
+          breathing: 'Exhale on the pull, inhale on the descent'
+        },
+        {
+          id: 'muscle-up',
+          name: 'Muscle-Up',
+          icon: '🔥',
+          targetMuscles: 'Lats, Chest, Triceps, Core',
+          sets: '3',
+          reps: '3-5',
+          rest: '120s',
+          description: 'The ultimate upper body calisthenics movement combining a pull-up and dip. A true demonstration of strength and skill.',
+          steps: [
+            'Hang from a bar with a false grip (wrists over the bar)',
+            'Initiate a powerful pull-up',
+            'As you rise, lean forward over the bar',
+            'Transition by rotating your wrists and pushing elbows back',
+            'Press yourself up until arms are straight',
+            'Lower back down with control'
+          ],
+          tips: [
+            'Master high pull-ups and straight bar dips first',
+            'The false grip is essential for beginners',
+            'Generate power from the bottom of the pull',
+            'Keep the bar close to your body throughout',
+            'Practice the transition separately'
+          ],
+          breathing: 'Exhale on the explosive pull, breathe at the top, exhale on the dip'
         }
       ]
     },
-    'shoulders': {
+
+    shoulders: {
       name: 'Shoulders',
-      muscles: [
+      subtitle: 'Develop strong, stable shoulders with these exercises',
+      beginner: [
         {
-          id: 'anterior-deltoid',
-          name: 'Anterior Deltoid',
-          function: 'Flexion and internal rotation of the arm',
-          role: 'Front portion of shoulder, involved in pressing and raising movements',
-          location: 'Front of the shoulder'
+          id: 'wall-angels',
+          name: 'Wall Angels',
+          icon: '👼',
+          targetMuscles: 'Shoulders, Upper Back, Rotator Cuff',
+          sets: '3',
+          reps: '10-12',
+          rest: '45s',
+          description: 'A mobility and activation exercise that improves shoulder health and posture while building foundational strength.',
+          steps: [
+            'Stand with your back flat against a wall',
+            'Press your lower back, upper back, and head into the wall',
+            'Raise arms to form a "W" position with elbows at 90 degrees',
+            'Keep arms in contact with the wall',
+            'Slide arms up overhead, keeping contact with the wall',
+            'Return to the W position and repeat'
+          ],
+          tips: [
+            'If you can\'t keep your back flat, step feet further from wall',
+            'Go only as high as you can while maintaining wall contact',
+            'Move slowly and with control',
+            'This is harder than it looks - don\'t rush'
+          ],
+          breathing: 'Exhale as you slide arms up, inhale coming down'
         },
         {
-          id: 'lateral-deltoid',
-          name: 'Lateral Deltoid',
-          function: 'Abduction of the arm',
-          role: 'Middle portion responsible for raising arm to the side',
-          location: 'Side of the shoulder'
+          id: 'prone-its',
+          name: 'Prone I-T-Y Raises',
+          icon: '🔤',
+          targetMuscles: 'Rear Delts, Rotator Cuff, Traps',
+          sets: '2',
+          reps: '8-10 each position',
+          rest: '45s',
+          description: 'A series of three movements that target different parts of the shoulders and upper back. Essential for shoulder health.',
+          steps: [
+            'Lie face down on the floor with forehead on a towel',
+            'I-Raise: Extend arms overhead, thumbs up, lift arms',
+            'T-Raise: Arms out to sides at shoulder level, thumbs up, lift',
+            'Y-Raise: Arms at 45 degrees overhead, thumbs up, lift',
+            'Hold each position for 2 seconds at the top',
+            'Lower with control between each letter'
+          ],
+          tips: [
+            'Keep your neck neutral throughout',
+            'Thumbs pointing up protects the shoulders',
+            'Squeeze shoulder blades on each lift',
+            'Start with no weight until form is perfect'
+          ],
+          breathing: 'Exhale on each lift, inhale as you lower'
         },
         {
-          id: 'posterior-deltoid',
-          name: 'Posterior Deltoid',
-          function: 'Extension and external rotation of the arm',
-          role: 'Rear portion involved in pulling movements and shoulder stability',
-          location: 'Back of the shoulder'
+          id: 'pike-hold',
+          name: 'Pike Hold',
+          icon: '⛰️',
+          targetMuscles: 'Shoulders, Triceps, Core',
+          sets: '3',
+          reps: '20-30 seconds',
+          rest: '60s',
+          description: 'A static hold that introduces the pike position. Builds shoulder stability and prepares you for pike push-ups.',
+          steps: [
+            'Start in a push-up position',
+            'Walk your feet toward your hands',
+            'Push your hips up toward the ceiling',
+            'Keep your arms and legs as straight as possible',
+            'Form an inverted V-shape with your body',
+            'Hold the position while pressing through your shoulders'
+          ],
+          tips: [
+            'Press firmly through your palms',
+            'Try to get your ears between your arms',
+            'Bend knees slightly if hamstrings are tight',
+            'Keep your head neutral, looking at your toes'
+          ],
+          breathing: 'Breathe steadily throughout the hold'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'pike-pushup',
+          name: 'Pike Push-Up',
+          icon: '🔺',
+          targetMuscles: 'Front Delts, Triceps, Upper Chest',
+          sets: '4',
+          reps: '8-12',
+          rest: '75s',
+          description: 'A pushing exercise that mimics overhead pressing using body weight. The foundation for handstand push-ups.',
+          steps: [
+            'Start in a downward dog position with hips high',
+            'Hands should be slightly wider than shoulders',
+            'Bend your elbows and lower your head toward the floor',
+            'Keep your hips high throughout the movement',
+            'Lower until your head nearly touches the ground',
+            'Push back up to the starting position'
+          ],
+          tips: [
+            'The closer your feet to your hands, the harder it is',
+            'Keep your core tight throughout',
+            'Elbows should go forward and out slightly',
+            'Look at your toes, not behind you'
+          ],
+          breathing: 'Inhale going down, exhale pressing up'
         },
         {
-          id: 'rotator-cuff',
-          name: 'Rotator Cuff',
-          function: 'Stabilizes the shoulder joint',
-          role: 'Group of four muscles that keep the shoulder stable during movement',
-          location: 'Deep within the shoulder, surrounding the joint'
+          id: 'elevated-pike-pushup',
+          name: 'Elevated Pike Push-Up',
+          icon: '📈',
+          targetMuscles: 'Shoulders, Triceps',
+          sets: '3',
+          reps: '6-10',
+          rest: '90s',
+          description: 'A pike push-up with feet elevated to increase difficulty and shift more weight onto your shoulders.',
+          steps: [
+            'Place your feet on an elevated surface (chair, bench)',
+            'Walk your hands back until you\'re in a pike position',
+            'Your body should form an inverted V with hips high',
+            'Lower your head toward the ground between your hands',
+            'Push back up to the starting position',
+            'Maintain the pike angle throughout'
+          ],
+          tips: [
+            'Start with a lower elevation and progress',
+            'Keep your legs as straight as possible',
+            'The higher the elevation, the more it mimics handstand push-ups',
+            'Control the descent - don\'t dive bomb'
+          ],
+          breathing: 'Inhale on descent, exhale on ascent'
+        },
+        {
+          id: 'hindu-pushup',
+          name: 'Hindu Push-Up',
+          icon: '🐍',
+          targetMuscles: 'Shoulders, Chest, Triceps, Core',
+          sets: '3',
+          reps: '10-15',
+          rest: '75s',
+          description: 'A dynamic push-up variation that flows between pike and cobra positions. Builds shoulder strength and mobility.',
+          steps: [
+            'Start in a pike position with hips high',
+            'Bend your elbows and swoop your chest forward',
+            'Continue scooping through until your chest is up',
+            'End in an upward dog position with hips low',
+            'Reverse the motion by pushing hips back up',
+            'Return to the starting pike position'
+          ],
+          tips: [
+            'Move in a smooth, flowing motion',
+            'Don\'t let your hips or thighs touch the ground',
+            'Keep your arms straight in the up-dog position',
+            'This is a challenging exercise - start slow'
+          ],
+          breathing: 'Inhale scooping through, exhale pushing back'
+        }
+      ],
+      advanced: [
+        {
+          id: 'wall-handstand-pushup',
+          name: 'Wall Handstand Push-Up',
+          icon: '🤸',
+          targetMuscles: 'Shoulders, Triceps, Upper Chest',
+          sets: '4',
+          reps: '5-10',
+          rest: '120s',
+          description: 'The ultimate bodyweight shoulder exercise. Builds incredible pressing strength and shoulder development.',
+          steps: [
+            'Kick up into a handstand against a wall (back facing wall)',
+            'Hands should be shoulder-width apart, fingers spread',
+            'Keep your body tight and straight',
+            'Lower yourself by bending your elbows',
+            'Go down until your head lightly touches the ground',
+            'Press back up to full arm extension'
+          ],
+          tips: [
+            'Master wall handstand holds before attempting push-ups',
+            'Use a pillow under your head when learning',
+            'Keep your core extremely tight',
+            'Face the wall (stomach to wall) for stricter form'
+          ],
+          breathing: 'Inhale going down, exhale pressing up'
+        },
+        {
+          id: 'pseudo-planche',
+          name: 'Pseudo Planche Lean',
+          icon: '➡️',
+          targetMuscles: 'Front Delts, Chest, Core',
+          sets: '3',
+          reps: '15-30 seconds',
+          rest: '90s',
+          description: 'An intense shoulder exercise that mimics planche positioning. Develops incredible front delt strength.',
+          steps: [
+            'Start in a push-up position with hands by your waist',
+            'Turn your fingers outward or backward',
+            'Lean your shoulders forward past your hands',
+            'Keep your arms straight and core tight',
+            'Hold the forward lean position',
+            'Your shoulders should be well ahead of your wrists'
+          ],
+          tips: [
+            'Start with minimal forward lean and progress',
+            'Keep your body in a straight line',
+            'Protract your shoulders (push them forward)',
+            'Warm up your wrists thoroughly first'
+          ],
+          breathing: 'Breathe steadily throughout the hold'
+        },
+        {
+          id: 'tuck-planche',
+          name: 'Tuck Planche',
+          icon: '🔵',
+          targetMuscles: 'Shoulders, Chest, Core',
+          sets: '4',
+          reps: '10-15 second holds',
+          rest: '120s',
+          description: 'A planche progression where you hold your body parallel to the ground with knees tucked. A serious strength skill.',
+          steps: [
+            'Place hands on the ground, arms straight',
+            'Lean forward until shoulders are ahead of hands',
+            'Lift your feet off the ground',
+            'Tuck your knees tightly to your chest',
+            'Hold your body parallel to the ground',
+            'Keep arms locked and shoulders protracted'
+          ],
+          tips: [
+            'Master the pseudo planche lean first',
+            'Use parallettes for wrist comfort if needed',
+            'Round your upper back slightly (protract)',
+            'This takes months to years to achieve - be patient'
+          ],
+          breathing: 'Breathe shallowly while maintaining tension'
         }
       ]
     },
-    'arms': {
+
+    arms: {
       name: 'Arms',
-      muscles: [
+      subtitle: 'Build powerful arms with these bodyweight exercises',
+      beginner: [
         {
-          id: 'biceps-brachii',
-          name: 'Biceps Brachii',
-          function: 'Flexion of the elbow and supination of the forearm',
-          role: 'Primary muscle for curling movements and turning palm upward',
-          location: 'Front of upper arm'
+          id: 'bench-dip',
+          name: 'Bench Dip',
+          icon: '🪑',
+          targetMuscles: 'Triceps, Front Delts, Chest',
+          sets: '3',
+          reps: '10-15',
+          rest: '60s',
+          description: 'A beginner-friendly triceps exercise using a bench or chair. Great for building pushing strength and triceps size.',
+          steps: [
+            'Sit on a bench or sturdy chair with hands beside your hips',
+            'Grip the edge of the bench with fingers facing forward',
+            'Slide your butt off the bench with legs extended',
+            'Lower your body by bending your elbows',
+            'Go down until your upper arms are parallel to the floor',
+            'Push back up to the starting position'
+          ],
+          tips: [
+            'Keep your back close to the bench',
+            'Don\'t go too deep - it can strain shoulders',
+            'Bend knees to make it easier',
+            'Keep elbows pointing straight back, not flared'
+          ],
+          breathing: 'Inhale going down, exhale pushing up'
         },
         {
-          id: 'triceps-brachii',
-          name: 'Triceps Brachii',
-          function: 'Extension of the elbow',
-          role: 'Primary muscle for straightening the arm, crucial for pushing',
-          location: 'Back of upper arm'
+          id: 'chin-up-negative',
+          name: 'Chin-Up Negative',
+          icon: '⬇️',
+          targetMuscles: 'Biceps, Lats, Forearms',
+          sets: '3',
+          reps: '5-8',
+          rest: '90s',
+          description: 'Eccentric-only chin-ups that build biceps strength and help progress toward full chin-ups.',
+          steps: [
+            'Use a box or jump to get to the top chin-up position',
+            'Hold the bar with an underhand (supinated) grip',
+            'Start with chin over the bar',
+            'Lower yourself as slowly as possible',
+            'Take 5-10 seconds to reach full arm extension',
+            'Step back up and repeat'
+          ],
+          tips: [
+            'Focus on a slow, controlled descent',
+            'Fight gravity the entire way down',
+            'Grip the bar tightly throughout',
+            'This builds the strength needed for full chin-ups'
+          ],
+          breathing: 'Breathe steadily throughout the descent'
         },
         {
-          id: 'brachialis',
-          name: 'Brachialis',
-          function: 'Flexion of the elbow',
-          role: 'Strong elbow flexor that works beneath the biceps',
-          location: 'Beneath biceps, visible on outer arm'
+          id: 'diamond-pushup-knees',
+          name: 'Diamond Push-Up (Knees)',
+          icon: '💎',
+          targetMuscles: 'Triceps, Inner Chest',
+          sets: '3',
+          reps: '10-12',
+          rest: '60s',
+          description: 'A knee variation of the diamond push-up that focuses on triceps development while building toward the full version.',
+          steps: [
+            'Start on your knees in a push-up position',
+            'Place hands together under your chest in a diamond shape',
+            'Touch your thumbs and index fingers together',
+            'Lower your chest toward your hands',
+            'Keep your elbows close to your body',
+            'Push back up to the starting position'
+          ],
+          tips: [
+            'Keep your body straight from knees to head',
+            'Don\'t let elbows flare out',
+            'Go as low as comfortable',
+            'Focus on squeezing triceps at the top'
+          ],
+          breathing: 'Inhale down, exhale up'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'chinup',
+          name: 'Chin-Up',
+          icon: '💪',
+          targetMuscles: 'Biceps, Lats, Forearms',
+          sets: '4',
+          reps: '6-12',
+          rest: '90s',
+          description: 'The best bodyweight exercise for biceps development. Uses an underhand grip to maximize biceps involvement.',
+          steps: [
+            'Grip the bar with palms facing you (supinated), shoulder-width apart',
+            'Hang with arms fully extended',
+            'Pull yourself up by driving elbows down',
+            'Continue until your chin clears the bar',
+            'Squeeze your biceps at the top',
+            'Lower with control to full extension'
+          ],
+          tips: [
+            'Keep your body relatively straight - minimal swinging',
+            'Focus on squeezing biceps at the top',
+            'Full range of motion for best results',
+            'Don\'t kip or use momentum'
+          ],
+          breathing: 'Exhale pulling up, inhale lowering down'
         },
         {
-          id: 'forearm-flexors',
-          name: 'Forearm Flexors',
-          function: 'Flexion of the wrist and fingers',
-          role: 'Control grip strength and wrist curling movements',
-          location: 'Inner forearm'
+          id: 'parallel-bar-dip',
+          name: 'Parallel Bar Dip',
+          icon: '⏸️',
+          targetMuscles: 'Triceps, Chest, Front Delts',
+          sets: '4',
+          reps: '8-12',
+          rest: '90s',
+          description: 'The king of triceps exercises. Dips build serious arm size and pressing strength.',
+          steps: [
+            'Grip parallel bars and lift yourself to the top position',
+            'Arms should be straight, shoulders down and back',
+            'Keep your body upright for more triceps focus',
+            'Lower yourself by bending your elbows',
+            'Go down until upper arms are parallel to the ground',
+            'Push back up to full arm extension'
+          ],
+          tips: [
+            'Stay upright to target triceps, lean forward for more chest',
+            'Don\'t go too deep if you have shoulder issues',
+            'Keep your elbows pointing backward, not flared',
+            'Control the descent - don\'t drop'
+          ],
+          breathing: 'Inhale going down, exhale pushing up'
         },
         {
-          id: 'forearm-extensors',
-          name: 'Forearm Extensors',
-          function: 'Extension of the wrist and fingers',
-          role: 'Control wrist extension and assist in grip',
-          location: 'Outer forearm'
+          id: 'close-grip-pushup',
+          name: 'Close-Grip Push-Up',
+          icon: '🤏',
+          targetMuscles: 'Triceps, Inner Chest',
+          sets: '3',
+          reps: '12-15',
+          rest: '60s',
+          description: 'A push-up variation with hands close together that shifts emphasis to the triceps.',
+          steps: [
+            'Start in push-up position with hands directly under your chest',
+            'Hands should be 6-12 inches apart',
+            'Keep your elbows tucked close to your body',
+            'Lower your chest toward your hands',
+            'Go down until your chest touches your hands',
+            'Push back up, focusing on triceps contraction'
+          ],
+          tips: [
+            'Keep elbows pointing backward, not out',
+            'If wrists hurt, make a fist or use push-up handles',
+            'Don\'t let hips sag',
+            'Focus on the triceps squeeze at the top'
+          ],
+          breathing: 'Inhale down, exhale up'
+        }
+      ],
+      advanced: [
+        {
+          id: 'ring-dip',
+          name: 'Ring Dip',
+          icon: '⭕',
+          targetMuscles: 'Triceps, Chest, Shoulders, Core',
+          sets: '4',
+          reps: '6-10',
+          rest: '120s',
+          description: 'An advanced dip variation using gymnastics rings. The instability makes this incredibly challenging and effective.',
+          steps: [
+            'Grip the rings and jump to support position',
+            'Lock out your arms and stabilize',
+            'Turn the rings out (external rotation) at the top',
+            'Lower yourself with control',
+            'Go down until upper arms are parallel to the ground',
+            'Push back up to lockout, turning rings out again'
+          ],
+          tips: [
+            'Master parallel bar dips first',
+            'The rings will shake - that\'s normal',
+            'Keep rings close to your body',
+            'RTO (rings turned out) at top is crucial'
+          ],
+          breathing: 'Inhale down, exhale up'
+        },
+        {
+          id: 'korean-dip',
+          name: 'Korean Dip',
+          icon: '🔙',
+          targetMuscles: 'Triceps, Shoulders, Core',
+          sets: '3',
+          reps: '5-8',
+          rest: '120s',
+          description: 'A challenging dip variation performed behind the back. Requires and builds significant triceps and shoulder strength.',
+          steps: [
+            'Stand in front of a bar at hip height',
+            'Grip the bar behind you with palms facing back',
+            'Lift yourself up so your back is to the bar',
+            'Lower your body by bending your elbows',
+            'Keep your body close to the bar',
+            'Push back up to full arm extension'
+          ],
+          tips: [
+            'Start with a low bar and feet on the ground for assistance',
+            'Keep your body close to the bar',
+            'Don\'t go too deep initially',
+            'This requires good shoulder flexibility'
+          ],
+          breathing: 'Inhale going down, exhale pressing up'
+        },
+        {
+          id: 'one-arm-pushup',
+          name: 'One-Arm Push-Up',
+          icon: '☝️',
+          targetMuscles: 'Chest, Triceps, Shoulders, Core',
+          sets: '3',
+          reps: '3-6 each side',
+          rest: '120s',
+          description: 'The ultimate pressing strength demonstration. Requires tremendous strength and stability.',
+          steps: [
+            'Start in a wide push-up stance for balance',
+            'Shift your weight to one arm',
+            'Place the other hand behind your back or on your thigh',
+            'Lower your chest toward the ground',
+            'Keep your body from rotating',
+            'Push back up using one arm'
+          ],
+          tips: [
+            'Wider stance provides more stability',
+            'Spread your feet wider as needed',
+            'Your body will rotate slightly - minimize it',
+            'Progress from assisted versions first'
+          ],
+          breathing: 'Inhale down, exhale up'
         }
       ]
     },
-    'core': {
+
+    core: {
       name: 'Core',
-      muscles: [
+      subtitle: 'Build a rock-solid core with these exercises',
+      beginner: [
         {
-          id: 'rectus-abdominis',
-          name: 'Rectus Abdominis',
-          function: 'Flexion of the trunk',
-          role: 'The "six-pack" muscle, responsible for crunching motions',
-          location: 'Front of abdomen, from ribs to pelvis'
+          id: 'dead-bug',
+          name: 'Dead Bug',
+          icon: '🐛',
+          targetMuscles: 'Deep Core, Hip Flexors',
+          sets: '3',
+          reps: '10-12 each side',
+          rest: '45s',
+          description: 'An excellent exercise for learning core bracing and building foundational stability. Safe for beginners and those with back issues.',
+          steps: [
+            'Lie on your back with arms extended toward ceiling',
+            'Raise your legs with knees bent at 90 degrees',
+            'Press your lower back firmly into the floor',
+            'Slowly extend opposite arm and leg',
+            'Return to starting position',
+            'Alternate sides with each rep'
+          ],
+          tips: [
+            'Your lower back should NEVER leave the floor',
+            'Move slowly - don\'t rush',
+            'Exhale as you extend arm and leg',
+            'Only extend as far as you can maintain back position'
+          ],
+          breathing: 'Exhale extending, inhale returning'
         },
         {
-          id: 'obliques',
-          name: 'Obliques',
-          function: 'Rotation and lateral flexion of the trunk',
-          role: 'Twisting movements and side bending, supports the spine',
-          location: 'Sides of the abdomen'
+          id: 'plank',
+          name: 'Plank',
+          icon: '📏',
+          targetMuscles: 'Core, Shoulders, Glutes',
+          sets: '3',
+          reps: '20-60 seconds',
+          rest: '45s',
+          description: 'The fundamental core exercise that builds endurance and stability throughout your entire midsection.',
+          steps: [
+            'Start in a forearm position with elbows under shoulders',
+            'Extend your legs with toes on the ground',
+            'Keep your body in a straight line from head to heels',
+            'Engage your core by pulling belly button to spine',
+            'Squeeze your glutes',
+            'Hold the position while breathing normally'
+          ],
+          tips: [
+            'Don\'t let your hips sag or pike up',
+            'Keep your neck neutral - look at the floor',
+            'Squeeze everything - core, glutes, legs',
+            'Quality time over maximum time'
+          ],
+          breathing: 'Breathe normally throughout the hold'
         },
         {
-          id: 'transverse-abdominis',
-          name: 'Transverse Abdominis',
-          function: 'Compresses the abdomen and stabilizes the spine',
-          role: 'Deep core stabilizer, acts like a natural weight belt',
-          location: 'Deepest abdominal muscle, wraps around torso'
+          id: 'glute-bridge',
+          name: 'Glute Bridge',
+          icon: '🌉',
+          targetMuscles: 'Glutes, Lower Back, Core',
+          sets: '3',
+          reps: '12-15',
+          rest: '45s',
+          description: 'A foundational exercise that strengthens the posterior chain while teaching hip extension.',
+          steps: [
+            'Lie on your back with knees bent, feet flat on floor',
+            'Place feet hip-width apart, close to your butt',
+            'Push through your heels to lift your hips',
+            'Squeeze your glutes at the top',
+            'Form a straight line from knees to shoulders',
+            'Lower with control and repeat'
+          ],
+          tips: [
+            'Drive through your heels, not your toes',
+            'Squeeze glutes hard at the top',
+            'Don\'t hyperextend your lower back',
+            'Keep core engaged throughout'
+          ],
+          breathing: 'Exhale lifting up, inhale lowering down'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'hollow-body-hold',
+          name: 'Hollow Body Hold',
+          icon: '🍌',
+          targetMuscles: 'Core, Hip Flexors',
+          sets: '3',
+          reps: '20-45 seconds',
+          rest: '60s',
+          description: 'A gymnastics staple that builds incredible core strength and the foundation for advanced movements.',
+          steps: [
+            'Lie on your back with arms extended overhead',
+            'Press your lower back into the floor',
+            'Lift your legs, shoulders, and arms off the ground',
+            'Create a "banana" shape with your body',
+            'Keep your lower back pressed down',
+            'Hold the position while maintaining tension'
+          ],
+          tips: [
+            'If lower back lifts, raise legs higher',
+            'Tuck chin slightly, look at toes',
+            'Arms should be by your ears',
+            'Keep breathing - don\'t hold your breath'
+          ],
+          breathing: 'Breathe shallowly while maintaining tension'
+        },
+        {
+          id: 'hanging-knee-raise',
+          name: 'Hanging Knee Raise',
+          icon: '🦵',
+          targetMuscles: 'Lower Abs, Hip Flexors',
+          sets: '3',
+          reps: '10-15',
+          rest: '60s',
+          description: 'A hanging core exercise that targets the lower abs and builds grip strength.',
+          steps: [
+            'Hang from a bar with arms fully extended',
+            'Keep your body still - no swinging',
+            'Raise your knees toward your chest',
+            'Curl your pelvis up at the top',
+            'Pause briefly at the top',
+            'Lower with control to the starting position'
+          ],
+          tips: [
+            'Initiate the movement by tilting pelvis',
+            'Don\'t just swing your legs up',
+            'Control the descent - don\'t drop',
+            'No swinging - reset between reps if needed'
+          ],
+          breathing: 'Exhale raising knees, inhale lowering'
+        },
+        {
+          id: 'l-sit-hold',
+          name: 'L-Sit Hold',
+          icon: '🔷',
+          targetMuscles: 'Core, Hip Flexors, Triceps',
+          sets: '4',
+          reps: '10-30 seconds',
+          rest: '90s',
+          description: 'A challenging static hold that builds tremendous core strength and compression.',
+          steps: [
+            'Sit between parallel bars or on the floor with hands beside hips',
+            'Press down and lift your body off the ground',
+            'Keep your legs straight out in front of you',
+            'Point your toes and hold legs parallel to the ground',
+            'Keep arms locked and shoulders depressed',
+            'Hold the position as long as possible'
+          ],
+          tips: [
+            'Use parallettes or push-up handles if needed',
+            'Start with tucked L-sit if full L is too hard',
+            'Push shoulders down away from ears',
+            'Keep legs actively straight'
+          ],
+          breathing: 'Breathe shallowly, maintaining tension'
+        }
+      ],
+      advanced: [
+        {
+          id: 'hanging-leg-raise',
+          name: 'Hanging Leg Raise',
+          icon: '🦿',
+          targetMuscles: 'Lower Abs, Hip Flexors, Grip',
+          sets: '4',
+          reps: '8-12',
+          rest: '90s',
+          description: 'An advanced hanging core exercise that requires significant strength and control.',
+          steps: [
+            'Hang from a bar with arms extended',
+            'Keep your body still and core engaged',
+            'Raise straight legs until parallel to the ground',
+            'Curl your pelvis at the top for full contraction',
+            'Lower with complete control',
+            'Avoid swinging throughout'
+          ],
+          tips: [
+            'Keep legs straight - don\'t bend knees',
+            'Go slow - momentum is cheating',
+            'Raise past parallel if possible',
+            'Reset between reps if swinging starts'
+          ],
+          breathing: 'Exhale raising, inhale lowering'
+        },
+        {
+          id: 'dragon-flag',
+          name: 'Dragon Flag',
+          icon: '🐉',
+          targetMuscles: 'Entire Core, Lats',
+          sets: '3',
+          reps: '5-8',
+          rest: '120s',
+          description: 'Made famous by Bruce Lee, this is one of the most challenging core exercises. Builds incredible full-body strength.',
+          steps: [
+            'Lie on a bench and grip behind your head',
+            'Lift your entire body until only shoulders touch the bench',
+            'Keep your body in a straight line',
+            'Lower your body slowly toward the bench',
+            'Keep your body rigid - don\'t pike',
+            'Stop before your lower back touches, then raise back up'
+          ],
+          tips: [
+            'Start with tucked or straddle versions',
+            'Your body should stay straight like a flag',
+            'Control the descent - this is the hardest part',
+            'Squeeze your entire body tight'
+          ],
+          breathing: 'Inhale at top, exhale during descent'
+        },
+        {
+          id: 'front-lever-tuck',
+          name: 'Front Lever (Tucked)',
+          icon: '➖',
+          targetMuscles: 'Core, Lats, Shoulders',
+          sets: '4',
+          reps: '10-20 second holds',
+          rest: '120s',
+          description: 'A gymnastics skill where you hold your body horizontal while hanging from a bar. The tucked version is a progression.',
+          steps: [
+            'Hang from a bar with overhand grip',
+            'Pull your shoulders down and back',
+            'Raise your body while tucking knees to chest',
+            'Continue until your body is horizontal',
+            'Keep your back parallel to the ground',
+            'Hold the position with straight arms'
+          ],
+          tips: [
+            'Depress your shoulders throughout',
+            'Keep arms straight - don\'t bend elbows',
+            'Engage your lats strongly',
+            'Progress by slowly extending legs over time'
+          ],
+          breathing: 'Breathe shallowly while holding'
         }
       ]
     },
-    'glutes': {
-      name: 'Glutes & Hips',
-      muscles: [
-        {
-          id: 'gluteus-maximus',
-          name: 'Gluteus Maximus',
-          function: 'Extension and external rotation of the hip',
-          role: 'Largest and most powerful muscle, essential for standing, walking, and jumping',
-          location: 'Main mass of the buttocks'
-        },
-        {
-          id: 'gluteus-medius',
-          name: 'Gluteus Medius',
-          function: 'Abduction and stabilization of the hip',
-          role: 'Stabilizes pelvis during walking and running',
-          location: 'Upper outer buttock'
-        },
-        {
-          id: 'hip-flexors',
-          name: 'Hip Flexors',
-          function: 'Flexion of the hip',
-          role: 'Lifts the thigh toward the torso, important for walking and running',
-          location: 'Front of hip, connecting spine to femur'
-        }
-      ]
-    },
-    'legs': {
+
+    legs: {
       name: 'Legs',
-      muscles: [
+      subtitle: 'Develop powerful legs with these bodyweight movements',
+      beginner: [
         {
-          id: 'quadriceps',
-          name: 'Quadriceps',
-          function: 'Extension of the knee and flexion of the hip',
-          role: 'Four-muscle group on front of thigh, essential for squatting and jumping',
-          location: 'Front of the thigh'
+          id: 'bodyweight-squat',
+          name: 'Bodyweight Squat',
+          icon: '🏋️',
+          targetMuscles: 'Quads, Glutes, Hamstrings',
+          sets: '3',
+          reps: '15-20',
+          rest: '60s',
+          description: 'The foundation of lower body training. Master the squat pattern for athletic performance and daily function.',
+          steps: [
+            'Stand with feet shoulder-width apart or slightly wider',
+            'Turn your toes out slightly (15-30 degrees)',
+            'Keep your chest up and core engaged',
+            'Bend your knees and push your hips back',
+            'Lower until thighs are at least parallel to the floor',
+            'Drive through your feet to stand back up'
+          ],
+          tips: [
+            'Keep your weight in your heels and midfoot',
+            'Knees should track over your toes',
+            'Keep your chest up - don\'t lean forward too much',
+            'Go as deep as your mobility allows with good form'
+          ],
+          breathing: 'Inhale going down, exhale standing up'
         },
         {
-          id: 'hamstrings',
-          name: 'Hamstrings',
-          function: 'Flexion of the knee and extension of the hip',
-          role: 'Three-muscle group on back of thigh, crucial for running and jumping',
-          location: 'Back of the thigh'
+          id: 'glute-bridge-single',
+          name: 'Single-Leg Glute Bridge',
+          icon: '🦩',
+          targetMuscles: 'Glutes, Hamstrings, Core',
+          sets: '3',
+          reps: '10-12 each leg',
+          rest: '60s',
+          description: 'A unilateral glute exercise that addresses imbalances and builds single-leg strength.',
+          steps: [
+            'Lie on your back with knees bent',
+            'Extend one leg straight up toward the ceiling',
+            'Push through the heel of your planted foot',
+            'Lift your hips until your body forms a straight line',
+            'Squeeze your glute at the top',
+            'Lower with control and repeat'
+          ],
+          tips: [
+            'Keep the raised leg straight',
+            'Drive through your heel, not your toes',
+            'Don\'t let your hips drop or rotate',
+            'Complete all reps on one side before switching'
+          ],
+          breathing: 'Exhale lifting, inhale lowering'
         },
         {
-          id: 'adductors',
-          name: 'Adductors',
-          function: 'Adduction of the thigh',
-          role: 'Brings legs together, stabilizes during lateral movements',
-          location: 'Inner thigh'
+          id: 'step-up',
+          name: 'Step-Up',
+          icon: '📦',
+          targetMuscles: 'Quads, Glutes, Hamstrings',
+          sets: '3',
+          reps: '10-12 each leg',
+          rest: '60s',
+          description: 'A functional single-leg exercise using a step or bench. Great for building leg strength and balance.',
+          steps: [
+            'Stand facing a box, bench, or sturdy step',
+            'Place one foot fully on top of the box',
+            'Press through that foot to lift your body up',
+            'Stand fully on the box, bringing the other foot up',
+            'Lower yourself back down with control',
+            'Complete all reps on one leg before switching'
+          ],
+          tips: [
+            'Don\'t push off with your back leg',
+            'Keep your chest up throughout',
+            'Start with a lower box and progress',
+            'Ensure the full foot is on the box'
+          ],
+          breathing: 'Exhale stepping up, inhale stepping down'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'split-squat',
+          name: 'Bulgarian Split Squat',
+          icon: '🇧🇬',
+          targetMuscles: 'Quads, Glutes, Hamstrings',
+          sets: '3',
+          reps: '8-12 each leg',
+          rest: '90s',
+          description: 'A challenging single-leg exercise with the rear foot elevated. Builds serious leg strength and balance.',
+          steps: [
+            'Stand 2-3 feet in front of a bench or chair',
+            'Place the top of one foot on the bench behind you',
+            'Keep your front foot firmly planted',
+            'Lower your body until your front thigh is parallel to the ground',
+            'Drive through your front foot to stand back up',
+            'Complete all reps on one leg before switching'
+          ],
+          tips: [
+            'Keep your torso upright',
+            'Front knee should track over your toes',
+            'Find the right distance - not too close or far from the bench',
+            'Control the descent - don\'t drop'
+          ],
+          breathing: 'Inhale going down, exhale standing up'
         },
         {
-          id: 'calves',
-          name: 'Calves (Gastrocnemius & Soleus)',
-          function: 'Plantar flexion of the ankle',
-          role: 'Points the toes down, essential for walking, running, and jumping',
-          location: 'Back of lower leg'
+          id: 'jump-squat',
+          name: 'Jump Squat',
+          icon: '🚀',
+          targetMuscles: 'Quads, Glutes, Calves (Explosive)',
+          sets: '3',
+          reps: '10-15',
+          rest: '90s',
+          description: 'A plyometric squat variation that builds explosive power and athleticism.',
+          steps: [
+            'Start in a squat stance',
+            'Lower into a squat position',
+            'Explosively jump as high as possible',
+            'Extend your body fully in the air',
+            'Land softly with bent knees',
+            'Immediately lower into the next rep'
+          ],
+          tips: [
+            'Land quietly - absorb impact with your legs',
+            'Keep your chest up throughout',
+            'Jump straight up, not forward',
+            'Start with lower jumps if needed'
+          ],
+          breathing: 'Exhale explosively during the jump'
         },
         {
-          id: 'tibialis-anterior',
-          name: 'Tibialis Anterior',
-          function: 'Dorsiflexion of the ankle',
-          role: 'Lifts the toes up, controls foot during walking',
-          location: 'Front of the shin'
+          id: 'nordic-curl',
+          name: 'Nordic Hamstring Curl',
+          icon: '🦵',
+          targetMuscles: 'Hamstrings',
+          sets: '3',
+          reps: '4-8',
+          rest: '120s',
+          description: 'One of the best hamstring exercises. Uses eccentric loading to build incredible hamstring strength.',
+          steps: [
+            'Kneel on a pad with ankles secured under something sturdy',
+            'Keep your body straight from knees to head',
+            'Slowly lower your body toward the ground',
+            'Control the descent using your hamstrings',
+            'Go as low as you can with control',
+            'Use your hands to push back up if needed'
+          ],
+          tips: [
+            'The eccentric (lowering) is the main benefit',
+            'It\'s okay to use hands to push back up',
+            'Keep hips extended - don\'t bend at the waist',
+            'Progress by going lower over time'
+          ],
+          breathing: 'Inhale lowering, exhale returning'
+        }
+      ],
+      advanced: [
+        {
+          id: 'pistol-squat',
+          name: 'Pistol Squat',
+          icon: '🔫',
+          targetMuscles: 'Quads, Glutes, Core, Balance',
+          sets: '4',
+          reps: '4-8 each leg',
+          rest: '120s',
+          description: 'The ultimate single-leg strength exercise. Requires strength, balance, and mobility.',
+          steps: [
+            'Stand on one leg with the other extended forward',
+            'Extend your arms forward for balance',
+            'Lower yourself on one leg while keeping the other straight',
+            'Go all the way down until your glute touches your calf',
+            'Drive through your foot to stand back up',
+            'Keep the extended leg off the ground throughout'
+          ],
+          tips: [
+            'Start by holding onto something for balance',
+            'Work on ankle and hip mobility',
+            'Keep your heel on the ground',
+            'It\'s okay to lean forward slightly'
+          ],
+          breathing: 'Inhale going down, exhale standing up'
+        },
+        {
+          id: 'shrimp-squat',
+          name: 'Shrimp Squat',
+          icon: '🦐',
+          targetMuscles: 'Quads, Glutes, Hip Flexors',
+          sets: '3',
+          reps: '4-6 each leg',
+          rest: '120s',
+          description: 'An advanced single-leg squat where the back leg is held behind you. Tests balance and leg strength.',
+          steps: [
+            'Stand on one leg',
+            'Reach back and grab your other foot behind you',
+            'Lower yourself by bending your standing leg',
+            'Keep your back knee traveling behind you',
+            'Touch your back knee to the ground if possible',
+            'Stand back up while still holding your foot'
+          ],
+          tips: [
+            'Start with partial range of motion',
+            'Place a cushion where your knee will touch',
+            'Keep your torso upright',
+            'Use a wall for balance when learning'
+          ],
+          breathing: 'Inhale lowering, exhale rising'
+        },
+        {
+          id: 'explosive-lunge',
+          name: 'Jumping Lunge',
+          icon: '⚡',
+          targetMuscles: 'Quads, Glutes, Hamstrings (Explosive)',
+          sets: '3',
+          reps: '8-12 each leg',
+          rest: '90s',
+          description: 'A plyometric lunge variation that builds explosive single-leg power.',
+          steps: [
+            'Start in a lunge position',
+            'Explosively jump up, switching legs in the air',
+            'Land softly in a lunge with the opposite leg forward',
+            'Immediately jump and switch again',
+            'Keep your torso upright throughout',
+            'Maintain a steady rhythm'
+          ],
+          tips: [
+            'Land softly to protect your knees',
+            'Use your arms for momentum',
+            'Keep your core tight',
+            'Start with regular lunges until confident'
+          ],
+          breathing: 'Exhale during each jump'
+        }
+      ]
+    },
+
+    fullbody: {
+      name: 'Full Body',
+      subtitle: 'Complete movements that work your entire body',
+      beginner: [
+        {
+          id: 'bear-crawl',
+          name: 'Bear Crawl',
+          icon: '🐻',
+          targetMuscles: 'Shoulders, Core, Quads, Coordination',
+          sets: '3',
+          reps: '20-30 seconds',
+          rest: '60s',
+          description: 'A primal movement pattern that builds coordination, core strength, and overall conditioning.',
+          steps: [
+            'Start on all fours with knees hovering just off the ground',
+            'Keep your back flat and hips down',
+            'Move forward by stepping opposite hand and foot together',
+            'Keep your knees close to the ground throughout',
+            'Move slowly and with control',
+            'You can also move backward or laterally'
+          ],
+          tips: [
+            'Keep your hips level - don\'t let them sway',
+            'Move opposite limbs together (right hand, left foot)',
+            'Keep your core tight throughout',
+            'Go slow - speed will come with practice'
+          ],
+          breathing: 'Breathe rhythmically with your movement'
+        },
+        {
+          id: 'inchworm',
+          name: 'Inchworm',
+          icon: '🐛',
+          targetMuscles: 'Core, Shoulders, Hamstrings',
+          sets: '3',
+          reps: '6-10',
+          rest: '60s',
+          description: 'A dynamic warm-up and strength exercise that stretches the hamstrings and works the core and shoulders.',
+          steps: [
+            'Stand with feet hip-width apart',
+            'Hinge at hips and place hands on the floor',
+            'Walk your hands forward into a plank position',
+            'Hold the plank briefly',
+            'Walk your hands back toward your feet',
+            'Stand up and repeat'
+          ],
+          tips: [
+            'Keep legs as straight as possible when hinging',
+            'Don\'t let hips sag in the plank',
+            'Move your hands in small steps',
+            'Great for warm-ups or as a finisher'
+          ],
+          breathing: 'Exhale walking out, inhale walking back'
+        },
+        {
+          id: 'squat-hold',
+          name: 'Squat Hold',
+          icon: '🧘',
+          targetMuscles: 'Quads, Glutes, Core, Mobility',
+          sets: '3',
+          reps: '30-60 seconds',
+          rest: '45s',
+          description: 'An isometric squat hold that builds leg endurance and improves squat mobility.',
+          steps: [
+            'Lower into a deep squat position',
+            'Keep your feet flat on the ground',
+            'Hold your arms out in front for balance',
+            'Keep your chest up and back straight',
+            'Hold the position',
+            'Try to relax into the stretch'
+          ],
+          tips: [
+            'It\'s okay if heels lift initially - work on mobility',
+            'Use a doorframe or pole for balance if needed',
+            'Try to make this a daily practice',
+            'Breathe deeply and relax'
+          ],
+          breathing: 'Deep, relaxed breathing throughout'
+        }
+      ],
+      intermediate: [
+        {
+          id: 'burpee',
+          name: 'Burpee',
+          icon: '🔥',
+          targetMuscles: 'Full Body, Cardio',
+          sets: '3',
+          reps: '10-15',
+          rest: '90s',
+          description: 'The king of bodyweight conditioning exercises. Works every muscle and elevates heart rate dramatically.',
+          steps: [
+            'Start standing with feet shoulder-width apart',
+            'Squat down and place hands on the floor',
+            'Jump or step your feet back into a plank',
+            'Perform a push-up (optional but recommended)',
+            'Jump or step your feet back toward your hands',
+            'Explosively jump up with hands overhead'
+          ],
+          tips: [
+            'Maintain good push-up form - don\'t sag',
+            'Land softly from the jump',
+            'Scale by removing the push-up or jump',
+            'Keep a steady pace - don\'t burn out too fast'
+          ],
+          breathing: 'Exhale on the jump, breathe during the push-up'
+        },
+        {
+          id: 'mountain-climber',
+          name: 'Mountain Climber',
+          icon: '⛰️',
+          targetMuscles: 'Core, Shoulders, Hip Flexors, Cardio',
+          sets: '3',
+          reps: '30-45 seconds',
+          rest: '60s',
+          description: 'A dynamic plank variation that builds core strength and elevates heart rate.',
+          steps: [
+            'Start in a high plank position',
+            'Drive one knee toward your chest',
+            'Quickly switch legs, extending the first leg back',
+            'Continue alternating at a rapid pace',
+            'Keep your hips level throughout',
+            'Maintain a strong plank position'
+          ],
+          tips: [
+            'Don\'t let hips pike up or sag',
+            'Keep your shoulders over your hands',
+            'Go at a pace you can maintain',
+            'Land on the balls of your feet'
+          ],
+          breathing: 'Breathe rhythmically, don\'t hold your breath'
+        },
+        {
+          id: 'turkish-getup',
+          name: 'Turkish Get-Up (Bodyweight)',
+          icon: '🇹🇷',
+          targetMuscles: 'Full Body, Core, Shoulders',
+          sets: '3',
+          reps: '3-5 each side',
+          rest: '90s',
+          description: 'A complex movement that takes you from lying to standing. Builds total body strength and coordination.',
+          steps: [
+            'Lie on your back with right arm extended toward ceiling',
+            'Bend your right knee with foot flat on floor',
+            'Roll onto your left elbow, then left hand',
+            'Lift your hips off the ground',
+            'Sweep your left leg under you to a kneeling position',
+            'Stand up while keeping your arm overhead'
+          ],
+          tips: [
+            'Keep your eyes on your raised hand',
+            'Move slowly and deliberately',
+            'Each step should be distinct',
+            'Reverse the movement to return to start'
+          ],
+          breathing: 'Exhale during the difficult transitions'
+        }
+      ],
+      advanced: [
+        {
+          id: 'burpee-pullup',
+          name: 'Burpee Pull-Up',
+          icon: '🔥',
+          targetMuscles: 'Full Body, Lats, Conditioning',
+          sets: '3',
+          reps: '6-10',
+          rest: '120s',
+          description: 'A brutal combination that adds a pull-up to the standard burpee. Ultimate full-body conditioning.',
+          steps: [
+            'Stand under a pull-up bar',
+            'Perform a burpee with a push-up',
+            'As you jump up, grab the bar',
+            'Immediately perform a pull-up',
+            'Lower yourself and drop from the bar',
+            'Go immediately into the next burpee'
+          ],
+          tips: [
+            'Make sure you can do both movements separately first',
+            'Jump high enough to easily grip the bar',
+            'Maintain form even when fatigued',
+            'Start with fewer reps and build up'
+          ],
+          breathing: 'Exhale on the pull-up, breathe during burpee'
+        },
+        {
+          id: 'muscle-up-progression',
+          name: 'Muscle-Up',
+          icon: '💥',
+          targetMuscles: 'Lats, Chest, Triceps, Core',
+          sets: '3',
+          reps: '3-5',
+          rest: '120s',
+          description: 'The ultimate bar exercise combining a pull-up with a dip in one fluid motion.',
+          steps: [
+            'Grip the bar slightly wider than shoulder width',
+            'Start with a powerful pull-up',
+            'Pull the bar toward your hips, not your chin',
+            'Lean forward as you rise',
+            'Transition your wrists over the bar',
+            'Push yourself up to a straight-arm support'
+          ],
+          tips: [
+            'Master explosive pull-ups first',
+            'The transition is the key - practice it separately',
+            'Keep the bar close to your body',
+            'Use a false grip when learning'
+          ],
+          breathing: 'Exhale explosively during the pull'
+        },
+        {
+          id: 'handstand-walk',
+          name: 'Handstand Walk',
+          icon: '🚶',
+          targetMuscles: 'Shoulders, Core, Balance',
+          sets: '3',
+          reps: '10-20 feet',
+          rest: '120s',
+          description: 'Walking on your hands requires and builds incredible shoulder strength, balance, and body control.',
+          steps: [
+            'Kick up into a freestanding handstand',
+            'Find your balance point',
+            'Shift your weight to one hand',
+            'Take a small step with the other hand',
+            'Shift weight and continue walking',
+            'Keep core tight and legs together'
+          ],
+          tips: [
+            'Master wall handstands and freestanding holds first',
+            'Take small, controlled steps',
+            'Look at the ground between your hands',
+            'Practice falling safely (cartwheel out)'
+          ],
+          breathing: 'Shallow, controlled breathing'
         }
       ]
     }
   };
 
-  // Exercises data for each muscle
-  const exercisesData = {
-    'sternocleidomastoid': [
-      {
-        id: 'neck-flexion',
-        name: 'Neck Flexion',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Sternocleidomastoid',
-        description: 'A simple exercise to strengthen the front neck muscles by tucking the chin and flexing the neck forward.',
-        steps: [
-          'Sit or stand with good posture, shoulders back',
-          'Slowly tuck your chin toward your chest',
-          'Hold the position for 5-10 seconds',
-          'Slowly return to the starting position',
-          'Repeat for the desired number of repetitions'
-        ],
-        sets: '2-3',
-        reps: '10-15',
-        rest: '30-60 seconds',
-        breathing: 'Breathe naturally throughout the movement',
-        tips: [
-          'Keep movements slow and controlled',
-          'Avoid jerky or rapid movements',
-          'Stop if you feel any sharp pain',
-          'Keep shoulders relaxed throughout'
-        ]
-      },
-      {
-        id: 'neck-rotation',
-        name: 'Neck Rotation',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Sternocleidomastoid',
-        description: 'Gentle rotation exercise to improve neck mobility and strengthen the rotating muscles.',
-        steps: [
-          'Sit or stand with neutral spine alignment',
-          'Slowly turn your head to look over your right shoulder',
-          'Hold for 5 seconds',
-          'Return to center and repeat to the left side',
-          'Complete all repetitions on both sides'
-        ],
-        sets: '2-3',
-        reps: '8-10 each side',
-        rest: '30 seconds',
-        breathing: 'Exhale as you rotate, inhale as you return to center',
-        tips: [
-          'Keep your shoulders still - only move your head',
-          'Move through a comfortable range of motion',
-          'Do not force the stretch',
-          'Perform daily for best results'
-        ]
-      }
-    ],
-    'trapezius-upper': [
-      {
-        id: 'barbell-shrug',
-        name: 'Barbell Shrug',
-        difficulty: 'Beginner',
-        equipment: 'Barbell',
-        targetMuscle: 'Upper Trapezius',
-        description: 'A classic exercise for building upper trap mass by elevating the shoulders against resistance.',
-        steps: [
-          'Stand holding a barbell with an overhand grip, arms extended',
-          'Position feet shoulder-width apart, core engaged',
-          'Elevate your shoulders straight up toward your ears',
-          'Squeeze at the top for 1-2 seconds',
-          'Lower the weight slowly back to the starting position'
-        ],
-        sets: '3-4',
-        reps: '10-15',
-        rest: '60-90 seconds',
-        breathing: 'Exhale as you shrug up, inhale as you lower',
-        tips: [
-          'Keep arms straight - do not bend elbows',
-          'Avoid rolling shoulders forward or backward',
-          'Use a weight you can control through full range',
-          'Focus on the squeeze at the top'
-        ]
-      },
-      {
-        id: 'dumbbell-shrug',
-        name: 'Dumbbell Shrug',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Upper Trapezius',
-        description: 'A shrug variation using dumbbells for greater range of motion and unilateral development.',
-        steps: [
-          'Stand holding a dumbbell in each hand at your sides',
-          'Keep feet hip-width apart and core braced',
-          'Raise your shoulders as high as possible',
-          'Hold the contraction briefly at the top',
-          'Lower the dumbbells with control'
-        ],
-        sets: '3-4',
-        reps: '12-15',
-        rest: '60 seconds',
-        breathing: 'Exhale during the shrug, inhale on the way down',
-        tips: [
-          'Let the dumbbells hang naturally - dont pull them forward',
-          'Keep your neck neutral - dont tuck chin',
-          'Use straps if grip becomes limiting',
-          'Can be performed seated for stricter form'
-        ]
-      }
-    ],
-    'pectoralis-major': [
-      {
-        id: 'bench-press',
-        name: 'Barbell Bench Press',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Pectoralis Major',
-        description: 'The king of chest exercises, the bench press is a compound movement that builds overall chest mass and pressing strength.',
-        steps: [
-          'Lie on a flat bench with eyes under the bar',
-          'Grip the bar slightly wider than shoulder width',
-          'Unrack the bar and position it over your chest',
-          'Lower the bar to mid-chest with elbows at about 45 degrees',
-          'Press the bar back up to the starting position'
-        ],
-        sets: '3-4',
-        reps: '6-12',
-        rest: '90-120 seconds',
-        breathing: 'Inhale as you lower the bar, exhale as you press up',
-        tips: [
-          'Keep shoulder blades pinched together throughout',
-          'Maintain a slight arch in your lower back',
-          'Keep feet flat on the floor for stability',
-          'Do not bounce the bar off your chest',
-          'Always use a spotter when lifting heavy'
-        ]
-      },
-      {
-        id: 'push-up',
-        name: 'Push-Up',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Pectoralis Major',
-        description: 'A foundational bodyweight exercise that develops chest, shoulder, and triceps strength.',
-        steps: [
-          'Start in a high plank position with hands slightly wider than shoulders',
-          'Keep your body in a straight line from head to heels',
-          'Lower your chest toward the floor by bending your elbows',
-          'Go down until your chest nearly touches the ground',
-          'Push back up to the starting position'
-        ],
-        sets: '3-4',
-        reps: '10-20',
-        rest: '60 seconds',
-        breathing: 'Inhale going down, exhale pushing up',
-        tips: [
-          'Keep your core tight to prevent hip sagging',
-          'Do not flare elbows out to 90 degrees - keep them closer to body',
-          'Look slightly ahead, not straight down',
-          'Modify on knees if needed to maintain proper form'
-        ]
-      },
-      {
-        id: 'dumbbell-fly',
-        name: 'Dumbbell Fly',
-        difficulty: 'Intermediate',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Pectoralis Major',
-        description: 'An isolation exercise that stretches and contracts the chest through a wide arc of motion.',
-        steps: [
-          'Lie on a flat bench holding dumbbells above your chest',
-          'Keep a slight bend in your elbows throughout',
-          'Lower the dumbbells out to the sides in a wide arc',
-          'Go down until you feel a stretch in your chest',
-          'Squeeze your chest to bring the weights back together'
-        ],
-        sets: '3',
-        reps: '10-15',
-        rest: '60 seconds',
-        breathing: 'Inhale as you open arms, exhale as you bring them together',
-        tips: [
-          'Use lighter weight than pressing movements',
-          'Focus on the stretch at the bottom',
-          'Do not let elbows drop below shoulder level',
-          'Imagine hugging a large tree'
-        ]
-      },
-      {
-        id: 'incline-bench-press',
-        name: 'Incline Bench Press',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Pectoralis Major (Upper)',
-        description: 'A bench press variation targeting the upper chest with an inclined angle.',
-        steps: [
-          'Set bench to 30-45 degree incline',
-          'Lie back and grip the bar slightly wider than shoulders',
-          'Unrack and lower the bar to upper chest',
-          'Press the bar back up in a slight arc',
-          'Lock out at the top and repeat'
-        ],
-        sets: '3-4',
-        reps: '8-12',
-        rest: '90 seconds',
-        breathing: 'Inhale lowering, exhale pressing',
-        tips: [
-          'Do not set the incline too steep - 30-45 degrees is optimal',
-          'Keep shoulder blades retracted',
-          'Touch the bar higher on your chest than flat bench',
-          'Control the weight throughout'
-        ]
-      }
-    ],
-    'pectoralis-minor': [
-      {
-        id: 'dip',
-        name: 'Chest Dip',
-        difficulty: 'Intermediate',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Pectoralis Minor',
-        description: 'A compound pushing exercise performed on parallel bars that heavily engages the lower chest and pec minor.',
-        steps: [
-          'Grip parallel bars and lift yourself to the starting position',
-          'Lean your torso forward about 30 degrees',
-          'Lower your body by bending your elbows',
-          'Go down until you feel a stretch in your chest',
-          'Push back up to the starting position'
-        ],
-        sets: '3',
-        reps: '8-12',
-        rest: '90 seconds',
-        breathing: 'Inhale as you descend, exhale as you push up',
-        tips: [
-          'Lean forward to emphasize chest over triceps',
-          'Do not go too deep if you have shoulder issues',
-          'Keep core tight throughout',
-          'Add weight with a dip belt once bodyweight becomes easy'
-        ]
-      }
-    ],
-    'serratus-anterior': [
-      {
-        id: 'push-up-plus',
-        name: 'Push-Up Plus',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Serratus Anterior',
-        description: 'A push-up variation with an extra push at the top to protract the scapula and target the serratus.',
-        steps: [
-          'Start in a standard push-up position',
-          'Perform a regular push-up',
-          'At the top, push further to round your upper back',
-          'Feel your shoulder blades spread apart',
-          'Return to normal push-up position and repeat'
-        ],
-        sets: '3',
-        reps: '10-15',
-        rest: '60 seconds',
-        breathing: 'Exhale during the extra push at the top',
-        tips: [
-          'Focus on the protraction (spreading) of shoulder blades',
-          'Keep arms straight during the plus phase',
-          'This can also be done on knees or against a wall',
-          'Great for improving shoulder health'
-        ]
-      }
-    ],
-    'latissimus-dorsi': [
-      {
-        id: 'pull-up',
-        name: 'Pull-Up',
-        difficulty: 'Intermediate',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Latissimus Dorsi',
-        description: 'The ultimate back exercise that builds a wide, powerful lat spread using your body weight.',
-        steps: [
-          'Hang from a pull-up bar with hands wider than shoulders',
-          'Engage your core and depress your shoulders',
-          'Pull yourself up by driving elbows down and back',
-          'Continue until chin clears the bar',
-          'Lower yourself with control to full arm extension'
-        ],
-        sets: '3-4',
-        reps: '6-12',
-        rest: '90-120 seconds',
-        breathing: 'Exhale as you pull up, inhale as you lower',
-        tips: [
-          'Initiate the pull by engaging lats, not biceps',
-          'Keep your body relatively straight - avoid swinging',
-          'Full range of motion is key - dead hang to chin over bar',
-          'Use assistance bands if you cannot complete reps'
-        ]
-      },
-      {
-        id: 'lat-pulldown',
-        name: 'Lat Pulldown',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Latissimus Dorsi',
-        description: 'A machine exercise that mimics the pull-up motion with adjustable resistance.',
-        steps: [
-          'Sit at a lat pulldown machine and adjust thigh pads',
-          'Grip the bar wider than shoulder width',
-          'Lean back slightly and pull the bar to upper chest',
-          'Squeeze your lats at the bottom',
-          'Control the bar back up to full extension'
-        ],
-        sets: '3-4',
-        reps: '10-12',
-        rest: '60-90 seconds',
-        breathing: 'Exhale pulling down, inhale releasing up',
-        tips: [
-          'Do not pull the bar behind your neck',
-          'Lead with your elbows, not your hands',
-          'Avoid using momentum - control the movement',
-          'Squeeze shoulder blades together at the bottom'
-        ]
-      },
-      {
-        id: 'barbell-row',
-        name: 'Barbell Bent-Over Row',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Latissimus Dorsi',
-        description: 'A fundamental compound rowing movement for building back thickness.',
-        steps: [
-          'Stand with feet hip-width apart, holding a barbell',
-          'Hinge at hips until torso is nearly parallel to floor',
-          'Let the bar hang with arms extended',
-          'Pull the bar to your lower chest/upper abdomen',
-          'Lower with control and repeat'
-        ],
-        sets: '3-4',
-        reps: '8-12',
-        rest: '90 seconds',
-        breathing: 'Exhale as you row up, inhale as you lower',
-        tips: [
-          'Keep your back flat - do not round',
-          'Maintain the hip hinge throughout',
-          'Pull to your belly button area',
-          'Squeeze shoulder blades together at the top'
-        ]
-      }
-    ],
-    'rhomboids': [
-      {
-        id: 'face-pull',
-        name: 'Face Pull',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Rhomboids',
-        description: 'A cable exercise that targets the rear delts and rhomboids while improving posture.',
-        steps: [
-          'Set a cable pulley to face height with rope attachment',
-          'Grip the rope with thumbs pointing back',
-          'Pull the rope toward your face',
-          'Separate your hands and squeeze shoulder blades',
-          'Return with control and repeat'
-        ],
-        sets: '3',
-        reps: '15-20',
-        rest: '45-60 seconds',
-        breathing: 'Exhale as you pull, inhale as you release',
-        tips: [
-          'Keep elbows high throughout the movement',
-          'Focus on squeezing shoulder blades together',
-          'Use light weight - this is not a power movement',
-          'Great for shoulder health and posture'
-        ]
-      },
-      {
-        id: 'seated-row',
-        name: 'Seated Cable Row',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Rhomboids',
-        description: 'A seated rowing movement that targets the middle back muscles.',
-        steps: [
-          'Sit at a cable row station with feet on the platform',
-          'Grab the handle with arms extended',
-          'Pull the handle to your abdomen',
-          'Squeeze your shoulder blades together',
-          'Extend arms back to the start with control'
-        ],
-        sets: '3-4',
-        reps: '10-12',
-        rest: '60 seconds',
-        breathing: 'Exhale pulling in, inhale extending out',
-        tips: [
-          'Keep your torso stationary - dont lean back',
-          'Lead with your elbows',
-          'Squeeze at the fully contracted position',
-          'Use full range of motion'
-        ]
-      }
-    ],
-    'erector-spinae': [
-      {
-        id: 'deadlift',
-        name: 'Conventional Deadlift',
-        difficulty: 'Advanced',
-        equipment: 'Barbell',
-        targetMuscle: 'Erector Spinae',
-        description: 'The ultimate posterior chain exercise that builds total body strength.',
-        steps: [
-          'Stand with feet hip-width apart, bar over mid-foot',
-          'Bend and grip the bar just outside your legs',
-          'Drop hips, lift chest, flatten back',
-          'Drive through your heels and stand up with the bar',
-          'Lock out hips and shoulders at the top'
-        ],
-        sets: '3-5',
-        reps: '3-6',
-        rest: '2-3 minutes',
-        breathing: 'Take a big breath and brace before lifting, exhale at top',
-        tips: [
-          'Keep the bar close to your body throughout',
-          'Do not round your lower back',
-          'Push the floor away rather than pulling the bar up',
-          'Master lighter weights before adding load'
-        ]
-      },
-      {
-        id: 'back-extension',
-        name: 'Back Extension',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Erector Spinae',
-        description: 'An isolation exercise for the lower back performed on a hyperextension bench.',
-        steps: [
-          'Position yourself on a back extension bench',
-          'Cross arms over chest or behind head',
-          'Lower your torso by bending at the waist',
-          'Go down until you feel a stretch',
-          'Raise back up until your body is in a straight line'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '60 seconds',
-        breathing: 'Inhale going down, exhale coming up',
-        tips: [
-          'Do not hyperextend at the top',
-          'Keep movement controlled',
-          'Add weight by holding a plate to progress',
-          'Focus on using lower back, not glutes'
-        ]
-      }
-    ],
-    'trapezius-mid': [
-      {
-        id: 'prone-y-raise',
-        name: 'Prone Y-Raise',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Middle Trapezius',
-        description: 'A floor exercise that targets the middle traps and improves scapular control.',
-        steps: [
-          'Lie face down on the floor or a bench',
-          'Extend arms overhead in a Y position, thumbs up',
-          'Raise arms off the ground by squeezing shoulder blades',
-          'Hold briefly at the top',
-          'Lower with control'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '45 seconds',
-        breathing: 'Exhale as you raise, inhale lowering',
-        tips: [
-          'Keep neck neutral - dont look up',
-          'Thumbs point to the ceiling',
-          'Focus on using the mid-back, not arms',
-          'Add light dumbbells to progress'
-        ]
-      }
-    ],
-    'anterior-deltoid': [
-      {
-        id: 'overhead-press',
-        name: 'Overhead Press',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Anterior Deltoid',
-        description: 'A fundamental pressing movement that builds shoulder strength and mass.',
-        steps: [
-          'Stand with feet shoulder-width apart, bar at collar bone',
-          'Grip the bar just outside shoulder width',
-          'Brace core and press the bar overhead',
-          'Lock out arms at the top',
-          'Lower the bar with control back to starting position'
-        ],
-        sets: '3-4',
-        reps: '6-10',
-        rest: '90 seconds',
-        breathing: 'Exhale pressing up, inhale lowering down',
-        tips: [
-          'Keep your core tight to avoid excessive back arch',
-          'Move your head back as the bar passes',
-          'Lock out directly over mid-foot',
-          'Keep wrists straight, not bent back'
-        ]
-      },
-      {
-        id: 'front-raise',
-        name: 'Dumbbell Front Raise',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Anterior Deltoid',
-        description: 'An isolation exercise that targets the front of the shoulder.',
-        steps: [
-          'Stand holding dumbbells in front of thighs',
-          'Keep a slight bend in your elbows',
-          'Raise one or both arms to shoulder height',
-          'Pause briefly at the top',
-          'Lower with control and repeat'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '45-60 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'Do not swing the weights - control the movement',
-          'Stop at shoulder height - going higher uses traps',
-          'Keep torso upright, no leaning back',
-          'Can be done alternating or simultaneously'
-        ]
-      }
-    ],
-    'lateral-deltoid': [
-      {
-        id: 'lateral-raise',
-        name: 'Dumbbell Lateral Raise',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Lateral Deltoid',
-        description: 'The go-to exercise for building wider shoulders by targeting the side delts.',
-        steps: [
-          'Stand holding dumbbells at your sides',
-          'Keep a slight bend in your elbows',
-          'Raise arms out to the sides until shoulder height',
-          'Lead with your elbows, not your hands',
-          'Lower with control and repeat'
-        ],
-        sets: '3-4',
-        reps: '12-15',
-        rest: '45-60 seconds',
-        breathing: 'Exhale as you raise, inhale as you lower',
-        tips: [
-          'Use lighter weight with strict form',
-          'Think of pouring water from a pitcher at the top',
-          'Keep traps relaxed - dont shrug',
-          'Control the negative portion'
-        ]
-      },
-      {
-        id: 'cable-lateral-raise',
-        name: 'Cable Lateral Raise',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Lateral Deltoid',
-        description: 'A cable variation providing constant tension throughout the movement.',
-        steps: [
-          'Stand sideways to a low cable pulley',
-          'Grab the handle with the far hand',
-          'Keep slight elbow bend throughout',
-          'Raise arm out to shoulder height',
-          'Lower with control and repeat'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '45 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'The cable provides tension even at the bottom',
-          'Keep your body still - no leaning',
-          'Great finisher after dumbbell raises',
-          'Do all reps on one side before switching'
-        ]
-      }
-    ],
-    'posterior-deltoid': [
-      {
-        id: 'reverse-fly',
-        name: 'Reverse Dumbbell Fly',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Posterior Deltoid',
-        description: 'An isolation exercise for the rear delts performed in a bent-over position.',
-        steps: [
-          'Hinge forward at hips with flat back',
-          'Hold dumbbells hanging below chest',
-          'Raise arms out to sides with slight elbow bend',
-          'Squeeze rear delts at the top',
-          'Lower with control'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '45-60 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'Keep torso angle constant throughout',
-          'Lead with elbows, not hands',
-          'Use light weight - rear delts are small',
-          'Can be done seated for more stability'
-        ]
-      },
-      {
-        id: 'rear-delt-row',
-        name: 'Rear Delt Cable Row',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Posterior Deltoid',
-        description: 'A cable row variation with high elbows to emphasize rear deltoids.',
-        steps: [
-          'Set cable to shoulder height with rope attachment',
-          'Grip rope and step back for tension',
-          'Pull rope toward your face with elbows high',
-          'Separate the rope ends at the finish',
-          'Return with control'
-        ],
-        sets: '3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Exhale pulling, inhale releasing',
-        tips: [
-          'Keep elbows at or above shoulder height',
-          'Squeeze shoulder blades together',
-          'Control the eccentric portion',
-          'This is also great for the face pull movement pattern'
-        ]
-      }
-    ],
-    'rotator-cuff': [
-      {
-        id: 'external-rotation',
-        name: 'Cable External Rotation',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Rotator Cuff',
-        description: 'An exercise to strengthen the external rotators of the shoulder for joint health.',
-        steps: [
-          'Set a cable to elbow height',
-          'Stand sideways and grab handle with far hand',
-          'Keep elbow pinned to your side at 90 degrees',
-          'Rotate forearm outward against the cable',
-          'Return with control'
-        ],
-        sets: '2-3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Breathe naturally throughout',
-        tips: [
-          'Use very light weight',
-          'Keep elbow tucked against body',
-          'Move only at the shoulder joint',
-          'Great for warm-up or prehab'
-        ]
-      },
-      {
-        id: 'internal-rotation',
-        name: 'Cable Internal Rotation',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Rotator Cuff',
-        description: 'Strengthens the internal rotators of the shoulder.',
-        steps: [
-          'Set a cable to elbow height',
-          'Stand sideways and grab handle with near hand',
-          'Keep elbow pinned to your side at 90 degrees',
-          'Rotate forearm inward across your body',
-          'Return with control'
-        ],
-        sets: '2-3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Breathe naturally',
-        tips: [
-          'Balance this with external rotation work',
-          'Keep elbow fixed at your side',
-          'Light weight, high reps',
-          'Important for shoulder stability'
-        ]
-      }
-    ],
-    'biceps-brachii': [
-      {
-        id: 'barbell-curl',
-        name: 'Barbell Curl',
-        difficulty: 'Beginner',
-        equipment: 'Barbell',
-        targetMuscle: 'Biceps Brachii',
-        description: 'The classic mass-building exercise for the biceps.',
-        steps: [
-          'Stand holding a barbell with underhand grip',
-          'Keep elbows pinned at your sides',
-          'Curl the bar up toward your shoulders',
-          'Squeeze the biceps at the top',
-          'Lower with control to full extension'
-        ],
-        sets: '3-4',
-        reps: '8-12',
-        rest: '60-90 seconds',
-        breathing: 'Exhale curling up, inhale lowering down',
-        tips: [
-          'Keep upper arms stationary throughout',
-          'Do not swing the weight - use strict form',
-          'Full range of motion for best results',
-          'EZ bar is easier on wrists if needed'
-        ]
-      },
-      {
-        id: 'dumbbell-curl',
-        name: 'Dumbbell Curl',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Biceps Brachii',
-        description: 'A versatile curl variation allowing for supination and unilateral work.',
-        steps: [
-          'Stand holding dumbbells at your sides, palms forward',
-          'Keep elbows close to your body',
-          'Curl the dumbbells up toward your shoulders',
-          'Squeeze at the top and supinate (rotate pinky up)',
-          'Lower with control'
-        ],
-        sets: '3',
-        reps: '10-12',
-        rest: '60 seconds',
-        breathing: 'Exhale curling up, inhale lowering',
-        tips: [
-          'Can be done alternating or simultaneously',
-          'Supinate (turn palm up) as you curl',
-          'Keep wrists straight',
-          'Control the negative portion'
-        ]
-      },
-      {
-        id: 'hammer-curl',
-        name: 'Hammer Curl',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Biceps Brachii',
-        description: 'A curl variation with neutral grip that also targets the brachialis.',
-        steps: [
-          'Stand holding dumbbells with palms facing each other',
-          'Keep elbows at your sides',
-          'Curl the weights up maintaining neutral grip',
-          'Squeeze at the top',
-          'Lower under control'
-        ],
-        sets: '3',
-        reps: '10-12',
-        rest: '60 seconds',
-        breathing: 'Exhale up, inhale down',
-        tips: [
-          'Neutral grip takes stress off wrists',
-          'Great for forearm development too',
-          'Keep thumbs pointing up throughout',
-          'Can be done alternating or together'
-        ]
-      }
-    ],
-    'triceps-brachii': [
-      {
-        id: 'close-grip-bench',
-        name: 'Close-Grip Bench Press',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Triceps Brachii',
-        description: 'A bench press variation with narrow grip that emphasizes triceps.',
-        steps: [
-          'Lie on a flat bench and grip the bar shoulder-width or narrower',
-          'Unrack and lower the bar to your lower chest',
-          'Keep elbows tucked close to your body',
-          'Press the bar back up to lockout',
-          'Focus on using triceps to push'
-        ],
-        sets: '3-4',
-        reps: '8-10',
-        rest: '90 seconds',
-        breathing: 'Inhale lowering, exhale pressing',
-        tips: [
-          'Do not go too narrow - shoulder width is fine',
-          'Keep elbows tucked, not flared',
-          'Touch lower on chest than regular bench',
-          'Squeeze triceps hard at lockout'
-        ]
-      },
-      {
-        id: 'tricep-pushdown',
-        name: 'Cable Tricep Pushdown',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Triceps Brachii',
-        description: 'A cable isolation exercise for triceps development.',
-        steps: [
-          'Stand at a cable station with high pulley and bar attachment',
-          'Grip the bar with overhand grip',
-          'Keep elbows pinned at your sides',
-          'Push the bar down until arms are fully extended',
-          'Control the bar back up'
-        ],
-        sets: '3-4',
-        reps: '12-15',
-        rest: '45-60 seconds',
-        breathing: 'Exhale pushing down, inhale releasing',
-        tips: [
-          'Do not let elbows drift forward',
-          'Squeeze triceps hard at the bottom',
-          'Use different attachments for variety',
-          'Keep torso upright'
-        ]
-      },
-      {
-        id: 'skull-crusher',
-        name: 'Skull Crusher',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Triceps Brachii',
-        description: 'A lying tricep extension that stretches and contracts the triceps.',
-        steps: [
-          'Lie on a bench holding an EZ bar above your chest',
-          'Keep upper arms perpendicular to the floor',
-          'Lower the bar by bending elbows toward your forehead',
-          'Stop just before the bar touches your head',
-          'Extend arms back to starting position'
-        ],
-        sets: '3',
-        reps: '10-12',
-        rest: '60 seconds',
-        breathing: 'Inhale lowering, exhale extending',
-        tips: [
-          'Keep upper arms still - only forearms move',
-          'Lower to forehead or just behind head',
-          'Use lighter weight for joint safety',
-          'EZ bar is easier on wrists'
-        ]
-      }
-    ],
-    'brachialis': [
-      {
-        id: 'reverse-curl',
-        name: 'Reverse Barbell Curl',
-        difficulty: 'Beginner',
-        equipment: 'Barbell',
-        targetMuscle: 'Brachialis',
-        description: 'A curl variation with overhand grip targeting the brachialis and forearms.',
-        steps: [
-          'Stand holding a barbell with overhand (pronated) grip',
-          'Keep elbows at your sides',
-          'Curl the bar up toward shoulders',
-          'Squeeze at the top',
-          'Lower with control'
-        ],
-        sets: '3',
-        reps: '10-12',
-        rest: '60 seconds',
-        breathing: 'Exhale curling, inhale lowering',
-        tips: [
-          'Use lighter weight than regular curls',
-          'Grip is palms down',
-          'Great for forearm development',
-          'Keep wrists straight'
-        ]
-      }
-    ],
-    'forearm-flexors': [
-      {
-        id: 'wrist-curl',
-        name: 'Wrist Curl',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Forearm Flexors',
-        description: 'An isolation exercise for the inner forearm muscles.',
-        steps: [
-          'Sit and rest forearms on thighs, wrists over knees',
-          'Hold dumbbells with palms up',
-          'Let wrists extend down, opening hands slightly',
-          'Curl wrists up, gripping the weight',
-          'Squeeze forearms at the top'
-        ],
-        sets: '3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Exhale curling, inhale releasing',
-        tips: [
-          'Use light weight for high reps',
-          'Keep forearms stationary on thighs',
-          'Can be done with barbell too',
-          'Great for grip strength'
-        ]
-      }
-    ],
-    'forearm-extensors': [
-      {
-        id: 'reverse-wrist-curl',
-        name: 'Reverse Wrist Curl',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Forearm Extensors',
-        description: 'Targets the outer forearm muscles with wrist extension.',
-        steps: [
-          'Sit and rest forearms on thighs, palms down',
-          'Let wrists hang over knees',
-          'Extend wrists up, raising the back of hand',
-          'Lower with control',
-          'Repeat for desired reps'
-        ],
-        sets: '3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Exhale extending, inhale lowering',
-        tips: [
-          'Use very light weight',
-          'Balance with wrist curls',
-          'Important for elbow health',
-          'Keep movements controlled'
-        ]
-      }
-    ],
-    'rectus-abdominis': [
-      {
-        id: 'crunch',
-        name: 'Crunch',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Rectus Abdominis',
-        description: 'A foundational ab exercise that targets the rectus abdominis through trunk flexion.',
-        steps: [
-          'Lie on your back with knees bent and feet flat',
-          'Place hands behind your head or across chest',
-          'Engage your core and curl your shoulders off the floor',
-          'Lift until your shoulder blades clear the ground',
-          'Lower back down with control'
-        ],
-        sets: '3',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Exhale as you crunch up, inhale lowering',
-        tips: [
-          'Do not pull on your neck',
-          'Focus on curling your ribs toward pelvis',
-          'Keep lower back pressed into the floor',
-          'Small controlled movement is more effective than big swings'
-        ]
-      },
-      {
-        id: 'hanging-leg-raise',
-        name: 'Hanging Leg Raise',
-        difficulty: 'Intermediate',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Rectus Abdominis',
-        description: 'An advanced ab exercise performed while hanging from a bar.',
-        steps: [
-          'Hang from a pull-up bar with arms extended',
-          'Keep legs together and straight',
-          'Raise legs until parallel to the ground or higher',
-          'Control the descent back to starting position',
-          'Avoid swinging'
-        ],
-        sets: '3',
-        reps: '10-15',
-        rest: '60 seconds',
-        breathing: 'Exhale raising legs, inhale lowering',
-        tips: [
-          'Keep movement controlled - no swinging',
-          'Tilt pelvis up at the top for full contraction',
-          'Bend knees if straight legs are too difficult',
-          'Use ab straps if grip is limiting'
-        ]
-      },
-      {
-        id: 'plank',
-        name: 'Plank',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Rectus Abdominis',
-        description: 'An isometric core exercise that builds stability and endurance.',
-        steps: [
-          'Start in a push-up position on forearms',
-          'Keep body in a straight line from head to heels',
-          'Engage your core and squeeze glutes',
-          'Hold the position for prescribed time',
-          'Breathe steadily throughout'
-        ],
-        sets: '3',
-        reps: '30-60 seconds',
-        rest: '45 seconds',
-        breathing: 'Breathe naturally, maintaining tension',
-        tips: [
-          'Do not let hips sag or pike up',
-          'Keep shoulders directly over elbows',
-          'Tuck chin slightly',
-          'Progress by increasing hold time'
-        ]
-      }
-    ],
-    'obliques': [
-      {
-        id: 'bicycle-crunch',
-        name: 'Bicycle Crunch',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Obliques',
-        description: 'A dynamic ab exercise that combines rotation with cycling motion.',
-        steps: [
-          'Lie on your back with hands behind head',
-          'Lift shoulders and feet off the ground',
-          'Bring right elbow toward left knee while extending right leg',
-          'Switch sides in a pedaling motion',
-          'Continue alternating sides'
-        ],
-        sets: '3',
-        reps: '15-20 each side',
-        rest: '45 seconds',
-        breathing: 'Exhale with each rotation',
-        tips: [
-          'Touch elbow to opposite knee',
-          'Keep lower back pressed into floor',
-          'Move slowly and deliberately',
-          'Focus on the rotation, not speed'
-        ]
-      },
-      {
-        id: 'russian-twist',
-        name: 'Russian Twist',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Obliques',
-        description: 'A rotational exercise that targets the obliques and builds rotational power.',
-        steps: [
-          'Sit with knees bent and feet off the floor',
-          'Lean back slightly to engage core',
-          'Hold hands together or hold a weight',
-          'Rotate torso to touch the floor on each side',
-          'Alternate sides for all repetitions'
-        ],
-        sets: '3',
-        reps: '15-20 each side',
-        rest: '45 seconds',
-        breathing: 'Exhale with each rotation',
-        tips: [
-          'Keep chest up throughout',
-          'Rotate from the waist, not shoulders',
-          'Feet can touch floor for easier version',
-          'Add weight to progress'
-        ]
-      },
-      {
-        id: 'side-plank',
-        name: 'Side Plank',
-        difficulty: 'Intermediate',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Obliques',
-        description: 'An isometric exercise that targets the obliques and lateral core.',
-        steps: [
-          'Lie on your side propped on your elbow',
-          'Stack feet on top of each other',
-          'Raise hips to form a straight line',
-          'Hold position keeping body aligned',
-          'Switch sides and repeat'
-        ],
-        sets: '3 each side',
-        reps: '20-45 seconds',
-        rest: '30 seconds',
-        breathing: 'Breathe steadily throughout hold',
-        tips: [
-          'Keep hips stacked - dont let them rotate',
-          'Shoulder directly over elbow',
-          'Top arm can be on hip or raised',
-          'Bend knees for easier variation'
-        ]
-      }
-    ],
-    'transverse-abdominis': [
-      {
-        id: 'dead-bug',
-        name: 'Dead Bug',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Transverse Abdominis',
-        description: 'A core stability exercise that teaches proper bracing.',
-        steps: [
-          'Lie on back with arms extended toward ceiling',
-          'Raise legs with knees bent at 90 degrees',
-          'Press lower back into the floor',
-          'Extend opposite arm and leg while maintaining back position',
-          'Return and alternate sides'
-        ],
-        sets: '3',
-        reps: '10-12 each side',
-        rest: '45 seconds',
-        breathing: 'Exhale as you extend, inhale returning',
-        tips: [
-          'Lower back must stay pressed into floor',
-          'Move slowly with control',
-          'Only extend as far as you can maintain back position',
-          'Great for learning core bracing'
-        ]
-      },
-      {
-        id: 'stomach-vacuum',
-        name: 'Stomach Vacuum',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Transverse Abdominis',
-        description: 'An isometric exercise that strengthens the deepest ab muscle.',
-        steps: [
-          'Stand, kneel, or lie on your back',
-          'Exhale completely, emptying your lungs',
-          'Draw your belly button in toward your spine',
-          'Hold this position for 15-30 seconds',
-          'Breathe shallowly while holding, then release'
-        ],
-        sets: '3-5',
-        reps: '15-30 second holds',
-        rest: '30 seconds',
-        breathing: 'Exhale completely before hold, breathe shallowly during',
-        tips: [
-          'Imagine trying to fit into tight pants',
-          'Do not hold breath completely',
-          'Practice consistently for results',
-          'Great for waist tightening'
-        ]
-      }
-    ],
-    'gluteus-maximus': [
-      {
-        id: 'squat',
-        name: 'Barbell Back Squat',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Gluteus Maximus',
-        description: 'The king of lower body exercises, building overall leg and glute strength.',
-        steps: [
-          'Position bar on upper back, not neck',
-          'Stand with feet shoulder-width or slightly wider',
-          'Brace core and begin descent by pushing hips back',
-          'Lower until thighs are at least parallel to floor',
-          'Drive through feet to stand back up'
-        ],
-        sets: '3-5',
-        reps: '5-10',
-        rest: '2-3 minutes',
-        breathing: 'Inhale and brace before descent, exhale at top',
-        tips: [
-          'Keep chest up throughout',
-          'Knees track over toes',
-          'Maintain neutral spine',
-          'Push knees out, do not let them cave in'
-        ]
-      },
-      {
-        id: 'hip-thrust',
-        name: 'Barbell Hip Thrust',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Gluteus Maximus',
-        description: 'The best exercise for glute isolation and development.',
-        steps: [
-          'Sit on ground with upper back against a bench',
-          'Roll a barbell over hips with pad for comfort',
-          'Plant feet flat on floor, hip-width apart',
-          'Drive hips up until body forms straight line',
-          'Squeeze glutes at top, then lower with control'
-        ],
-        sets: '3-4',
-        reps: '10-15',
-        rest: '90 seconds',
-        breathing: 'Exhale driving up, inhale lowering',
-        tips: [
-          'Tuck chin slightly at the top',
-          'Do not hyperextend lower back',
-          'Keep ribs down',
-          'Squeeze glutes hard at lockout'
-        ]
-      },
-      {
-        id: 'romanian-deadlift',
-        name: 'Romanian Deadlift',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Gluteus Maximus',
-        description: 'A hip hinge movement that targets glutes and hamstrings.',
-        steps: [
-          'Stand holding barbell at hip level',
-          'Keep slight bend in knees throughout',
-          'Push hips back and lower bar along legs',
-          'Go down until you feel hamstring stretch',
-          'Drive hips forward to return to start'
-        ],
-        sets: '3-4',
-        reps: '8-12',
-        rest: '90 seconds',
-        breathing: 'Inhale lowering, exhale standing',
-        tips: [
-          'Keep bar close to legs',
-          'Do not round your back',
-          'Feel the stretch in hamstrings',
-          'Squeeze glutes at the top'
-        ]
-      }
-    ],
-    'gluteus-medius': [
-      {
-        id: 'side-lying-hip-abduction',
-        name: 'Side-Lying Hip Abduction',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Gluteus Medius',
-        description: 'An isolation exercise for the upper glute muscles.',
-        steps: [
-          'Lie on your side with legs stacked',
-          'Rest head on lower arm',
-          'Keep top leg straight',
-          'Raise top leg toward ceiling',
-          'Lower with control and repeat'
-        ],
-        sets: '3 each side',
-        reps: '15-20',
-        rest: '30 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'Keep hips stacked - do not roll back',
-          'Lead with heel, not toe',
-          'Do not raise too high',
-          'Add ankle weight to progress'
-        ]
-      },
-      {
-        id: 'clamshell',
-        name: 'Clamshell',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Gluteus Medius',
-        description: 'A hip external rotation exercise that targets the glute med.',
-        steps: [
-          'Lie on side with knees bent at 45 degrees',
-          'Keep feet together',
-          'Raise top knee while keeping feet touching',
-          'Open legs like a clamshell',
-          'Lower with control'
-        ],
-        sets: '3 each side',
-        reps: '15-20',
-        rest: '30 seconds',
-        breathing: 'Exhale opening, inhale closing',
-        tips: [
-          'Keep hips stacked and still',
-          'Feel the burn in upper glute',
-          'Add resistance band around knees to progress',
-          'Great for hip stability'
-        ]
-      }
-    ],
-    'hip-flexors': [
-      {
-        id: 'hanging-knee-raise',
-        name: 'Hanging Knee Raise',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Hip Flexors',
-        description: 'A hanging exercise that strengthens hip flexors and lower abs.',
-        steps: [
-          'Hang from a pull-up bar with arms extended',
-          'Keep legs together',
-          'Raise knees toward your chest',
-          'Lower with control',
-          'Avoid swinging'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '60 seconds',
-        breathing: 'Exhale raising knees, inhale lowering',
-        tips: [
-          'Control the movement - no swinging',
-          'Tuck pelvis at the top',
-          'Use ab straps if grip is limiting',
-          'Progress to straight leg raises'
-        ]
-      },
-      {
-        id: 'mountain-climber',
-        name: 'Mountain Climber',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Hip Flexors',
-        description: 'A dynamic exercise combining core stability with hip flexor work.',
-        steps: [
-          'Start in a push-up position',
-          'Drive one knee toward chest',
-          'Quickly switch legs',
-          'Continue alternating at desired pace',
-          'Keep hips level throughout'
-        ],
-        sets: '3',
-        reps: '30-60 seconds',
-        rest: '45 seconds',
-        breathing: 'Breathe rhythmically with movement',
-        tips: [
-          'Keep core tight',
-          'Do not let hips pike up',
-          'Go slower for more control',
-          'Can be done fast for cardio'
-        ]
-      }
-    ],
-    'quadriceps': [
-      {
-        id: 'leg-press',
-        name: 'Leg Press',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Quadriceps',
-        description: 'A machine exercise for building quad mass with back support.',
-        steps: [
-          'Sit in leg press with back flat against pad',
-          'Place feet shoulder-width on platform',
-          'Release safety and lower the weight',
-          'Go down until knees are at 90 degrees',
-          'Push through feet to extend legs'
-        ],
-        sets: '3-4',
-        reps: '10-15',
-        rest: '90 seconds',
-        breathing: 'Inhale lowering, exhale pressing',
-        tips: [
-          'Do not let lower back round off the pad',
-          'Keep knees in line with toes',
-          'Do not lock out completely',
-          'Different foot positions target different areas'
-        ]
-      },
-      {
-        id: 'leg-extension',
-        name: 'Leg Extension',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Quadriceps',
-        description: 'An isolation exercise for the quadriceps.',
-        steps: [
-          'Sit in machine with back against pad',
-          'Hook ankles under the pad',
-          'Extend legs until straight',
-          'Squeeze quads at the top',
-          'Lower with control'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '60 seconds',
-        breathing: 'Exhale extending, inhale lowering',
-        tips: [
-          'Control the movement throughout',
-          'Do not use momentum',
-          'Squeeze hard at full extension',
-          'Adjust seat so knee aligns with pivot point'
-        ]
-      },
-      {
-        id: 'lunge',
-        name: 'Walking Lunge',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Quadriceps',
-        description: 'A functional exercise that builds leg strength and balance.',
-        steps: [
-          'Stand tall with feet together',
-          'Step forward into a lunge position',
-          'Lower until both knees are at 90 degrees',
-          'Push off front foot and step forward with back leg',
-          'Continue walking forward alternating legs'
-        ],
-        sets: '3',
-        reps: '10-12 each leg',
-        rest: '60-90 seconds',
-        breathing: 'Inhale lowering, exhale stepping forward',
-        tips: [
-          'Keep torso upright',
-          'Front knee tracks over toes',
-          'Do not let back knee slam into ground',
-          'Add dumbbells or barbell to progress'
-        ]
-      }
-    ],
-    'hamstrings': [
-      {
-        id: 'leg-curl',
-        name: 'Lying Leg Curl',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Hamstrings',
-        description: 'An isolation exercise for the hamstrings.',
-        steps: [
-          'Lie face down on leg curl machine',
-          'Position pad just above ankles',
-          'Curl heels toward glutes',
-          'Squeeze hamstrings at top',
-          'Lower with control'
-        ],
-        sets: '3-4',
-        reps: '10-15',
-        rest: '60 seconds',
-        breathing: 'Exhale curling, inhale lowering',
-        tips: [
-          'Keep hips pressed into pad',
-          'Do not jerk the weight',
-          'Full range of motion',
-          'Try different machines for variety'
-        ]
-      },
-      {
-        id: 'nordic-curl',
-        name: 'Nordic Hamstring Curl',
-        difficulty: 'Advanced',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Hamstrings',
-        description: 'An advanced eccentric exercise for hamstring strength.',
-        steps: [
-          'Kneel on a pad with ankles secured',
-          'Keep body straight from knees to head',
-          'Slowly lower your body toward the ground',
-          'Use hamstrings to control the descent',
-          'Push off floor and use hamstrings to pull back up'
-        ],
-        sets: '3',
-        reps: '4-8',
-        rest: '90 seconds',
-        breathing: 'Inhale lowering, exhale returning',
-        tips: [
-          'Focus on the slow eccentric phase',
-          'Keep hips extended throughout',
-          'Use hands to assist if needed',
-          'Progress by lowering further before catching yourself'
-        ]
-      },
-      {
-        id: 'good-morning',
-        name: 'Good Morning',
-        difficulty: 'Intermediate',
-        equipment: 'Barbell',
-        targetMuscle: 'Hamstrings',
-        description: 'A hip hinge exercise that stretches and strengthens the posterior chain.',
-        steps: [
-          'Place a barbell on your upper back like a squat',
-          'Stand with feet shoulder-width apart',
-          'Push hips back while keeping legs nearly straight',
-          'Lower torso until nearly parallel to floor',
-          'Drive hips forward to return to standing'
-        ],
-        sets: '3',
-        reps: '8-12',
-        rest: '90 seconds',
-        breathing: 'Inhale going down, exhale standing up',
-        tips: [
-          'Keep back flat - do not round',
-          'Slight knee bend is okay',
-          'Feel the stretch in hamstrings',
-          'Start with light weight to learn the pattern'
-        ]
-      }
-    ],
-    'adductors': [
-      {
-        id: 'adductor-machine',
-        name: 'Adductor Machine',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Adductors',
-        description: 'An isolation exercise for the inner thigh muscles.',
-        steps: [
-          'Sit in the adductor machine',
-          'Place legs against the pads in the open position',
-          'Squeeze legs together',
-          'Hold briefly at the end',
-          'Control the return to starting position'
-        ],
-        sets: '3',
-        reps: '12-15',
-        rest: '45-60 seconds',
-        breathing: 'Exhale squeezing, inhale releasing',
-        tips: [
-          'Control the eccentric portion',
-          'Do not let the weights slam',
-          'Squeeze at the fully closed position',
-          'Keep back flat against pad'
-        ]
-      },
-      {
-        id: 'sumo-squat',
-        name: 'Sumo Squat',
-        difficulty: 'Beginner',
-        equipment: 'Dumbbell',
-        targetMuscle: 'Adductors',
-        description: 'A wide-stance squat variation that emphasizes the inner thighs.',
-        steps: [
-          'Stand with feet wider than shoulder width, toes pointed out',
-          'Hold a dumbbell between your legs',
-          'Lower into a squat keeping chest up',
-          'Go down until thighs are parallel or below',
-          'Drive through heels to stand'
-        ],
-        sets: '3-4',
-        reps: '10-15',
-        rest: '60-90 seconds',
-        breathing: 'Inhale lowering, exhale standing',
-        tips: [
-          'Keep knees tracking over toes',
-          'Maintain upright torso',
-          'Push knees out, do not let them cave',
-          'Can use kettlebell or goblet position'
-        ]
-      }
-    ],
-    'calves': [
-      {
-        id: 'standing-calf-raise',
-        name: 'Standing Calf Raise',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Calves',
-        description: 'The primary exercise for building calf mass.',
-        steps: [
-          'Position shoulders under the pads of a calf raise machine',
-          'Stand on the platform with balls of feet on edge',
-          'Let heels drop below the platform for a stretch',
-          'Push up onto toes as high as possible',
-          'Lower with control and repeat'
-        ],
-        sets: '4-5',
-        reps: '12-20',
-        rest: '45-60 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'Full range of motion is crucial',
-          'Pause at the top for a squeeze',
-          'Control the eccentric',
-          'Calves respond well to higher reps'
-        ]
-      },
-      {
-        id: 'seated-calf-raise',
-        name: 'Seated Calf Raise',
-        difficulty: 'Beginner',
-        equipment: 'Machine',
-        targetMuscle: 'Calves',
-        description: 'Targets the soleus muscle with bent-knee position.',
-        steps: [
-          'Sit at a seated calf raise machine',
-          'Place balls of feet on platform, pad on lower thighs',
-          'Let heels drop for a stretch',
-          'Raise heels as high as possible',
-          'Lower with control'
-        ],
-        sets: '3-4',
-        reps: '15-20',
-        rest: '45 seconds',
-        breathing: 'Exhale raising, inhale lowering',
-        tips: [
-          'This targets the soleus more than gastrocnemius',
-          'Use both standing and seated for complete development',
-          'Full range of motion',
-          'Pause at the top'
-        ]
-      }
-    ],
-    'tibialis-anterior': [
-      {
-        id: 'tibialis-raise',
-        name: 'Tibialis Raise',
-        difficulty: 'Beginner',
-        equipment: 'Bodyweight',
-        targetMuscle: 'Tibialis Anterior',
-        description: 'Strengthens the front of the shin to balance calf development.',
-        steps: [
-          'Stand with back against a wall',
-          'Walk feet out about 12 inches from wall',
-          'Keeping heels on ground, lift toes toward shins',
-          'Lower with control',
-          'Repeat for desired reps'
-        ],
-        sets: '3',
-        reps: '15-25',
-        rest: '30 seconds',
-        breathing: 'Exhale lifting toes, inhale lowering',
-        tips: [
-          'Keep heels in contact with ground',
-          'Control the movement',
-          'Can be done seated with weight on feet',
-          'Important for ankle health and balance'
-        ]
-      }
-    ]
+  // ==========================================
+  // THREE.JS 3D BODY MODEL
+  // ==========================================
+  let scene, camera, renderer, bodyGroup;
+  let autoRotate = true;
+  let targetRotationY = 0;
+  let currentRotationY = 0;
+
+  // Muscle highlight colors
+  const muscleColors = {
+    default: 0x4a4a5a,
+    chest: 0xef4444,
+    back: 0x3b82f6,
+    shoulders: 0x8b5cf6,
+    arms: 0xf59e0b,
+    core: 0x10b981,
+    legs: 0x6366f1,
+    fullbody: 0xa855f7
   };
 
-  // DOM Elements
-  const bodyOverview = document.getElementById('bodyOverview');
-  const muscleListView = document.getElementById('muscleList');
-  const muscleDetailView = document.getElementById('muscleDetail');
-  const exerciseDetailView = document.getElementById('exerciseDetail');
+  let currentHighlight = 'chest';
 
-  const frontViewBtn = document.getElementById('frontViewBtn');
-  const backViewBtn = document.getElementById('backViewBtn');
-  const frontBodySvg = document.getElementById('frontBodySvg');
-  const backBodySvg = document.getElementById('backBodySvg');
+  function init3D() {
+    const container = document.getElementById('canvas-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-  const muscleListTitle = document.getElementById('muscleListTitle');
-  const muscleListContent = document.getElementById('muscleListContent');
-  const muscleDetailPartLink = document.getElementById('muscleDetailPartLink');
-  const muscleDetailTitle = document.getElementById('muscleDetailTitle');
-  const muscleDetailContent = document.getElementById('muscleDetailContent');
-  const exerciseDetailPartLink = document.getElementById('exerciseDetailPartLink');
-  const exerciseDetailMuscleLink = document.getElementById('exerciseDetailMuscleLink');
-  const exerciseDetailTitle = document.getElementById('exerciseDetailTitle');
-  const exerciseDetailContent = document.getElementById('exerciseDetailContent');
+    // Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0a0f);
 
-  // State
-  let currentPart = null;
-  let currentMuscle = null;
+    // Camera
+    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    camera.position.z = 5;
+    camera.position.y = 0.5;
 
-  // View switching
-  function showView(viewId) {
-    [bodyOverview, muscleListView, muscleDetailView, exerciseDetailView].forEach(view => {
-      view.classList.remove('active');
-    });
-    document.getElementById(viewId).classList.add('active');
+    // Renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    container.appendChild(renderer.domElement);
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0x404050, 0.5);
+    scene.add(ambientLight);
+
+    const frontLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    frontLight.position.set(0, 2, 5);
+    scene.add(frontLight);
+
+    const backLight = new THREE.DirectionalLight(0x6366f1, 0.4);
+    backLight.position.set(0, 2, -5);
+    scene.add(backLight);
+
+    const topLight = new THREE.DirectionalLight(0x8b5cf6, 0.3);
+    topLight.position.set(0, 5, 0);
+    scene.add(topLight);
+
+    // Create body
+    bodyGroup = new THREE.Group();
+    createStylizedBody();
+    scene.add(bodyGroup);
+
+    // Start animation
+    animate();
+
+    // Handle resize
+    window.addEventListener('resize', onWindowResize);
   }
 
-  // Body view toggle
-  frontViewBtn.addEventListener('click', function() {
-    frontViewBtn.classList.add('active');
-    backViewBtn.classList.remove('active');
-    frontBodySvg.style.display = 'block';
-    backBodySvg.style.display = 'none';
-  });
-
-  backViewBtn.addEventListener('click', function() {
-    backViewBtn.classList.add('active');
-    frontViewBtn.classList.remove('active');
-    backBodySvg.style.display = 'block';
-    frontBodySvg.style.display = 'none';
-  });
-
-  // Body part click handlers
-  document.querySelectorAll('.body-part').forEach(part => {
-    part.addEventListener('click', function() {
-      const partId = this.getAttribute('data-part');
-      showMuscleList(partId);
-    });
-  });
-
-  // Show muscle list for a body part
-  function showMuscleList(partId) {
-    currentPart = partId;
-    const partData = bodyPartsData[partId];
-
-    if (!partData) return;
-
-    muscleListTitle.textContent = partData.name;
-    muscleListContent.innerHTML = '';
-
-    partData.muscles.forEach(muscle => {
-      const card = document.createElement('div');
-      card.className = 'muscle-card';
-      card.innerHTML = `
-        <h3>${muscle.name}</h3>
-        <p>${muscle.function}</p>
-        <span class="muscle-location">${muscle.location}</span>
-      `;
-      card.addEventListener('click', () => showMuscleDetail(muscle));
-      muscleListContent.appendChild(card);
+  function createStylizedBody() {
+    const bodyMaterial = new THREE.MeshStandardMaterial({
+      color: muscleColors.default,
+      roughness: 0.7,
+      metalness: 0.1
     });
 
-    showView('muscleList');
+    // Torso
+    const torsoGeometry = new THREE.CylinderGeometry(0.5, 0.4, 1.2, 16);
+    const torso = new THREE.Mesh(torsoGeometry, bodyMaterial.clone());
+    torso.position.y = 0.3;
+    torso.name = 'core';
+    bodyGroup.add(torso);
+
+    // Chest
+    const chestGeometry = new THREE.SphereGeometry(0.55, 16, 16);
+    const chest = new THREE.Mesh(chestGeometry, bodyMaterial.clone());
+    chest.position.y = 0.7;
+    chest.position.z = 0.1;
+    chest.scale.set(1, 0.7, 0.6);
+    chest.name = 'chest';
+    bodyGroup.add(chest);
+
+    // Head
+    const headGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+    const head = new THREE.Mesh(headGeometry, bodyMaterial.clone());
+    head.position.y = 1.3;
+    head.name = 'head';
+    bodyGroup.add(head);
+
+    // Neck
+    const neckGeometry = new THREE.CylinderGeometry(0.1, 0.12, 0.15, 12);
+    const neck = new THREE.Mesh(neckGeometry, bodyMaterial.clone());
+    neck.position.y = 1.0;
+    bodyGroup.add(neck);
+
+    // Shoulders (spheres)
+    const shoulderGeometry = new THREE.SphereGeometry(0.15, 12, 12);
+
+    const leftShoulder = new THREE.Mesh(shoulderGeometry, bodyMaterial.clone());
+    leftShoulder.position.set(-0.55, 0.8, 0);
+    leftShoulder.name = 'shoulders';
+    bodyGroup.add(leftShoulder);
+
+    const rightShoulder = new THREE.Mesh(shoulderGeometry, bodyMaterial.clone());
+    rightShoulder.position.set(0.55, 0.8, 0);
+    rightShoulder.name = 'shoulders';
+    bodyGroup.add(rightShoulder);
+
+    // Upper Arms
+    const upperArmGeometry = new THREE.CapsuleGeometry(0.1, 0.4, 8, 8);
+
+    const leftUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial.clone());
+    leftUpperArm.position.set(-0.65, 0.5, 0);
+    leftUpperArm.rotation.z = 0.15;
+    leftUpperArm.name = 'arms';
+    bodyGroup.add(leftUpperArm);
+
+    const rightUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial.clone());
+    rightUpperArm.position.set(0.65, 0.5, 0);
+    rightUpperArm.rotation.z = -0.15;
+    rightUpperArm.name = 'arms';
+    bodyGroup.add(rightUpperArm);
+
+    // Lower Arms
+    const lowerArmGeometry = new THREE.CapsuleGeometry(0.08, 0.35, 8, 8);
+
+    const leftLowerArm = new THREE.Mesh(lowerArmGeometry, bodyMaterial.clone());
+    leftLowerArm.position.set(-0.72, 0.05, 0);
+    leftLowerArm.rotation.z = 0.1;
+    leftLowerArm.name = 'arms';
+    bodyGroup.add(leftLowerArm);
+
+    const rightLowerArm = new THREE.Mesh(lowerArmGeometry, bodyMaterial.clone());
+    rightLowerArm.position.set(0.72, 0.05, 0);
+    rightLowerArm.rotation.z = -0.1;
+    rightLowerArm.name = 'arms';
+    bodyGroup.add(rightLowerArm);
+
+    // Hips
+    const hipGeometry = new THREE.CylinderGeometry(0.45, 0.35, 0.3, 16);
+    const hips = new THREE.Mesh(hipGeometry, bodyMaterial.clone());
+    hips.position.y = -0.35;
+    hips.name = 'legs';
+    bodyGroup.add(hips);
+
+    // Upper Legs
+    const upperLegGeometry = new THREE.CapsuleGeometry(0.15, 0.5, 8, 8);
+
+    const leftUpperLeg = new THREE.Mesh(upperLegGeometry, bodyMaterial.clone());
+    leftUpperLeg.position.set(-0.2, -0.8, 0);
+    leftUpperLeg.name = 'legs';
+    bodyGroup.add(leftUpperLeg);
+
+    const rightUpperLeg = new THREE.Mesh(upperLegGeometry, bodyMaterial.clone());
+    rightUpperLeg.position.set(0.2, -0.8, 0);
+    rightUpperLeg.name = 'legs';
+    bodyGroup.add(rightUpperLeg);
+
+    // Lower Legs
+    const lowerLegGeometry = new THREE.CapsuleGeometry(0.1, 0.5, 8, 8);
+
+    const leftLowerLeg = new THREE.Mesh(lowerLegGeometry, bodyMaterial.clone());
+    leftLowerLeg.position.set(-0.2, -1.45, 0);
+    leftLowerLeg.name = 'legs';
+    bodyGroup.add(leftLowerLeg);
+
+    const rightLowerLeg = new THREE.Mesh(lowerLegGeometry, bodyMaterial.clone());
+    rightLowerLeg.position.set(0.2, -1.45, 0);
+    rightLowerLeg.name = 'legs';
+    bodyGroup.add(rightLowerLeg);
+
+    // Back (visible from behind)
+    const backGeometry = new THREE.BoxGeometry(0.8, 0.9, 0.2);
+    const back = new THREE.Mesh(backGeometry, bodyMaterial.clone());
+    back.position.set(0, 0.5, -0.25);
+    back.name = 'back';
+    bodyGroup.add(back);
+
+    // Apply initial highlight
+    highlightMuscle('chest');
   }
 
-  // Show muscle detail
-  function showMuscleDetail(muscle) {
-    currentMuscle = muscle;
-    const partData = bodyPartsData[currentPart];
+  function highlightMuscle(muscleName) {
+    currentHighlight = muscleName;
 
-    muscleDetailPartLink.textContent = partData.name;
-    muscleDetailTitle.textContent = muscle.name;
+    bodyGroup.children.forEach(child => {
+      if (child.material) {
+        if (muscleName === 'fullbody') {
+          // Highlight everything
+          child.material.color.setHex(muscleColors.fullbody);
+          child.material.emissive = new THREE.Color(muscleColors.fullbody);
+          child.material.emissiveIntensity = 0.2;
+        } else if (child.name === muscleName) {
+          child.material.color.setHex(muscleColors[muscleName]);
+          child.material.emissive = new THREE.Color(muscleColors[muscleName]);
+          child.material.emissiveIntensity = 0.3;
+        } else {
+          child.material.color.setHex(muscleColors.default);
+          child.material.emissive = new THREE.Color(0x000000);
+          child.material.emissiveIntensity = 0;
+        }
+      }
+    });
+  }
 
-    const exercises = exercisesData[muscle.id] || [];
+  function animate() {
+    requestAnimationFrame(animate);
 
-    let exerciseListHTML = '';
-    exercises.forEach(ex => {
-      const difficultyClass = ex.difficulty.toLowerCase();
-      exerciseListHTML += `
-        <div class="exercise-card" data-exercise-id="${ex.id}">
-          <div class="exercise-card-main">
+    if (autoRotate) {
+      targetRotationY += 0.003;
+    }
+
+    // Smooth rotation
+    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+    bodyGroup.rotation.y = currentRotationY;
+
+    // Subtle floating animation
+    bodyGroup.position.y = Math.sin(Date.now() * 0.001) * 0.05;
+
+    renderer.render(scene, camera);
+  }
+
+  function onWindowResize() {
+    const container = document.getElementById('canvas-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+
+  // ==========================================
+  // UI FUNCTIONS
+  // ==========================================
+  let currentPart = 'chest';
+  let currentLevel = 'beginner';
+
+  function renderExerciseList() {
+    const exerciseList = document.getElementById('exerciseList');
+    const exercises = exerciseData[currentPart][currentLevel];
+
+    if (!exercises) {
+      exerciseList.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px;">No exercises found for this combination.</p>';
+      return;
+    }
+
+    exerciseList.innerHTML = exercises.map(ex => `
+      <div class="exercise-card" data-exercise-id="${ex.id}">
+        <div class="exercise-card-header">
+          <div class="exercise-icon">${ex.icon}</div>
+          <div class="exercise-title">
             <h4>${ex.name}</h4>
-            <div class="exercise-tags">
-              <span class="exercise-tag tag-difficulty ${difficultyClass}">${ex.difficulty}</span>
-              <span class="exercise-tag tag-equipment">${ex.equipment}</span>
-            </div>
+            <span>${ex.targetMuscles}</span>
           </div>
-          <span class="exercise-card-arrow">&#8250;</span>
         </div>
-      `;
-    });
+        <div class="exercise-stats">
+          <div class="stat-item">
+            <div class="stat-value">${ex.sets}</div>
+            <div class="stat-label">Sets</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">${ex.reps}</div>
+            <div class="stat-label">Reps</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">${ex.rest}</div>
+            <div class="stat-label">Rest</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
 
-    muscleDetailContent.innerHTML = `
-      <div class="muscle-detail-header">
-        <h2>${muscle.name}</h2>
-      </div>
-      <div class="muscle-info-grid">
-        <div class="muscle-info-box">
-          <h4>Primary Function</h4>
-          <p>${muscle.function}</p>
-        </div>
-        <div class="muscle-info-box">
-          <h4>Role in Movement</h4>
-          <p>${muscle.role}</p>
-        </div>
-        <div class="muscle-info-box">
-          <h4>Location</h4>
-          <p>${muscle.location}</p>
-        </div>
-      </div>
-      <div class="exercises-section">
-        <h3>Exercises for ${muscle.name}</h3>
-        <div class="exercise-list">
-          ${exerciseListHTML || '<p>No exercises available for this muscle yet.</p>'}
-        </div>
-      </div>
-    `;
-
-    // Add click handlers to exercise cards
-    muscleDetailContent.querySelectorAll('.exercise-card').forEach(card => {
-      card.addEventListener('click', function() {
-        const exId = this.getAttribute('data-exercise-id');
+    // Add click handlers
+    exerciseList.querySelectorAll('.exercise-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const exId = card.dataset.exerciseId;
         const exercise = exercises.find(e => e.id === exId);
-        if (exercise) showExerciseDetail(exercise);
+        if (exercise) openExerciseModal(exercise);
       });
     });
-
-    showView('muscleDetail');
   }
 
-  // Show exercise detail
-  function showExerciseDetail(exercise) {
-    const partData = bodyPartsData[currentPart];
+  function openExerciseModal(exercise) {
+    const modal = document.getElementById('exerciseModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const modalBody = document.getElementById('modalBody');
 
-    exerciseDetailPartLink.textContent = partData.name;
-    exerciseDetailMuscleLink.textContent = currentMuscle.name;
-    exerciseDetailTitle.textContent = exercise.name;
+    modalTitle.textContent = exercise.name;
+    modalSubtitle.textContent = exercise.targetMuscles;
 
-    const difficultyClass = exercise.difficulty.toLowerCase();
+    modalBody.innerHTML = `
+      <span class="level-badge ${currentLevel}">${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)}</span>
 
-    let stepsHTML = '';
-    exercise.steps.forEach(step => {
-      stepsHTML += `<li>${step}</li>`;
-    });
-
-    let tipsHTML = '';
-    exercise.tips.forEach(tip => {
-      tipsHTML += `<li>${tip}</li>`;
-    });
-
-    exerciseDetailContent.innerHTML = `
-      <div class="exercise-detail-header">
-        <h2>${exercise.name}</h2>
-        <div class="exercise-meta">
-          <span class="exercise-tag tag-difficulty ${difficultyClass}">${exercise.difficulty}</span>
-          <span class="exercise-tag tag-equipment">${exercise.equipment}</span>
+      <div class="exercise-section">
+        <h3>Programming</h3>
+        <div class="programming-grid">
+          <div class="programming-item">
+            <div class="value">${exercise.sets}</div>
+            <div class="label">Sets</div>
+          </div>
+          <div class="programming-item">
+            <div class="value">${exercise.reps}</div>
+            <div class="label">Reps</div>
+          </div>
+          <div class="programming-item">
+            <div class="value">${exercise.rest}</div>
+            <div class="label">Rest</div>
+          </div>
+          <div class="programming-item">
+            <div class="value">${currentLevel === 'beginner' ? '2-3x' : currentLevel === 'intermediate' ? '3-4x' : '4-5x'}</div>
+            <div class="label">Per Week</div>
+          </div>
         </div>
       </div>
 
       <div class="exercise-section">
         <h3>Description</h3>
-        <p>${exercise.description}</p>
+        <p style="color: var(--text-secondary); line-height: 1.7;">${exercise.description}</p>
       </div>
 
       <div class="exercise-section">
-        <h3>Step-by-Step Instructions</h3>
-        <ol class="step-list">
-          ${stepsHTML}
-        </ol>
-      </div>
-
-      <div class="exercise-section">
-        <h3>Recommended Programming</h3>
-        <div class="recommendation-grid">
-          <div class="rec-item">
-            <div class="rec-value">${exercise.sets}</div>
-            <div class="rec-label">Sets</div>
-          </div>
-          <div class="rec-item">
-            <div class="rec-value">${exercise.reps}</div>
-            <div class="rec-label">Reps</div>
-          </div>
-          <div class="rec-item">
-            <div class="rec-value">${exercise.rest}</div>
-            <div class="rec-label">Rest</div>
-          </div>
+        <h3>How to Perform</h3>
+        <div class="steps-list">
+          ${exercise.steps.map((step, i) => `
+            <div class="step-item">
+              <div class="step-number">${i + 1}</div>
+              <div class="step-text">${step}</div>
+            </div>
+          `).join('')}
         </div>
       </div>
 
       <div class="exercise-section">
         <h3>Breathing</h3>
-        <p>${exercise.breathing}</p>
+        <p style="color: var(--text-secondary); line-height: 1.7;">${exercise.breathing}</p>
       </div>
 
       <div class="exercise-section">
-        <h3>Tips & Common Mistakes to Avoid</h3>
-        <ul class="tips-list">
-          ${tipsHTML}
-        </ul>
+        <h3>Tips & Common Mistakes</h3>
+        <div class="tips-list">
+          ${exercise.tips.map(tip => `
+            <div class="tip-item">
+              <span class="icon">💡</span>
+              <span>${tip}</span>
+            </div>
+          `).join('')}
+        </div>
       </div>
     `;
 
-    showView('exerciseDetail');
+    modal.classList.add('active');
   }
 
-  // Breadcrumb navigation
-  document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('breadcrumb-item')) {
-      const view = e.target.getAttribute('data-view');
-      if (view === 'bodyOverview') {
-        showView('bodyOverview');
-      } else if (view === 'muscleList') {
-        showView('muscleList');
-      } else if (view === 'muscleDetail') {
-        showView('muscleDetail');
-      }
-    }
-  });
+  function closeModal() {
+    document.getElementById('exerciseModal').classList.remove('active');
+  }
 
-  // Initialize ads
-  try {
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    (adsbygoogle = window.adsbygoogle || []).push({});
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  } catch(e) {}
+  function updatePanelInfo() {
+    const data = exerciseData[currentPart];
+    document.getElementById('panelTitle').textContent = `${data.name} Exercises`;
+    document.getElementById('panelSubtitle').textContent = data.subtitle;
+  }
+
+  // ==========================================
+  // EVENT LISTENERS
+  // ==========================================
+  function setupEventListeners() {
+    // Body part buttons
+    document.querySelectorAll('.body-part-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.body-part-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        currentPart = btn.dataset.part;
+        highlightMuscle(currentPart);
+        updatePanelInfo();
+        renderExerciseList();
+
+        // Show muscle indicator
+        const indicator = document.getElementById('muscleIndicator');
+        document.getElementById('muscleName').textContent = exerciseData[currentPart].name;
+        document.getElementById('muscleDesc').textContent = 'View exercises below';
+        indicator.classList.add('visible');
+        setTimeout(() => indicator.classList.remove('visible'), 2000);
+      });
+    });
+
+    // Level tabs
+    document.querySelectorAll('.level-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        currentLevel = tab.dataset.level;
+        renderExerciseList();
+      });
+    });
+
+    // Modal close
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('exerciseModal').addEventListener('click', (e) => {
+      if (e.target.id === 'exerciseModal') closeModal();
+    });
+
+    // Escape key to close modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Rotation controls
+    document.getElementById('rotateLeftBtn').addEventListener('click', () => {
+      autoRotate = false;
+      document.getElementById('toggleAutoRotate').classList.remove('active');
+      targetRotationY -= Math.PI / 4;
+    });
+
+    document.getElementById('rotateRightBtn').addEventListener('click', () => {
+      autoRotate = false;
+      document.getElementById('toggleAutoRotate').classList.remove('active');
+      targetRotationY += Math.PI / 4;
+    });
+
+    document.getElementById('resetViewBtn').addEventListener('click', () => {
+      targetRotationY = 0;
+    });
+
+    document.getElementById('toggleAutoRotate').addEventListener('click', (e) => {
+      autoRotate = !autoRotate;
+      e.currentTarget.classList.toggle('active', autoRotate);
+    });
+  }
+
+  // ==========================================
+  // INITIALIZATION
+  // ==========================================
+  function init() {
+    init3D();
+    setupEventListeners();
+    updatePanelInfo();
+    renderExerciseList();
+
+    // Hide loading screen
+    setTimeout(() => {
+      document.getElementById('loadingScreen').classList.add('hidden');
+    }, 1000);
+
+    // Set initial auto-rotate button state
+    document.getElementById('toggleAutoRotate').classList.add('active');
+  }
+
+  // Wait for DOM and Three.js
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 
 })();
