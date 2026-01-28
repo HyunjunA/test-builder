@@ -1718,9 +1718,12 @@
   let targetRotationY = 0;
   let currentRotationY = 0;
   let isDragging = false;
+  let dragDistance = 0;
   let previousMouseX = 0;
   let threeJSReady = false;
   let allMeshes = [];
+  var raycaster = null;
+  var mouse = null;
 
   // Muscle highlight colors
   const muscleColors = {
@@ -1836,10 +1839,14 @@
     bodyGroup = new THREE.Group();
     scene.add(bodyGroup);
 
+    // Raycaster for click detection
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
     // Try loading GLTF model, fallback to procedural
     loadGLTFModel();
 
-    // Touch & mouse drag rotation
+    // Touch & mouse drag + click interaction
     setupDragControls(container);
 
     // Start animation
@@ -2158,39 +2165,130 @@
     renderer.setSize(width, height);
   }
 
+  function selectBodyPart(region) {
+    if (!region || !exerciseData[region]) return;
+    currentPart = region;
+    highlightMuscle(region);
+    updatePanelInfo();
+    renderExerciseList();
+
+    // Update buttons
+    document.querySelectorAll('.body-part-btn').forEach(function(b) {
+      b.classList.toggle('active', b.dataset.part === region);
+    });
+
+    // Show muscle indicator
+    var indicator = document.getElementById('muscleIndicator');
+    document.getElementById('muscleName').textContent = exerciseData[region].name;
+    document.getElementById('muscleDesc').textContent = 'Tap to view exercises';
+    indicator.classList.add('visible');
+    setTimeout(function() { indicator.classList.remove('visible'); }, 2000);
+
+    // On mobile, scroll to exercises
+    if (window.innerWidth <= 1024) {
+      var panel = document.querySelector('.content-panel');
+      if (panel) panel.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  function handleBodyClick(clientX, clientY, rect) {
+    if (!raycaster || !camera || allMeshes.length === 0) return;
+
+    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    var intersects = raycaster.intersectObjects(allMeshes, true);
+
+    if (intersects.length > 0) {
+      // Walk up to find the mesh with a bodyRegion
+      var hit = intersects[0].object;
+      var region = hit.userData.bodyRegion || '';
+
+      // If hit mesh has no region, check parent hierarchy
+      while (!region && hit.parent) {
+        hit = hit.parent;
+        region = (hit.userData && hit.userData.bodyRegion) || '';
+      }
+
+      if (region && exerciseData[region]) {
+        selectBodyPart(region);
+      }
+    }
+  }
+
   function setupDragControls(container) {
+    var CLICK_THRESHOLD = 5; // pixels - if moved less than this, it's a click
+
     // Mouse
+    var mouseDownX = 0, mouseDownY = 0;
     container.addEventListener('mousedown', function(e) {
       isDragging = true;
+      dragDistance = 0;
       previousMouseX = e.clientX;
-      autoRotate = false;
-      document.getElementById('toggleAutoRotate').classList.remove('active');
+      mouseDownX = e.clientX;
+      mouseDownY = e.clientY;
     });
     window.addEventListener('mousemove', function(e) {
       if (!isDragging) return;
       var delta = e.clientX - previousMouseX;
+      dragDistance += Math.abs(delta);
+      if (dragDistance > CLICK_THRESHOLD) {
+        autoRotate = false;
+        document.getElementById('toggleAutoRotate').classList.remove('active');
+      }
       targetRotationY += delta * 0.01;
       previousMouseX = e.clientX;
     });
-    window.addEventListener('mouseup', function() { isDragging = false; });
+    window.addEventListener('mouseup', function(e) {
+      if (isDragging && dragDistance <= CLICK_THRESHOLD) {
+        // It was a click, not a drag
+        var rect = container.getBoundingClientRect();
+        handleBodyClick(mouseDownX, mouseDownY, rect);
+      }
+      isDragging = false;
+    });
 
     // Touch
-    var touchStartX = 0;
+    var touchStartX = 0, touchStartY = 0, touchDragDist = 0;
     container.addEventListener('touchstart', function(e) {
       if (e.touches.length === 1) {
         isDragging = true;
+        touchDragDist = 0;
         touchStartX = e.touches[0].clientX;
-        autoRotate = false;
-        document.getElementById('toggleAutoRotate').classList.remove('active');
+        touchStartY = e.touches[0].clientY;
+        previousMouseX = touchStartX;
       }
     }, { passive: true });
     container.addEventListener('touchmove', function(e) {
       if (!isDragging || e.touches.length !== 1) return;
-      var delta = e.touches[0].clientX - touchStartX;
+      var delta = e.touches[0].clientX - previousMouseX;
+      touchDragDist += Math.abs(delta);
+      if (touchDragDist > CLICK_THRESHOLD) {
+        autoRotate = false;
+        document.getElementById('toggleAutoRotate').classList.remove('active');
+      }
       targetRotationY += delta * 0.01;
-      touchStartX = e.touches[0].clientX;
+      previousMouseX = e.touches[0].clientX;
     }, { passive: true });
-    container.addEventListener('touchend', function() { isDragging = false; }, { passive: true });
+    container.addEventListener('touchend', function(e) {
+      if (isDragging && touchDragDist <= CLICK_THRESHOLD) {
+        var rect = container.getBoundingClientRect();
+        handleBodyClick(touchStartX, touchStartY, rect);
+      }
+      isDragging = false;
+    }, { passive: true });
+
+    // Hover effect - highlight on mouseover
+    container.addEventListener('mousemove', function(e) {
+      if (isDragging || !raycaster || !camera || allMeshes.length === 0) return;
+      var rect = container.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      var intersects = raycaster.intersectObjects(allMeshes, true);
+      container.style.cursor = (intersects.length > 0 && intersects[0].object.userData.bodyRegion) ? 'pointer' : 'grab';
+    });
   }
 
   // ==========================================
@@ -2333,20 +2431,7 @@
     // Body part buttons
     document.querySelectorAll('.body-part-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.body-part-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        currentPart = btn.dataset.part;
-        highlightMuscle(currentPart);
-        updatePanelInfo();
-        renderExerciseList();
-
-        // Show muscle indicator
-        const indicator = document.getElementById('muscleIndicator');
-        document.getElementById('muscleName').textContent = exerciseData[currentPart].name;
-        document.getElementById('muscleDesc').textContent = 'View exercises below';
-        indicator.classList.add('visible');
-        setTimeout(() => indicator.classList.remove('visible'), 2000);
+        selectBodyPart(btn.dataset.part);
       });
     });
 
