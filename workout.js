@@ -2191,25 +2191,61 @@
     }
   }
 
+  // Determine body region from 3D intersection point
+  function regionFromPoint(point) {
+    // Convert intersection point to bodyGroup local space
+    var local = bodyGroup.worldToLocal(point.clone());
+    var y = local.y;
+    var x = Math.abs(local.x);
+    var z = local.z;
+
+    // Get bounding box of body for normalization
+    var box = new THREE.Box3().setFromObject(bodyGroup);
+    var minY = box.min.y;
+    var maxY = box.max.y;
+    var height = maxY - minY;
+    if (height === 0) return '';
+
+    var normalizedY = (y - minY) / height; // 0 = feet, 1 = head
+
+    // Determine region by Y position + X offset
+    if (normalizedY > 0.88) {
+      return ''; // head - no exercises
+    } else if (normalizedY > 0.78) {
+      return 'shoulders';
+    } else if (normalizedY > 0.62) {
+      // Upper torso area: check X for arms vs chest/back
+      if (x > 0.25) return 'arms';
+      if (z < -0.05) return 'back';
+      return 'chest';
+    } else if (normalizedY > 0.45) {
+      // Mid section: arms or core/back
+      if (x > 0.25) return 'arms';
+      if (z < -0.05) return 'back';
+      return 'core';
+    } else {
+      return 'legs';
+    }
+  }
+
   function handleBodyClick(clientX, clientY, rect) {
-    if (!raycaster || !camera || allMeshes.length === 0) return;
+    if (!raycaster || !camera) return;
 
     mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
     mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    var intersects = raycaster.intersectObjects(allMeshes, true);
+
+    // Raycast against bodyGroup children recursively
+    var targets = [];
+    bodyGroup.traverse(function(child) {
+      if (child.isMesh) targets.push(child);
+    });
+    var intersects = raycaster.intersectObjects(targets, false);
 
     if (intersects.length > 0) {
-      // Walk up to find the mesh with a bodyRegion
-      var hit = intersects[0].object;
-      var region = hit.userData.bodyRegion || '';
-
-      // If hit mesh has no region, check parent hierarchy
-      while (!region && hit.parent) {
-        hit = hit.parent;
-        region = (hit.userData && hit.userData.bodyRegion) || '';
-      }
+      var point = intersects[0].point;
+      var region = regionFromPoint(point);
 
       if (region && exerciseData[region]) {
         selectBodyPart(region);
@@ -2279,15 +2315,37 @@
       isDragging = false;
     }, { passive: true });
 
-    // Hover effect - highlight on mouseover
+    // Hover effect - change cursor + show region indicator
+    var hoverThrottle = 0;
     container.addEventListener('mousemove', function(e) {
-      if (isDragging || !raycaster || !camera || allMeshes.length === 0) return;
+      if (isDragging || !raycaster || !camera) return;
+      var now = Date.now();
+      if (now - hoverThrottle < 50) return; // throttle to 20fps
+      hoverThrottle = now;
+
       var rect = container.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      var intersects = raycaster.intersectObjects(allMeshes, true);
-      container.style.cursor = (intersects.length > 0 && intersects[0].object.userData.bodyRegion) ? 'pointer' : 'grab';
+
+      var targets = [];
+      bodyGroup.traverse(function(child) { if (child.isMesh) targets.push(child); });
+      var intersects = raycaster.intersectObjects(targets, false);
+
+      if (intersects.length > 0) {
+        var region = regionFromPoint(intersects[0].point);
+        if (region && exerciseData[region]) {
+          container.style.cursor = 'pointer';
+          // Show indicator on hover
+          var indicator = document.getElementById('muscleIndicator');
+          document.getElementById('muscleName').textContent = exerciseData[region].name;
+          document.getElementById('muscleDesc').textContent = 'Click to view exercises';
+          indicator.classList.add('visible');
+          return;
+        }
+      }
+      container.style.cursor = 'grab';
+      document.getElementById('muscleIndicator').classList.remove('visible');
     });
   }
 
