@@ -1711,7 +1711,7 @@
   };
 
   // ==========================================
-  // THREE.JS 3D BODY MODEL
+  // THREE.JS 3D BODY MODEL (GLTF Loader + Fallback)
   // ==========================================
   let scene, camera, renderer, bodyGroup;
   let autoRotate = true;
@@ -1720,6 +1720,7 @@
   let isDragging = false;
   let previousMouseX = 0;
   let threeJSReady = false;
+  let allMeshes = [];
 
   // Muscle highlight colors
   const muscleColors = {
@@ -1735,19 +1736,39 @@
 
   let currentHighlight = 'chest';
 
-  // CapsuleGeometry polyfill for older Three.js versions
-  function makeCapsuleGeometry(radius, length, capSeg, radSeg) {
-    if (typeof THREE.CapsuleGeometry === 'function') {
-      return new THREE.CapsuleGeometry(radius, length, capSeg, radSeg);
+  // Body part name mapping: mesh name keywords -> body region
+  var bodyPartKeywords = {
+    chest: ['chest', 'pectoral', 'pec', 'breast', 'torso_front', 'Body_Chest', 'mixamorigSpine1', 'mixamorigSpine2'],
+    back: ['back', 'lat', 'lats', 'trapez', 'trap', 'rhomboid', 'erect', 'spine', 'torso_back', 'Body_Back'],
+    shoulders: ['shoulder', 'deltoid', 'delt', 'clavicle', 'Body_Shoulder', 'mixamorigShoulder'],
+    arms: ['arm', 'bicep', 'tricep', 'forearm', 'hand', 'wrist', 'finger', 'elbow', 'Body_Arm', 'mixamorigArm', 'mixamorigForeArm', 'mixamorigHand'],
+    core: ['core', 'abdom', 'abs', 'oblique', 'pelvis', 'hip', 'waist', 'Body_Core', 'mixamorigHips', 'mixamorigSpine'],
+    legs: ['leg', 'quad', 'hamstring', 'calf', 'calves', 'glut', 'thigh', 'knee', 'shin', 'foot', 'ankle', 'toe', 'Body_Leg', 'mixamorigUpLeg', 'mixamorigLeg', 'mixamorigFoot', 'mixamorigToe']
+  };
+
+  function classifyMesh(meshName) {
+    var lname = meshName.toLowerCase();
+    for (var region in bodyPartKeywords) {
+      for (var i = 0; i < bodyPartKeywords[region].length; i++) {
+        if (lname.indexOf(bodyPartKeywords[region][i].toLowerCase()) !== -1) {
+          return region;
+        }
+      }
     }
-    // Fallback: rounded cylinder approximation
-    return new THREE.CylinderGeometry(radius, radius, length + radius * 2, radSeg, 1, false);
+    // Fallback: try to classify by Y position later
+    return '';
   }
 
+  // GLB model URLs to try (MIT-licensed Three.js example models)
+  var MODEL_URLS = [
+    'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r148/examples/models/gltf/Xbot.glb',
+    'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@main/2.0/CesiumMan/glTF-Binary/CesiumMan.glb'
+  ];
+
   function init3D() {
-    const container = document.getElementById('canvas-container');
-    const width = container.clientWidth;
-    const height = container.clientHeight;
+    var container = document.getElementById('canvas-container');
+    var width = container.clientWidth;
+    var height = container.clientHeight;
 
     // WebGL check
     try {
@@ -1763,49 +1784,369 @@
     // Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a0a0f);
+    scene.fog = new THREE.Fog(0x0a0a0f, 8, 15);
 
     // Camera
-    camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-    camera.position.z = 5;
-    camera.position.y = 0.5;
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 1, 4);
+    camera.lookAt(0, 0.8, 0);
 
     // Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
 
-    // Lights
-    const ambientLight = new THREE.AmbientLight(0x404050, 0.5);
+    // Lights - studio-quality setup
+    var ambientLight = new THREE.AmbientLight(0x404060, 0.6);
     scene.add(ambientLight);
 
-    const frontLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    frontLight.position.set(0, 2, 5);
-    scene.add(frontLight);
+    var keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    keyLight.position.set(2, 4, 5);
+    keyLight.castShadow = false;
+    scene.add(keyLight);
 
-    const backLight = new THREE.DirectionalLight(0x6366f1, 0.4);
-    backLight.position.set(0, 2, -5);
-    scene.add(backLight);
+    var fillLight = new THREE.DirectionalLight(0x6366f1, 0.5);
+    fillLight.position.set(-3, 2, -3);
+    scene.add(fillLight);
 
-    const topLight = new THREE.DirectionalLight(0x8b5cf6, 0.3);
-    topLight.position.set(0, 5, 0);
-    scene.add(topLight);
+    var rimLight = new THREE.DirectionalLight(0x8b5cf6, 0.6);
+    rimLight.position.set(0, 3, -5);
+    scene.add(rimLight);
 
-    // Create body
+    var bottomLight = new THREE.DirectionalLight(0x334155, 0.3);
+    bottomLight.position.set(0, -3, 2);
+    scene.add(bottomLight);
+
+    // Ground glow
+    var groundGeo = new THREE.PlaneGeometry(6, 6);
+    var groundMat = new THREE.MeshStandardMaterial({
+      color: 0x6366f1, emissive: 0x6366f1, emissiveIntensity: 0.15,
+      transparent: true, opacity: 0.3, side: THREE.DoubleSide
+    });
+    var ground = new THREE.Mesh(groundGeo, groundMat);
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.05;
+    scene.add(ground);
+
+    // Body group
     bodyGroup = new THREE.Group();
-    createStylizedBody();
     scene.add(bodyGroup);
+
+    // Try loading GLTF model, fallback to procedural
+    loadGLTFModel();
 
     // Touch & mouse drag rotation
     setupDragControls(container);
-
-    threeJSReady = true;
 
     // Start animation
     animate();
 
     // Handle resize
     window.addEventListener('resize', onWindowResize);
+  }
+
+  function loadGLTFModel() {
+    var loader = new THREE.GLTFLoader();
+    var loadingText = document.querySelector('.loading-text');
+
+    function tryLoad(index) {
+      if (index >= MODEL_URLS.length) {
+        // All URLs failed, use procedural model
+        if (loadingText) loadingText.textContent = 'Building 3D model...';
+        createProceduralBody();
+        threeJSReady = true;
+        return;
+      }
+
+      if (loadingText) loadingText.textContent = 'Loading 3D model...';
+
+      loader.load(
+        MODEL_URLS[index],
+        function(gltf) {
+          // Success
+          var model = gltf.scene;
+
+          // Compute bounding box to normalize size and position
+          var box = new THREE.Box3().setFromObject(model);
+          var size = box.getSize(new THREE.Vector3());
+          var center = box.getCenter(new THREE.Vector3());
+
+          // Scale to ~2 units tall
+          var targetHeight = 2.0;
+          var scale = targetHeight / size.y;
+          model.scale.setScalar(scale);
+
+          // Center horizontally, place feet near y=0
+          model.position.x = -center.x * scale;
+          model.position.y = -box.min.y * scale;
+          model.position.z = -center.z * scale;
+
+          // Assign body part regions and collect meshes
+          allMeshes = [];
+          model.traverse(function(child) {
+            if (child.isMesh) {
+              // Try classifying by name
+              var region = classifyMesh(child.name);
+
+              // If not classified by name, classify by vertical position
+              if (!region) {
+                var worldPos = new THREE.Vector3();
+                child.getWorldPosition(worldPos);
+                var normalizedY = (worldPos.y - box.min.y) / size.y;
+                if (normalizedY > 0.85) region = ''; // head, skip
+                else if (normalizedY > 0.7) region = 'shoulders';
+                else if (normalizedY > 0.55) region = 'chest';
+                else if (normalizedY > 0.4) region = 'core';
+                else if (normalizedY > 0.0) region = 'legs';
+                else region = 'legs';
+              }
+
+              child.userData.bodyRegion = region;
+
+              // Replace material for highlighting support
+              child.material = new THREE.MeshStandardMaterial({
+                color: muscleColors.default,
+                roughness: 0.5,
+                metalness: 0.2,
+                emissive: new THREE.Color(0x000000),
+                emissiveIntensity: 0
+              });
+
+              allMeshes.push(child);
+            }
+          });
+
+          bodyGroup.add(model);
+          highlightMuscle('chest');
+          threeJSReady = true;
+        },
+        function(progress) {
+          // Progress
+          if (loadingText && progress.total > 0) {
+            var pct = Math.round((progress.loaded / progress.total) * 100);
+            loadingText.textContent = 'Loading 3D model... ' + pct + '%';
+          }
+        },
+        function(error) {
+          // Error, try next URL
+          console.warn('Model load failed:', MODEL_URLS[index], error);
+          tryLoad(index + 1);
+        }
+      );
+    }
+
+    tryLoad(0);
+  }
+
+  function createProceduralBody() {
+    // High-quality procedural mannequin using LatheGeometry for smooth body
+    var mat = function(region) {
+      return new THREE.MeshStandardMaterial({
+        color: muscleColors.default, roughness: 0.5, metalness: 0.2,
+        emissive: new THREE.Color(0x000000), emissiveIntensity: 0
+      });
+    };
+
+    var seg = 24;
+
+    // --- Torso (LatheGeometry for smooth organic shape) ---
+    var torsoProfile = [
+      new THREE.Vector2(0, 0),
+      new THREE.Vector2(0.25, 0.05),
+      new THREE.Vector2(0.32, 0.15),
+      new THREE.Vector2(0.35, 0.3),
+      new THREE.Vector2(0.33, 0.5),
+      new THREE.Vector2(0.28, 0.6),
+      new THREE.Vector2(0.25, 0.65),
+      new THREE.Vector2(0.28, 0.7),
+      new THREE.Vector2(0.35, 0.85),
+      new THREE.Vector2(0.38, 1.0),
+      new THREE.Vector2(0.36, 1.1),
+      new THREE.Vector2(0.3, 1.15),
+      new THREE.Vector2(0.15, 1.2),
+      new THREE.Vector2(0, 1.22)
+    ];
+    var torsoGeo = new THREE.LatheGeometry(torsoProfile, seg);
+    var torsoMesh = new THREE.Mesh(torsoGeo, mat('core'));
+    torsoMesh.position.y = -0.05;
+    torsoMesh.userData.bodyRegion = 'core';
+    bodyGroup.add(torsoMesh);
+    allMeshes.push(torsoMesh);
+
+    // --- Chest overlay ---
+    var chestGeo = new THREE.SphereGeometry(0.38, seg, seg, 0, Math.PI * 2, 0, Math.PI * 0.5);
+    var chestL = new THREE.Mesh(chestGeo, mat('chest'));
+    chestL.position.set(-0.12, 0.9, 0.15);
+    chestL.scale.set(0.7, 0.55, 0.45);
+    chestL.userData.bodyRegion = 'chest';
+    bodyGroup.add(chestL);
+    allMeshes.push(chestL);
+
+    var chestR = new THREE.Mesh(chestGeo, mat('chest'));
+    chestR.position.set(0.12, 0.9, 0.15);
+    chestR.scale.set(0.7, 0.55, 0.45);
+    chestR.userData.bodyRegion = 'chest';
+    bodyGroup.add(chestR);
+    allMeshes.push(chestR);
+
+    // --- Back ---
+    var backGeo = new THREE.SphereGeometry(0.35, seg, seg);
+    var backMesh = new THREE.Mesh(backGeo, mat('back'));
+    backMesh.position.set(0, 0.85, -0.18);
+    backMesh.scale.set(1.0, 1.3, 0.4);
+    backMesh.userData.bodyRegion = 'back';
+    bodyGroup.add(backMesh);
+    allMeshes.push(backMesh);
+
+    // --- Head ---
+    var headGeo = new THREE.SphereGeometry(0.16, seg, seg);
+    var head = new THREE.Mesh(headGeo, mat(''));
+    head.position.y = 1.35;
+    head.userData.bodyRegion = '';
+    bodyGroup.add(head);
+    allMeshes.push(head);
+
+    // Neck
+    var neckGeo = new THREE.CylinderGeometry(0.08, 0.1, 0.12, seg);
+    var neck = new THREE.Mesh(neckGeo, mat(''));
+    neck.position.y = 1.18;
+    neck.userData.bodyRegion = '';
+    bodyGroup.add(neck);
+    allMeshes.push(neck);
+
+    // --- Shoulders ---
+    var shoulderGeo = new THREE.SphereGeometry(0.12, seg, seg);
+    [-1, 1].forEach(function(side) {
+      var s = new THREE.Mesh(shoulderGeo, mat('shoulders'));
+      s.position.set(side * 0.42, 1.05, 0);
+      s.scale.set(1.2, 1, 1);
+      s.userData.bodyRegion = 'shoulders';
+      bodyGroup.add(s);
+      allMeshes.push(s);
+    });
+
+    // --- Arms (upper + lower + hands) ---
+    function capsule(r, len) {
+      if (typeof THREE.CapsuleGeometry === 'function') {
+        return new THREE.CapsuleGeometry(r, len, 12, seg);
+      }
+      return new THREE.CylinderGeometry(r, r * 0.9, len + r * 2, seg);
+    }
+
+    [-1, 1].forEach(function(side) {
+      // Upper arm
+      var ua = new THREE.Mesh(capsule(0.08, 0.32), mat('arms'));
+      ua.position.set(side * 0.48, 0.75, 0);
+      ua.rotation.z = side * 0.08;
+      ua.userData.bodyRegion = 'arms';
+      bodyGroup.add(ua);
+      allMeshes.push(ua);
+
+      // Lower arm
+      var la = new THREE.Mesh(capsule(0.06, 0.3), mat('arms'));
+      la.position.set(side * 0.52, 0.35, 0.03);
+      la.rotation.z = side * 0.04;
+      la.userData.bodyRegion = 'arms';
+      bodyGroup.add(la);
+      allMeshes.push(la);
+
+      // Hand
+      var hGeo = new THREE.SphereGeometry(0.06, 12, 12);
+      var h = new THREE.Mesh(hGeo, mat('arms'));
+      h.position.set(side * 0.54, 0.1, 0.03);
+      h.scale.set(0.8, 1.2, 0.6);
+      h.userData.bodyRegion = 'arms';
+      bodyGroup.add(h);
+      allMeshes.push(h);
+    });
+
+    // --- Legs (upper + lower + feet) ---
+    [-1, 1].forEach(function(side) {
+      // Upper leg
+      var ul = new THREE.Mesh(capsule(0.12, 0.45), mat('legs'));
+      ul.position.set(side * 0.15, -0.45, 0);
+      ul.userData.bodyRegion = 'legs';
+      bodyGroup.add(ul);
+      allMeshes.push(ul);
+
+      // Lower leg
+      var ll = new THREE.Mesh(capsule(0.09, 0.42), mat('legs'));
+      ll.position.set(side * 0.15, -1.05, 0);
+      ll.userData.bodyRegion = 'legs';
+      bodyGroup.add(ll);
+      allMeshes.push(ll);
+
+      // Foot
+      var footGeo = new THREE.SphereGeometry(0.09, 12, 12);
+      var foot = new THREE.Mesh(footGeo, mat('legs'));
+      foot.position.set(side * 0.15, -1.38, 0.06);
+      foot.scale.set(0.8, 0.5, 1.4);
+      foot.userData.bodyRegion = 'legs';
+      bodyGroup.add(foot);
+      allMeshes.push(foot);
+    });
+
+    // Center the body
+    bodyGroup.position.y = 0.2;
+
+    highlightMuscle('chest');
+  }
+
+  function highlightMuscle(muscleName) {
+    currentHighlight = muscleName;
+
+    allMeshes.forEach(function(mesh) {
+      if (!mesh.material) return;
+      var region = mesh.userData.bodyRegion || mesh.name || '';
+
+      if (muscleName === 'fullbody') {
+        mesh.material.color.setHex(muscleColors.fullbody);
+        mesh.material.emissive.setHex(muscleColors.fullbody);
+        mesh.material.emissiveIntensity = 0.25;
+      } else if (region === muscleName) {
+        mesh.material.color.setHex(muscleColors[muscleName]);
+        mesh.material.emissive.setHex(muscleColors[muscleName]);
+        mesh.material.emissiveIntensity = 0.35;
+      } else {
+        mesh.material.color.setHex(muscleColors.default);
+        mesh.material.emissive.setHex(0x000000);
+        mesh.material.emissiveIntensity = 0;
+      }
+    });
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    if (autoRotate) {
+      targetRotationY += 0.003;
+    }
+
+    // Smooth rotation
+    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
+    if (bodyGroup) {
+      bodyGroup.rotation.y = currentRotationY;
+      // Subtle floating animation
+      bodyGroup.position.y = (bodyGroup.position.y || 0.2) + Math.sin(Date.now() * 0.001) * 0.0005;
+    }
+
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera);
+    }
+  }
+
+  function onWindowResize() {
+    var container = document.getElementById('canvas-container');
+    var width = container.clientWidth;
+    var height = container.clientHeight;
+
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
   }
 
   function setupDragControls(container) {
@@ -1841,179 +2182,6 @@
       touchStartX = e.touches[0].clientX;
     }, { passive: true });
     container.addEventListener('touchend', function() { isDragging = false; }, { passive: true });
-  }
-
-  function createStylizedBody() {
-    const bodyMaterial = new THREE.MeshStandardMaterial({
-      color: muscleColors.default,
-      roughness: 0.7,
-      metalness: 0.1
-    });
-
-    // Torso
-    const torsoGeometry = new THREE.CylinderGeometry(0.5, 0.4, 1.2, 16);
-    const torso = new THREE.Mesh(torsoGeometry, bodyMaterial.clone());
-    torso.position.y = 0.3;
-    torso.name = 'core';
-    bodyGroup.add(torso);
-
-    // Chest
-    const chestGeometry = new THREE.SphereGeometry(0.55, 16, 16);
-    const chest = new THREE.Mesh(chestGeometry, bodyMaterial.clone());
-    chest.position.y = 0.7;
-    chest.position.z = 0.1;
-    chest.scale.set(1, 0.7, 0.6);
-    chest.name = 'chest';
-    bodyGroup.add(chest);
-
-    // Head
-    const headGeometry = new THREE.SphereGeometry(0.25, 16, 16);
-    const head = new THREE.Mesh(headGeometry, bodyMaterial.clone());
-    head.position.y = 1.3;
-    head.name = 'head';
-    bodyGroup.add(head);
-
-    // Neck
-    const neckGeometry = new THREE.CylinderGeometry(0.1, 0.12, 0.15, 12);
-    const neck = new THREE.Mesh(neckGeometry, bodyMaterial.clone());
-    neck.position.y = 1.0;
-    bodyGroup.add(neck);
-
-    // Shoulders (spheres)
-    const shoulderGeometry = new THREE.SphereGeometry(0.15, 12, 12);
-
-    const leftShoulder = new THREE.Mesh(shoulderGeometry, bodyMaterial.clone());
-    leftShoulder.position.set(-0.55, 0.8, 0);
-    leftShoulder.name = 'shoulders';
-    bodyGroup.add(leftShoulder);
-
-    const rightShoulder = new THREE.Mesh(shoulderGeometry, bodyMaterial.clone());
-    rightShoulder.position.set(0.55, 0.8, 0);
-    rightShoulder.name = 'shoulders';
-    bodyGroup.add(rightShoulder);
-
-    // Upper Arms
-    const upperArmGeometry = makeCapsuleGeometry(0.1, 0.4, 8, 8);
-
-    const leftUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial.clone());
-    leftUpperArm.position.set(-0.65, 0.5, 0);
-    leftUpperArm.rotation.z = 0.15;
-    leftUpperArm.name = 'arms';
-    bodyGroup.add(leftUpperArm);
-
-    const rightUpperArm = new THREE.Mesh(upperArmGeometry, bodyMaterial.clone());
-    rightUpperArm.position.set(0.65, 0.5, 0);
-    rightUpperArm.rotation.z = -0.15;
-    rightUpperArm.name = 'arms';
-    bodyGroup.add(rightUpperArm);
-
-    // Lower Arms
-    const lowerArmGeometry = makeCapsuleGeometry(0.08, 0.35, 8, 8);
-
-    const leftLowerArm = new THREE.Mesh(lowerArmGeometry, bodyMaterial.clone());
-    leftLowerArm.position.set(-0.72, 0.05, 0);
-    leftLowerArm.rotation.z = 0.1;
-    leftLowerArm.name = 'arms';
-    bodyGroup.add(leftLowerArm);
-
-    const rightLowerArm = new THREE.Mesh(lowerArmGeometry, bodyMaterial.clone());
-    rightLowerArm.position.set(0.72, 0.05, 0);
-    rightLowerArm.rotation.z = -0.1;
-    rightLowerArm.name = 'arms';
-    bodyGroup.add(rightLowerArm);
-
-    // Hips
-    const hipGeometry = new THREE.CylinderGeometry(0.45, 0.35, 0.3, 16);
-    const hips = new THREE.Mesh(hipGeometry, bodyMaterial.clone());
-    hips.position.y = -0.35;
-    hips.name = 'legs';
-    bodyGroup.add(hips);
-
-    // Upper Legs
-    const upperLegGeometry = makeCapsuleGeometry(0.15, 0.5, 8, 8);
-
-    const leftUpperLeg = new THREE.Mesh(upperLegGeometry, bodyMaterial.clone());
-    leftUpperLeg.position.set(-0.2, -0.8, 0);
-    leftUpperLeg.name = 'legs';
-    bodyGroup.add(leftUpperLeg);
-
-    const rightUpperLeg = new THREE.Mesh(upperLegGeometry, bodyMaterial.clone());
-    rightUpperLeg.position.set(0.2, -0.8, 0);
-    rightUpperLeg.name = 'legs';
-    bodyGroup.add(rightUpperLeg);
-
-    // Lower Legs
-    const lowerLegGeometry = makeCapsuleGeometry(0.1, 0.5, 8, 8);
-
-    const leftLowerLeg = new THREE.Mesh(lowerLegGeometry, bodyMaterial.clone());
-    leftLowerLeg.position.set(-0.2, -1.45, 0);
-    leftLowerLeg.name = 'legs';
-    bodyGroup.add(leftLowerLeg);
-
-    const rightLowerLeg = new THREE.Mesh(lowerLegGeometry, bodyMaterial.clone());
-    rightLowerLeg.position.set(0.2, -1.45, 0);
-    rightLowerLeg.name = 'legs';
-    bodyGroup.add(rightLowerLeg);
-
-    // Back (visible from behind)
-    const backGeometry = new THREE.BoxGeometry(0.8, 0.9, 0.2);
-    const back = new THREE.Mesh(backGeometry, bodyMaterial.clone());
-    back.position.set(0, 0.5, -0.25);
-    back.name = 'back';
-    bodyGroup.add(back);
-
-    // Apply initial highlight
-    highlightMuscle('chest');
-  }
-
-  function highlightMuscle(muscleName) {
-    currentHighlight = muscleName;
-
-    bodyGroup.children.forEach(child => {
-      if (child.material) {
-        if (muscleName === 'fullbody') {
-          // Highlight everything
-          child.material.color.setHex(muscleColors.fullbody);
-          child.material.emissive = new THREE.Color(muscleColors.fullbody);
-          child.material.emissiveIntensity = 0.2;
-        } else if (child.name === muscleName) {
-          child.material.color.setHex(muscleColors[muscleName]);
-          child.material.emissive = new THREE.Color(muscleColors[muscleName]);
-          child.material.emissiveIntensity = 0.3;
-        } else {
-          child.material.color.setHex(muscleColors.default);
-          child.material.emissive = new THREE.Color(0x000000);
-          child.material.emissiveIntensity = 0;
-        }
-      }
-    });
-  }
-
-  function animate() {
-    requestAnimationFrame(animate);
-
-    if (autoRotate) {
-      targetRotationY += 0.003;
-    }
-
-    // Smooth rotation
-    currentRotationY += (targetRotationY - currentRotationY) * 0.05;
-    bodyGroup.rotation.y = currentRotationY;
-
-    // Subtle floating animation
-    bodyGroup.position.y = Math.sin(Date.now() * 0.001) * 0.05;
-
-    renderer.render(scene, camera);
-  }
-
-  function onWindowResize() {
-    const container = document.getElementById('canvas-container');
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
   }
 
   // ==========================================
