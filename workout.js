@@ -1795,8 +1795,8 @@
     renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    if (THREE.sRGBEncoding) renderer.outputEncoding = THREE.sRGBEncoding;
+    if (THREE.ACESFilmicToneMapping) renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
 
@@ -1850,6 +1850,13 @@
   }
 
   function loadGLTFModel() {
+    if (!THREE.GLTFLoader) {
+      console.warn('GLTFLoader not available, using procedural body');
+      createProceduralBody();
+      threeJSReady = true;
+      hideLoading();
+      return;
+    }
     var loader = new THREE.GLTFLoader();
     var loadingText = document.querySelector('.loading-text');
 
@@ -1859,6 +1866,7 @@
         if (loadingText) loadingText.textContent = 'Building 3D model...';
         createProceduralBody();
         threeJSReady = true;
+        hideLoading();
         return;
       }
 
@@ -1923,6 +1931,7 @@
           bodyGroup.add(model);
           highlightMuscle('chest');
           threeJSReady = true;
+          hideLoading();
         },
         function(progress) {
           // Progress
@@ -2389,20 +2398,21 @@
   // ==========================================
   // INITIALIZATION
   // ==========================================
+  function hideLoading() {
+    var ls = document.getElementById('loadingScreen');
+    if (ls) ls.classList.add('hidden');
+  }
+
   function init() {
     try {
       init3D();
     } catch (e) {
       console.warn('3D initialization failed:', e);
-      var container = document.getElementById('canvas-container');
-      container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#94a3b8;text-align:center;padding:40px;"><div><p style="font-size:1.2rem;margin-bottom:10px;">3D model could not load</p><p>You can still browse all exercises below.</p></div></div>';
+      hideLoading();
     }
     setupEventListeners();
     updatePanelInfo();
     renderExerciseList();
-
-    // Hide loading screen immediately
-    document.getElementById('loadingScreen').classList.add('hidden');
 
     // Set initial auto-rotate button state
     document.getElementById('toggleAutoRotate').classList.add('active');
